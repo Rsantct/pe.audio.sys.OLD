@@ -7,11 +7,11 @@
 
 import sys
 from subprocess import run
-import jack_loop
+from predic import jack_loop
 
 def start():
     # jack_loop module will keep the loop alive
-    jack_loop.jack_loop('alsa_loop')
+    jack_loop('alsa_loop')
 
 def stop():
     run( 'pkill -f alsa2jack.py'.split() )
