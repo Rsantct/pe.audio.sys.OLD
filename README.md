@@ -10,8 +10,9 @@ Copyright (c) 2016-2018 Rafael Sánchez
 
 **Python** >= 3.6
 
-**~/.profile**
+Update your environment for instance by editing your **`.profile`** home file:
+
 ```
-  ...
-  PYTHONPATH="$PYTHONPATH:$HOME/bin:$HOME/clients/bin"
+export PYTHONPATH="$PYTHONPATH:$HOME/pre.di.c/bin:$HOME/pre.di.c/clients/bin"
+export PATH="$PATH:$HOME/pre.di.c/bin"
 ```

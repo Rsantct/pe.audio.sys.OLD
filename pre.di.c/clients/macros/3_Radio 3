@@ -1,0 +1,5 @@
+#!/bin/bash
+
+$HOME/pre.di.c/scripts/istreams.py preset 3
+echo "input istreams" | nc -N localhost 9999
+
