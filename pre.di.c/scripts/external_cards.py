@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
     Runs external cards resampled in JACK
+    
+    usage:  external_cards.py   start | stop
 """
 
 import sys
