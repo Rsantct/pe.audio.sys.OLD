@@ -7,4 +7,5 @@ alsa_loop_load.py   # Sets up alsa_loop ports in jack to be used from ALSA backe
 #librespot.py        # Loads a Spotify Connect player client
 aux.py              # Loads a server to switching the amplifier and running user macros.
 players.py          # Loads a server to interfacing with players
+external_cards.py   # Runs external cards resampled in JACK
 #pulseaudio-jack-sink # Pulseadio sink on jack to be used from Pulseaudio backended players
