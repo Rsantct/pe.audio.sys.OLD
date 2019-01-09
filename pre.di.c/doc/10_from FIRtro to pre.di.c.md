@@ -53,7 +53,7 @@ Copy all pcm stuff you will need here and rename pcm files as convenient. For ex
 
     nano renaming
     
-        Edit here each line to somethin like:
+        Edit here each line to something like:
 
         mv  lp-high.pcm                     xo.high_lp.pcm
         mv  drc-1-L_somodrcdescription.pcm  drc.L_somodrcdescription.pcm
