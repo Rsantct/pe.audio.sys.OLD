@@ -1,6 +1,11 @@
 (Download and install scripts from AudioHumLab/FIRtro, adapted to pre.di.c)
 
 
+FIRST install an set all **Python3** stuff as indicated in **`/README.md`**. Relogin when done.
+
+NEXT install pre.di.c:
+
+
 ## First install:
 
 1- Download manually a copy of `download_predic.sh`, an run it:
