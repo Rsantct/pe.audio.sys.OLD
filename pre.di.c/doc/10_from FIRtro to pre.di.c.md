@@ -8,7 +8,7 @@ So 'fs' is no longer stored inside `config/state.yml`
 
        (i) PLEASE set your editor to tab by using 4 spaces
 
-## PREPARING YOUR pre.di.c
+## PREPARING pre.di.c
 
 - Make a folder for your loudspeaker an go inside:
 
@@ -17,7 +17,9 @@ So 'fs' is no longer stored inside `config/state.yml`
     cd pre.di.c/loudspeakers/mylspkname
 ```
 
-- Copy here the provided `../example2ways-sub/brutefir_settings.yml`.
+- Copy here the provided file:
+
+`cp   ../example2ways-sub/brutefir_settings.yml  .`
 
 Edit and set your current FIR taps lenght, for example if your pcm files are 64K then FIRs are 16384 taps lenght:
 
