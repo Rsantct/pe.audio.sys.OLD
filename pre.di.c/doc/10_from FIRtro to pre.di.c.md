@@ -36,7 +36,7 @@ Edit and set your current FIR taps lenght, for example if your pcm files are 64K
 
 - Copy here your XO and DRC pcm files.
 
-Run do_config_files.py -h for help on convention naming pcm files:
+Run **`do_config_files.py -h`** for help on convention naming pcm files:
 
         XO:
           xo.someDescription.pcm
