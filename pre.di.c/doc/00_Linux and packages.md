@@ -13,4 +13,5 @@ A summary of packages you'll need:
     ecasound ecatools python-ecasound ladspa-sdk fil-plugins
     zita-ajbridge zita-njbridge
     apache2
+    mpd mpc
 ```
