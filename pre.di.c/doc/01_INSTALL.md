@@ -37,3 +37,14 @@ where `my_branch` can be 'master' or whatever branch name you want to test
 `sh tmp/update_predic.sh <my_brach>`
 
 Say **'Y'** to keep your current config.
+
+
+### The web page
+
+For the web page server update you'll need sudo credentials.
+
+Now you can check the control web from some LAN computer or smartphone
+
+    http://yourPredicHostname.local
+
+
