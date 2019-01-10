@@ -1,22 +1,19 @@
 (Download and install scripts from AudioHumLab/FIRtro, adapted to pre.di.c)
 
+## Required
 
-FIRST install an set all **Python3** stuff as indicated in **`/README.md`**. Relogin when done.
+You need **Python>=3.6** and all python stuff as indicated in **`/README.md`**. Relogin when done.
 
-NEXT install pre.di.c:
+## First pre.di.c install:
 
-
-## First install:
-
-1- Download manually a copy of `download_predic.sh`, an run it:
+1- Under your home folder, download manually a copy of `download_predic.sh`, an run it:
 
 ```
-wget https://raw.githubusercontent.com/rripio/pre.di.c/master/.install/download_predic.sh
+wget https://raw.githubusercontent.com/Rsantct/pre.di.c/master/.install/download_predic.sh
 sh download_predic.sh master
-rm download_predic.sh
 ```
 
-At this point, the install scripts will be accesible under `~/tmp`
+At this point, the install scripts and the whole 'master' repo will be located under `~/tmp` (and also deleted the above downloaded)
 
 2- Install pre.di.c
 
@@ -41,10 +38,9 @@ Say **'Y'** to keep your current config.
 
 ### The web page
 
-For the web page server update you'll need sudo credentials.
+To updating your Apache web server you'll need sudo credentials.
 
-Now you can check the control web from some LAN computer or smartphone
+Once done you can check the control web from some LAN computer or smartphone
 
     http://yourPredicHostname.local
-
 
