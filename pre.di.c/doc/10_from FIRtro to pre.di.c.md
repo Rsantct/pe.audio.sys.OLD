@@ -187,5 +187,5 @@ You can use the `read_brutefir_process.py` tool to see how coefficients and outp
 
 If things seems to work well, you can set `jack_options` to use the **real alsa** sound card, for instance:
 
-       `jack_options: -R -dalsa -p1024 -n`
+       jack_options: -R -dalsa -p1024 -n
 
