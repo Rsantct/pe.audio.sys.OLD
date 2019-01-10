@@ -178,10 +178,10 @@ You can use the `read_brutefir_process.py` tool to see how coefficients and outp
           1 f.eq.R      +0.00   1      0   c.eq             +0.00     dirac pulse
           2 f.drc.L     +0.00   1      1   L_multipV1       +0.00     drc.L_multipV1.pcm
           3 f.drc.R     +0.00   1      2   R_multipV1       +0.00     drc.L_multipV1.pcm
-          4 f.lo.L     -10.50   1      6   lo_mp            +0.00     xo.lo_mp.pcm
-          5 f.hi.L      -9.00   1      5   hi_mp            +0.00     xo.hi_mp.pcm
-          6 f.lo.R     -10.50   1      6   lo_mp            +0.00     xo.lo_mp.pcm
-          7 f.hi.R      -9.00   1      5   hi_mp            +0.00     xo.hi_mp.pcm
+          4 f.lo.L      +0.00   1      6   lo_mp            +0.00     xo.lo_mp.pcm
+          5 f.hi.L      +0.00   1      5   hi_mp            +0.00     xo.hi_mp.pcm
+          6 f.lo.R      +0.00   1      6   lo_mp            +0.00     xo.lo_mp.pcm
+          7 f.hi.R      +0.00   1      5   hi_mp            +0.00     xo.hi_mp.pcm
 
        $
 
