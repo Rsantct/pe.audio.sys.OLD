@@ -90,8 +90,8 @@ def select_by_name(channel_name):
 
     try:
         print( f'(scripts/DVB.py) trying to load \'{channel_name}\'' )
-        # The whole address after 'loadfile' needs to be quoted to load properly:
-        command = ('loadfile "dvb://' + channel_name + '"\n' )
+        # The whole address after 'loadfile' needs to be SINGLE quoted to load properly:
+        command = ('loadfile \'dvb://' + channel_name + '\'\n' )
         f = open( input_fifo, 'w')
         f.write(command)
         f.close()
