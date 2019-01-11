@@ -102,7 +102,7 @@ for file in clients/bin/* ; do
 done
 
 ## CLIENTS / MACROS
-# These are privative files, nothing to do here.
+# These are privative files, nothing to do here. The branch will provide a 'macros.example' folder.
 
 #########################################################
 # Cleaning
