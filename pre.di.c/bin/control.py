@@ -256,9 +256,9 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
     def change_drc(DRC_set, state=state):
 
         state['DRC_set'] = DRC_set
-        # if drc 'none' coefficient -1 is set, so latency and CPU usage
-        # are improved
-        if DRC_set == 'none':
+        # if drc 'none' or 'defeat' then coefficient -1 is set,
+        # so latency and CPU usage are improved
+        if DRC_set in ('none', 'defeat'):
             filters = gc.speaker['DRC']['filters']
             for i in range(len(filters)):
                 bf_cli('cfc "'
