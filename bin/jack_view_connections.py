@@ -56,7 +56,7 @@ def jackConns(pattern='', InOut='all'):
     elif InOut == 'in':
         A_ports = jc.get_ports( name_pattern=pattern, is_input=True )
 
-    elif InOut == 'all':
+    else:
         A_ports = jc.get_ports( name_pattern=pattern )
 
     for A_port in A_ports:
