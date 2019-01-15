@@ -11,3 +11,5 @@ istreams.py             # Mplayer based internet streams player script
 aux.py                  # Loads a server to switching the amplifier and running user macros.
 players.py              # Loads a server to interfacing with players
 #mouse_volume.py         # mouse controls the pre.di.c volume
+#jackminimix.py          # Loads a Mixer
+
