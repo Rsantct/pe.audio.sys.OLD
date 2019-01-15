@@ -34,7 +34,7 @@ N=1
 for source in "${sources[@]}"; do
 
     echo "connecting [$source] to [minimixer:in$N]"
-    jack_connect    "$source"_1 minimixer:in"$N"_left
+    jack_connect    "$source"_1  minimixer:in"$N"_left
     jack_connect    "$source"_2  minimixer:in"$N"_right
     # channel gain to 0 dB:
     ~/pre.di.c/clients/bin/jackminimix_ctrl.py -i"$N" -g0
