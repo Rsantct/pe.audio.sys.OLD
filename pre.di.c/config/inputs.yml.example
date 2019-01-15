@@ -46,3 +46,11 @@ istreams:
     resampled: False
     xo: none
 
+minimixer:
+    gain: 0
+    in_ports:
+        - minimixer:out_left
+        - minimixer:out_right
+    resampled: False
+    xo: none
+
