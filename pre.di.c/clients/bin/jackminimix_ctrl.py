@@ -1,4 +1,17 @@
 #!/usr/bin/env python3
+"""
+    jackminimix needs to be controlled via OSC protocol
+    https://www.aelius.com/njh/jackminimix/
+    
+    Here we use 'oscchief' as an OSC command line tool to
+    send OSC commands to jackminimix.
+    https://github.com/hypebeast/oscchief
+    
+"""
+
+# Unfortunately direct udp messages via netcat does not work for me,
+# so here we use 'oscchief'
+
 
 import argparse
 from subprocess import run, check_output
