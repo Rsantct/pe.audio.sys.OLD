@@ -79,7 +79,6 @@ def do(task):
     elif task[:6] == 'mixer ':
         try:
             cmd = f'{bp.main_folder}/clients/bin/jackminimix_ctrl.py { task[6:] }'
-            #sp.run( "'" + cmd + "'", shell=True ) # needs shell to user bash scripts to work
             sp.run( cmd.split() )
             return b'done'
         except:
