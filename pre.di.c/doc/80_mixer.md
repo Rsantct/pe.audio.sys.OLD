@@ -2,8 +2,9 @@
 
 If you are interested on running a mixer for your jack sources, here we provide a **[jackminimix](https://www.aelius.com/njh/jackminimix/)** scripts for pre.di.c to work with.
 
-    pre.di.c/clients/bin/jackminimix_start.sh
-    pre.di.c/clients/bin/jackminimix_ctrl.py
+    pre.di.c/scripts/jackminimix.py             # Init the mixer when starting pre.di.c
+    pre.di.c/clients/bin/jackminimix_start.sh   # Starts the mixer and connects configured sources
+    pre.di.c/clients/bin/jackminimix_ctrl.py    # Controls mixer inputs gains on the fly
 
 `jackminimix` needs to be controlled via OSC protocol.
 
