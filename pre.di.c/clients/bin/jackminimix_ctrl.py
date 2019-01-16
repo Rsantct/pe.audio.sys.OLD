@@ -8,10 +8,10 @@
     https://github.com/hypebeast/oscchief
     
 """
-
-# Unfortunately direct udp messages via netcat does not work for me,
-# so here we use 'oscchief'
-
+# Unfortunately direct udp messages via netcat does not work for me, 
+# neither I was able to use the pure Python OSC implementation python-osc 
+# because not available under Berryconda (Python Anaconda distro for Raspberry Pi)... 
+# So here we use oscchief, a nice OSC command line tool.
 
 import argparse
 from subprocess import run, check_output
