@@ -13,7 +13,7 @@ Unfortunately direct udp messages via netcat does not work for me, neither I was
 
 It is needed that you compile both `jackminimix` and `oscchief` tools. Not needs `make install`, just copy the compiled binaries under your ~/bin folder.
 
-**Notice**: when compliling oscchief under Raspbian, it was necessary to edit `Makefile` to use:
+**Notice**: when compiling `oscchief` under Raspbian, it was necessary to edit the `Makefile` to use `LDLIBS` this way:
 
     LDLIBS=`pkg-config --static --libs liblo`
 
