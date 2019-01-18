@@ -1,11 +1,21 @@
 #!/usr/bin/env python3
 
-""" 
-    Runs a jackminimix instance as per configured inside:
+"""
+    Runs 'jackminimix' on JACK inserted after pre.dic output:
+    
+    predic:out     --------\\
+                            \\
+    analog         --------( + )----> sound_card
+                            /
+    someJackClient --------/
+
+
+    Usage:    jackminimix.py   start | stop
+
+
+    Notice: jack sources to mixer inputs can be configured inside:
     
         pre.di.c/clients/bin/jackminimix_start.sh
-
-    usage:    jackminimix.py   start | stop
 """
 
 import sys
@@ -15,8 +25,8 @@ import basepaths as bp
 
 
 def start():
-    cmd = f'{bp.main_folder}/clients/bin/jackminimix_start.sh'
-    Popen( cmd )
+    cmd = f'{bp.main_folder}/clients/bin/jackminimix_start.sh -i'
+    Popen( cmd.split() )
 
 def stop():
     Popen( 'pkill -f jackminimix'.split() )
