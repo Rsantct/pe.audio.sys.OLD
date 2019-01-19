@@ -237,7 +237,7 @@ function page_initiate() {
     }
 
     // Web header shows the loudspeaker name
-    document.getElementById("main_lside").innerText = ':: pre.di.c :: ' + get_loudspeaker() + ' ::';
+    document.getElementById("main_lside").innerText = ':: pre.di.c :: ' + get_loudspeaker_name() + ' ::';
 
     // Amplifier switch status
     update_ampli_switch();
@@ -321,7 +321,7 @@ function page_update(status) {
     }
 
     // Loudspeaker name (can change in some systems)
-    document.getElementById("main_lside").innerText = ':: pre.di.c :: ' + get_loudspeaker() + ' ::';
+    document.getElementById("main_lside").innerText = ':: pre.di.c :: ' + get_loudspeaker_name() + ' ::';
 
     // Updates the amplifier switch
     update_ampli_switch()
@@ -469,19 +469,12 @@ function fills_peq_selector() {
     }
 }
 
-// Gets the current loudspeaker
-// (recently the php server knows it, but this was done before)
-function get_loudspeaker() {
-    var result = '';
-    var config = get_file('config');
-    var lines = config.split('\n');
-    for ( i in lines ) {
-        line = lines[i];
-        if ( line.trim().split(':')[0] == 'loudspeaker' ){
-            result = line.trim().split(':')[1];
-        }
-    }
-    return result;
+// Gets the current loudspeaker name
+function get_loudspeaker_name() {
+    var myREQ = new XMLHttpRequest();
+    myREQ.open(method="GET", url="php/functions.php?command=get_loudspeaker_name", async=false);
+    myREQ.send();
+    return (myREQ.responseText);
 }
 
 // Gets the sets defined into XO or DRC inside speaker.yml
