@@ -1,0 +1,79 @@
+#!/usr/bin/env python3
+
+"""
+    Alternates between two loudspeaker sets, then restart pre.di.c
+"""
+
+######## USER SETTINGS #########
+
+lspk_A = {  'loudspeaker':  'DynC5',
+            'DRC_set':      'multip_mp',
+            'PEQ_set':      'defeat',
+            'XO_set':       'lp'}
+
+lspk_B = {  'loudspeaker':  'dipojorns',
+            'DRC_set':      'estant_mp',
+            'PEQ_set':      'estant',
+            'XO_set':       'lp'}
+
+################################
+
+import sys
+from subprocess import Popen
+
+# ruamel.yaml preserves comments and items order when dumping to a file.
+# https://yaml.readthedocs.io/en/latest/basicuse.html
+from ruamel.yaml import YAML
+
+import basepaths as bp
+
+def load_yaml(fpath):
+    try:
+        yaml = YAML() # default round-trip mode preserve comments and order
+        doc = open(fpath, 'r')
+        d = yaml.load( doc.read() )
+        doc.close()
+        return d
+    except:
+        print ( 'YAML error loading ' + fpath )
+
+def dump_yaml(d, fpath):
+    try:
+        yaml = YAML() # default round-trip mode preserve comments and order
+        doc = open(fpath, 'w')
+        yaml.dump( d, doc )
+        doc.close()
+    except:
+        print ( 'YAML error dumping ' + fpath )
+
+if __name__ == "__main__":
+    
+    configPath = f'{bp.main_folder}/config/config.yml'
+    statusPath = f'{bp.main_folder}/config/state.yml'
+    
+    # Reads pre.di.c configuration
+    current_config = load_yaml( configPath )
+    # Reads status
+    current_status = load_yaml( statusPath )
+    
+    
+    if current_config['loudspeaker'] == lspk_A['loudspeaker']:
+        lspk_New = lspk_B
+    else:
+        lspk_New = lspk_A
+        
+    # New config and status files
+
+    new_config = current_config
+    new_config['loudspeaker'] = lspk_New['loudspeaker']
+
+    new_status = current_status
+    new_status['DRC_set'] = lspk_New['DRC_set']
+    new_status['PEQ_set'] = lspk_New['PEQ_set']
+    new_status['XO_set']  = lspk_New['XO_set']
+    
+    dump_yaml(new_config, configPath)
+    dump_yaml(new_status, statusPath)
+    
+    # Finally we can relauch startaudio.py
+    Popen( 'startaudio.py' )
