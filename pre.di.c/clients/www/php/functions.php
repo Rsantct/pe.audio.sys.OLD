@@ -33,7 +33,7 @@
     $home = "/home/predic";
     ///////////////////////////////////////////////////////////////////////
 
-    // Retrieves simple configured items from pre.di.c 'config.yml' file
+    // Retrieves single line configured items from pre.di.c 'config.yml' file
     function get_config($item) {
         global $home;
         $tmp = "";
@@ -94,13 +94,18 @@
         The array is what appears after 'php/functions.php?.......', example:
                 "GET", "php/functions.php?command=level -15"
         Here the key 'command' has the value 'level -15'
-        So, lets read the key 'command':
+        So, lets read the key 'command', then run corresponding actions:
     */
     $command = $_REQUEST["command"];
 
-    // READING CONFIG FILES
+    // READING THE LOUDSPEAKER NAME:
+    if ( $command == "get_loudspeaker_name" ) {
+        echo get_config("loudspeaker");
+    }
+
+    // UPLOADING SOME FILES: inputs.yml, config.yml, speaker.yml
     // Notice: readfile() does an 'echo', so it returns the contents to the standard php output
-    if ( $command == "read_inputs_file" ) {
+    elseif ( $command == "read_inputs_file" ) {
         readfile($home."/pre.di.c/config/inputs.yml");
     }
     elseif ( $command == "read_config_file" ) {
@@ -110,7 +115,7 @@
         $fpath = $home."/pre.di.c/loudspeakers/".get_config("loudspeaker")."/speaker.yml";
         readfile($fpath);
     }
-
+    
     // AMPLIFIER switching commands are handled by the 'aux' server
     // Notice: It is expected that the remote script will store the amplifier state
     //         into the file '~/.ampli' so that the web can update it.
