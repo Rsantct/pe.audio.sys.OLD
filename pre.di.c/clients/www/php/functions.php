@@ -41,12 +41,14 @@
                   or die("Unable to open file!");
         while( !feof($cfile) ) {
             $linea = fgets($cfile);
-            $found = strpos( $linea, $item);
-            if ( $found !== false ) {
-                $tmp = str_replace( "\n", "", $linea);
-                $tmp = str_replace( $item, "", $tmp);
-                $tmp = str_replace( ":", "", $tmp);
-                $tmp = trim($tmp);
+            // Ignore yaml commented out lines
+            if ( strpos($linea, '#') === false ) {
+                if ( strpos( $linea, $item) !== false ) {
+                    $tmp = str_replace( "\n", "", $linea);
+                    $tmp = str_replace( $item, "", $tmp);
+                    $tmp = str_replace( ":", "", $tmp);
+                    $tmp = trim($tmp);
+                }
             }
         }
         fclose($cfile);
