@@ -13,3 +13,4 @@ jack_connect    brutefir:fr.R   minimixer:in1_right
 echo "connecting the mixer output to the sound card"
 jack_connect    minimixer:out_left  system:playback_1
 jack_connect    minimixer:out_right system:playback_2
+
