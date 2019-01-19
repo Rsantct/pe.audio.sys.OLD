@@ -1,13 +1,8 @@
 #!/usr/bin/env python3
 """
-    jackminimix needs to be controlled via OSC protocol
-    https://www.aelius.com/njh/jackminimix/
-    
-    Here we use 'oscchief' as an OSC command line tool to
-    send OSC commands to jackminimix.
-    https://github.com/hypebeast/oscchief
-    
+    Controls jackminimix    
 """
+# https://github.com/Rsantct/pre.di.c/blob/master/pre.di.c/doc/80_mixer.md
 # Unfortunately direct udp messages via netcat does not work for me, 
 # neither I was able to use the pure Python OSC implementation python-osc 
 # because not available under Berryconda (Python Anaconda distro for Raspberry Pi)... 
@@ -56,6 +51,6 @@ if __name__ == '__main__':
     cmd = f'oscchief send { args.ip } { str(get_port()) } \
            /mixer/channel/set_gain ii { args.input } { args.gain }'
 
-    #print(cmd)
+    print(cmd)
     run( cmd.split() )
 
