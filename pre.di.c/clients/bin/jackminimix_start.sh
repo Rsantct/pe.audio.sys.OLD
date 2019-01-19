@@ -65,12 +65,12 @@ for source in "${sources[@]}"; do
     jack_connect    "$source"_2  minimixer:in"$N"_right
     
     # Adjust inputs gain to 0 dB:
-    ~/pre.di.c/clients/bin/jackminimix_ctrl.py -i"$N" -g0
+    ~/bin/jackminimix_ctrl.py -i"$N" -g0
 
     ((N++))
 done
 echo "(i) [minimixer:in"$N"] is free"
-    ~/pre.di.c/clients/bin/jackminimix_ctrl.py -i"$N" -g0
+~/bin/jackminimix_ctrl.py -i"$N" -g0
 
 # If inserting is desired
 if [[ $1 == *'-i'* ]]; then
