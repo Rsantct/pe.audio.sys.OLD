@@ -23,7 +23,6 @@ from subprocess import Popen
 
 import basepaths as bp
 
-
 def start():
     cmd = f'{bp.main_folder}/clients/bin/jackminimix_start.sh -i'
     Popen( cmd.split() )
