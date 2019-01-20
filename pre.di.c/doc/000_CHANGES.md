@@ -61,11 +61,11 @@ This way the server can runs also other general interest service modules.
 
 So, if we wanna run the server that will listen for pre.di.c management, we run:
 
-  `server.py control`
+    `server.py control`
 
 If wanna run another server for auxiliary tasks:
 
-  `server.py aux`
+    `server.py aux`
 
 The arguments `control` or `aux` will indicates to `server.py` to IMPORT these module names to work.
 
