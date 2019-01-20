@@ -8,7 +8,7 @@
             mouse_volume_daemon.py [-sNN -bHH] &
 
                 -sNN volume step NN dBs (default 2.0 dB)
-                -bHH beeps if exceeds headroom HH dB (default 6.0 dB)
+                -bLL beeps if level exceeds LL dB (default -6.0 dB)
                 -h   this help
 
                 left button   -->  vol --
@@ -46,12 +46,16 @@ import basepaths as bp
 HOME =      os.path.expanduser("~")
 hostDir =   os.path.dirname( os.path.realpath(__file__) )
 
-#### USER SETTINGS: ####
-STEPdB  = 2.0
-HRthr   = 6.0
-beep    = False
-beepPath = f'{hostDir}/3beeps.wav'
-########################
+####################### USER SETTINGS: ###################
+STEPdB      = 2.0
+alertdB     = -6.0
+beep        = False
+beepPath    = f'{hostDir}/3beeps.wav'
+alsaplugin  = 'jackbrutefir'
+# NOTE: the above needs to you to configure your .asondrc
+#       to have a jack plugin that connects to brutefir
+##########################################################
+
 
 def getMouseEvent():
     """
@@ -92,7 +96,7 @@ def getMouseEvent():
         return "buttonMid"
     fmice.close()
 
-def check_headroom():
+def check_level():
     # To avoid reading issues while state.yml is written
     i = 0
     while i < 20:
@@ -100,22 +104,22 @@ def check_headroom():
         conte = f.read()
         f.close()
         try:
-            headroom = conte.split('headroom:')[1].split()[0]
-            return float(headroom)
+            level = conte.split('level:')[1].split()[0]
+            return float(level)
         except:
             pass
         i += 1
         time.sleep(.2)
     return 0.0
 
-def beep():
+def beeps():
     # The synth on Sox is too slow :-/
     #sp.Popen( 'play --null synth 1 sine 880 gain -10.0 > /dev/null 2>&1' )
     # then will use aplay
-    sp.Popen( ['aplay', '-Djack', beepPath],
+    sp.Popen( ['aplay', f'-D{alsaplugin}', beepPath],
               stdout=sp.DEVNULL, stderr=sp.DEVNULL )
 
-def main_loop():
+def main_loop(alertdB=alertdB, beep=beep):
 
     level_ups = False
     beeped =    False
@@ -145,11 +149,11 @@ def main_loop():
 
         # Alert if crossed the headroom threshold
         if level_ups:
-            hr = check_headroom()
-            if hr < HRthr:
-                #print(hr)
+            level = check_level()
+            if ( level + STEPdB )  >= alertdB:
                 if not beeped and beep:
-                    beep()
+                    print('(mouse_volume_daemon.py) BEEEEEEP, BEEEEEP') # debug
+                    beeps()
                     beeped = True
             else:
                 beeped = False
@@ -171,7 +175,7 @@ if __name__ == "__main__":
         if "-b" in opc:
             beep = True
             try:
-                HRthr = float(opc.replace("-b", ""))
+                alertdB = float(opc.replace("-b", ""))
             except:
                 pass
 
