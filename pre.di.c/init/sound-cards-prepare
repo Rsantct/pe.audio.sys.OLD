@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # Useful script for Desktop and Pulseaudio systems.
-# If used, PLEASE place at FIRST position inside config/scripts
+# If used, PLEASE place at FIRST position inside 
+#    config/init
 
-# CARDS BELOW ARE A USER CASE, PLEASE UPDATE WITH YOURS
+# CARDS BELOW ARE USER CASE, PLEASE UPDATE WITH YOURS
 
 # Release cards from Pulseaudio to be used by pre.di.c:
 # DX
