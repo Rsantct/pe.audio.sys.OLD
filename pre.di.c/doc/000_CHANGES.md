@@ -90,15 +90,15 @@ Any service module intended to be used under `server.py` must provide an interfa
 
 Also, an optimization has been done regarding the original `server.py` mechanism: it has been omitted the status dict when calling `process_commands()` because status is already read by default when calling this function.
 
-## DVB.py
+## DVB script
 
-    Usage:   DVB.py     start  [ <preset_num> | <channel_name> ]
+    Usage:   DVB        start  [ <preset_num> | <channel_name> ]
                         stop
                         prev  (load previous from recent presets)
                         preset <preset_num>
                         name   <channel_name>
 
-Now `DVB.py` uses a unique `config/DVB-T.yml` file for user presets configuration and also for recent used presets to be persistent, so `config/DVB-T_state.yml` is not used anymore.
+Now `DVB` uses a unique `config/DVB-T.yml` file for user presets configuration and also for recent used presets to be persistent, so `config/DVB-T_state.yml` is not used anymore.
 
 The YAML parser now is `ruamer.yaml` that preserves comments and the order of yaml items when dumping.
 
