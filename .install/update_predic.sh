@@ -74,8 +74,8 @@ cp .mplayer/channels.conf   .mplayer/channels.conf.LAST   >/dev/null 2>&1
 
 cd pre.di.c
 
-## CONFIG: 'scripts' file and '*.yml' files
-mv config/scripts  config/scripts.LAST >/dev/null 2>&1
+## CONFIG: 'init' file and '*.yml' files
+mv config/init  config/init.LAST >/dev/null 2>&1
 for file in config/*.yml ; do
     mv "$file" "$file.LAST"
 done
@@ -86,9 +86,9 @@ for file in config/PEQx* ; do
     mv "$file" "$file.LAST"
 done
 
-## SCRIPTS
-rm scripts/*LAST        >/dev/null 2>&1     # discard previous *LAST if any
-for file in scripts/* ; do
+## INIT files
+rm init/*LAST        >/dev/null 2>&1     # discard previous *LAST if any
+for file in init/* ; do
     cp "$file" "$file.LAST" >/dev/null 2>&1
 done
 
@@ -155,7 +155,7 @@ if [ "$keepConfig" ]; then
 
     cd pre.di.c
 
-    # CONFIG ( *LAST will include '*.yml' files as well 'scripts' file )
+    # CONFIG ( *LAST will include '*.yml' files as well the 'init' file )
     for file in config/*LAST ; do
         nfile=${file%.LAST}         # removes trailing .LAST '%'
         echo "    "$nfile
@@ -169,7 +169,7 @@ else
     cd pre.di.c/config
 
     # config files are provided with '.example' extension
-    cp scripts.example           scripts
+    cp init.example              init
     cp state.yml.example         state.yml
     cp config.yml.example        config.yml
     cp inputs.yml.example        inputs.yml
@@ -202,7 +202,7 @@ mkfifo pre.di.c/istreams_fifo    # internet streams
 chmod +x bin/*                          >/dev/null 2>&1
 chmod +x pre.di.c/bin/*                 >/dev/null 2>&1
 chmod +x pre.di.c/clients/bin/*         >/dev/null 2>&1
-chmod +x pre.di.c/scripts/*             >/dev/null 2>&1
+chmod +x pre.di.c/init/*                >/dev/null 2>&1
 chmod +x pre.di.c/clients/macros/[1-9]* >/dev/null 2>&1
 
 #########################################################
