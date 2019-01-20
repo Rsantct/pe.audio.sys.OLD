@@ -1,13 +1,26 @@
 ## This fork main changes versus the official repository
 
+### 2019 work in progress
+
+- Split mplayer related scripts, i.e. `DVB` and `istreams`, to leave a start/stop script under the `init` folder and a separate on the fly control script under `clients/bin`.
+
 ### 2019-Jan:
 
-- Minor changes on run level options into `stopaudio.py` and `startaudio.py`.
-- Minor code under `startaudio.py` to able Jack to run under Pulseaudio desktop machines.
-- Minor code mod under `start_pid()` at `predic.py` to able processes (e.g. mplayer) to redirect his stdout and stderr to a file that could be read later from others process.
-- `DVB.py` has been rewritten.
-- New server mechanism
-- Code arrangement ( issue #29 ), including `scripts` folder renamed to `init` and scripts inside init folder leaving the `.py` or `.sh` extension.
+* Minor changes on run level options into `stopaudio.py` and `startaudio.py`.
+
+* Minor code under `startaudio.py` to able Jack to run under Pulseaudio desktop machines.
+
+* Minor code mod under `start_pid()` at `predic.py` to able processes (e.g. mplayer) to redirect his stdout and stderr to a file that could be read later from others process.
+
+* `DVB.py` has been rewritten.
+
+* New server mechanism
+
+* Code arrangement ( issue #29 ), including:
+
+    * `scripts` folder renamed to `init`
+    * scripts inside the `init` folder leaving the `.py` or `.sh` extension.
+    * `mpd_load.py` renamed to `mpd`
 
     ```
     $HOME/
