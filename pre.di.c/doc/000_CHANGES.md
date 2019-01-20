@@ -10,7 +10,13 @@
 
 * A volume control by using a mouse has been introduced.
 
-* Control web page enhancements: a basic view by default, a new gear button will display advanced controls.
+* Control web page enhancements:
+
+   * A basic view by default, a new gear button will display advanced controls.
+
+   * When [istreams] input, a link button allows the user to enter o paste a stream url to be played.
+
+   * If available metadata, the page will show the audio bitrate ant the time track info.
 
 * If your pre.di.c machine uses a Spotify desktop client, full metadata info will be displayed under the control web page.
 
