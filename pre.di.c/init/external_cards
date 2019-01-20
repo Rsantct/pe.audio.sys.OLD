@@ -2,7 +2,7 @@
 """
     Runs external cards resampled in JACK
     
-    usage:  external_cards.py   start | stop
+    usage:  external_cards   start | stop
 """
 
 import sys
@@ -43,7 +43,7 @@ if sys.argv[1:]:
             'stop'  : stop
             }[ sys.argv[1] ]()
     except:
-        print( f'(external_cards) error {option}' ) 
+        print( f'(init/external_cards) error {option}' ) 
 else:
     print(__doc__)
 
