@@ -6,16 +6,20 @@
     use:   mouse_volume   start | stop
 """
 
-#### Set -99 to avoid alerts ####
-ALERT_LEVEL = -10.0
-#################################
-
 import sys
 from subprocess import Popen
 
 import mouse_volume_daemon as mvd
+from getconfigs import config
 
 def start():
+
+    try:
+        ALERT_LEVEL = config['alert_level']
+    except:
+        ALERT_LEVEL = -10.0
+        print( '(init/mouse_volume_daemon) You can configure alert_level inside config.yml' )
+
     print( f'(init/mouse_volume_daemon) will alert at {ALERT_LEVEL} dB' )
     mvd.main_loop(alertdB = ALERT_LEVEL, beep=True)
 
