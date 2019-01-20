@@ -12,7 +12,7 @@
 
 * Control web page enhancements.
 
-* If you use a Spotify desktop client, full metadata info will be displayed under whe control web page.
+* If your pre.di.c machine uses a Spotify desktop client, full metadata info will be displayed under the control web page.
 
 * Minor changes on run level options into `stopaudio.py` and `startaudio.py`.
 
@@ -93,5 +93,5 @@ Also, an optimization has been done regarding the original `server.py` mechanism
 
 Now `DVB.py` uses a unique `config/DVB-T.yml` file for user presets configuration and also for recent used presets to be persistent, so `config/DVB-T_state.yml` is not used anymore.
 
-I have switched to the YAML parser `ruamer.yaml` that preserves comments and the order of yaml items when dumping.
+The YAML parser now is `ruamer.yaml` that preserves comments and the order of yaml items when dumping.
 
