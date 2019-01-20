@@ -40,11 +40,12 @@
 
 ```
 $HOME/
-  ├── cdda_fifo   dvb_fifo    ...
   │    
   ├── bin/     (user bin folder including some pre.di.c tools)
   │    
   ├── pre.di.c/
+      │
+      ├── cdda_fifo   dvb_fifo    istreams_fifo
       │
       ├── bin
       │   │   basepaths.py    peq_control.py  startaudio.py
