@@ -1,0 +1,15 @@
+#sound-cards-prepare     # release cards from PA an restore asound settings
+#external_cards          # Runs external cards resampled in JACK
+alsa_loop                # Sets up alsa_loop ports in jack to be used from ALSA backended players
+#pulseaudio-jack-sink    # Pulseadio sink on jack to be used from Pulseaudio backended players
+#mpd                     # Loads MPD
+istreams                 # Mplayer based internet streams player script
+#DVB                     # Mplayer based DVB-T player script
+#netjack
+#librespot               # Loads librespot (a Spotify Connect player)
+#spotify_monitor         # Loads a Spotify Desktop monitor
+aux                      # Loads a server to switching the amplifier and running user macros.
+players                  # Loads a server to interfacing with players
+#mouse_volume            # mouse controls the pre.di.c volume
+#jackminimix             # Loads a Mixer
+
