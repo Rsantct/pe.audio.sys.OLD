@@ -20,7 +20,7 @@
 
 * Minor code mod under `start_pid()` at `predic.py` to able processes (e.g. mplayer) to redirect his stdout and stderr to a file that could be read later from others process.
 
-* `DVB.py` has been rewritten.
+* `DVB.py` has been rewritten, see below.
 
 * New server mechanism, see below.
 
