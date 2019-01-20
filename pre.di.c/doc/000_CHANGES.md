@@ -8,7 +8,7 @@
 
 ### 2019-Jan:
 
-* A volume control by using a mouse has been introduced.
+* A volume control by using a mouse has been introduced. A new parameter 'alert_level' can be set inside `config/config.yml`.
 
 * Control web page enhancements:
 
