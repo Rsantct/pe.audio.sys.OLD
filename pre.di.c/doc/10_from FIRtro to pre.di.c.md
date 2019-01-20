@@ -36,6 +36,8 @@ Edit and set your current FIR taps lenght, for example if your pcm files are 64K
 
 - Copy here your XO and DRC pcm files.
 
+### Naming your pcm FIR files 
+
 Run **`do_config_files.py -h`** for help on convention naming pcm files:
 
         XO:
@@ -45,6 +47,12 @@ Run **`do_config_files.py -h`** for help on convention naming pcm files:
           drc.X_someDescription.pcm     Where X is the channel 'L' or 'R'
 
 So forgot old `drc-1-L_xxxxx.pcm` naming from FIRtro, neither `drc` subfolders.
+
+Notice:
+
+- DRC selection is no longer referred to any DRC index number, it is based on a DRC set name as configured inside the `speaker.yaml` file.
+
+- Former XO selection lp / mp from FIRtro is no longer used here, also this is based on XO set names under `speaker.yaml`.
 
 Copy all pcm stuff you will need here and rename pcm files as convenient. For example
 
@@ -68,6 +76,12 @@ Copy all pcm stuff you will need here and rename pcm files as convenient. For ex
 - Copy here the example target files:
 
     `cp  ../example2ways-sub/R20_ext*   .`
+
+### Config files for loudspeaker definition
+
+`speaker.yml` and `brutefir_config` are the *low level* files needed for pre.di.c to work with your loudspeaker.
+
+Here we provide a *high level* configuration helper tool.
 
 - Copy a template to prepare a *high level* loudspeaker definition
 
