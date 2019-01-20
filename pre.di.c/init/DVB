@@ -85,11 +85,11 @@ def select_by_name(channel_name):
         # check_output will fail if no command output
         sp.check_output( ['grep', channel_name, tuner_file] ).decode()
     except:
-        print( f'(scripts/DVB.py) Channel NOT found: \'{channel_name}\'' )
+        print( f'(init/DVB.py) Channel NOT found: \'{channel_name}\'' )
         return False
 
     try:
-        print( f'(scripts/DVB.py) trying to load \'{channel_name}\'' )
+        print( f'(init/DVB.py) trying to load \'{channel_name}\'' )
         # The whole address after 'loadfile' needs to be SINGLE quoted to load properly:
         command = ('loadfile \'dvb://' + channel_name + '\'\n' )
         f = open( input_fifo, 'w')
@@ -97,7 +97,7 @@ def select_by_name(channel_name):
         f.close()
         return True
     except:
-        print( f'(scripts/DVB.py) failed to load \'{channel_name}\'' )
+        print( f'(init/DVB.py) failed to load \'{channel_name}\'' )
         return False
 
 def select_by_preset(preset_num):
@@ -114,7 +114,7 @@ def select_by_preset(preset_num):
         return True
 
     except:
-        print( f'(scripts/DVB.py) error in preset # {preset_num}' )
+        print( f'(init/DVB.py) error in preset # {preset_num}' )
         return False
 
 def start():
@@ -132,7 +132,7 @@ def stop():
     pd.kill_pid(program_alias)
     # harakiri
     sp.Popen( ['pkill', '-KILL', '-f', 'profile dvb'] )
-    sp.Popen( ['pkill', '-KILL', '-f', 'DVB.py start'] )
+    sp.Popen( ['pkill', '-KILL', '-f', 'DVB start'] )
 
 def load_yaml(fpath):
     try:
@@ -142,7 +142,7 @@ def load_yaml(fpath):
         doc.close()
         return d
     except:
-        print ( '(scripts/DVB.py) YAML error loading ' + fpath )
+        print ( '(init/DVB.py) YAML error loading ' + fpath )
 
 def dump_yaml(d, fpath):
     try:
@@ -151,7 +151,7 @@ def dump_yaml(d, fpath):
         yaml.dump( d, doc )
         doc.close()
     except:
-        print ( '(scripts/DVB.py) YAML error dumping ' + fpath )
+        print ( '(init/DVB.py) YAML error dumping ' + fpath )
 
 if __name__ == '__main__':
 
@@ -193,7 +193,7 @@ if __name__ == '__main__':
             select_by_name( sys.argv[2] )
 
         else:
-            print( '(scripts/DVB.py) Bad option' )
+            print( '(init/DVB) Bad option' )
 
     else:
         print(__doc__)
