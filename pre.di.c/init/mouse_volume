@@ -6,16 +6,21 @@
     use:   mouse_volume   start | stop
 """
 
+#### Set -99 to avoid alerts ####
+ALERT_LEVEL = -10.0
+#################################
+
 import sys
 from subprocess import Popen
 
 import mouse_volume_daemon as mvd
 
 def start():
-    mvd.main_loop()
+    print( f'(init/mouse_volume_daemon) will alert at {ALERT_LEVEL} dB' )
+    mvd.main_loop(alertdB = ALERT_LEVEL, beep=True)
 
 def stop():
-    Popen( ['pkill', '-f',  'mouse_volume.py'] )
+    Popen( ['pkill', '-f',  'init/mouse_volume'] )
 
 if sys.argv[1:]:
 
@@ -25,6 +30,7 @@ if sys.argv[1:]:
             'stop'  : stop
             }[ sys.argv[1] ]()
     except:
-        print( '(init/mouse_volume_daemon) bad option' )
+        print( '(init/mouse_volume_daemon) an error occoured,' )
+        print( 'do you belong to /dev/input/mouseX read group?' )
 else:
     print(__doc__)
