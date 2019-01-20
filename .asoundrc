@@ -15,7 +15,7 @@ pcm.rawjack2brutefir {
 }
 
 # This plugin is intended to be used from alsa players
-# associated to pre.di.c alsa_loop jack ports
+# associated to pre.di.c inputs on alsa_loop jack ports
 pcm.jack {
     type plug
     slave { pcm "rawjack2alsaloop" }
