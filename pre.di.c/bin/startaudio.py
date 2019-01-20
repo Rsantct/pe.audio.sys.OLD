@@ -22,12 +22,15 @@
 # You should have received a copy of the GNU General Public License
 # along with pre.di.c.  If not, see <https://www.gnu.org/licenses/>.
 
-"""Starts predic audio system
+"""
+    Starts predic audio system
+
     Usage:
-    initaudio.py [ core | scripts | all ]   (default 'all')
-    core: jack, brutefir, ecasound, server
-    players: everything else (players and clients)
-    all: all of the above
+    initaudio.py    core | scripts | all
+
+    core:       jack, brutefir, ecasound, server
+    scripts:    everything else (players and clients)
+    all:        all of the above
 """
 
 import sys
@@ -232,52 +235,54 @@ def init_inputs():
         print(f'\n(startaudio) time out restoring input \'{input}\''
                                         ', ports not available')
 
-def main(run_level):
+def main(run_levels):
 
     # Jack, Brutefir, Ecasound, Server
-    if run_level in ['core', 'all']:
+    if 'core' in run_levels or 'all' in run_levels:
         # load basic audio kernel
         init_jack()
         init_brutefir()
         init_ecasound()
         init_server()
-        # inboard players
-        if run_level in ['scripts', 'all']:
-            # launch external scripts, sources and clients
-            print('\n(startaudio): starting scripts...')
-            for line in [ x for x in open(bp.script_list_path)
-                                  if not '#' in x.strip()[0] ]: # ignore comments
-                # dispise options if incorrectly set
-                script = line.strip().split()[0]
-                path = f'{bp.scripts_folder}{script}'
-                try:
-                    p = Popen(f'{path} start'.split())
-                    print(f'pid {p.pid:4}: {script}')
-                    with open(f'{bp.pids_folder}{script}.pid', 'w') as pidfile:
-                        pidfile.write(f'{p.pid}')
-                except OSError as err:
-                    print(f'error launching script:\n\t{err}')
-                except:
-                    print(f'problem launching script {line}')
-        # restoring previous state
-        init_state_settings()
-        # restoring inputs
-        init_inputs()
-        # some info
-        pd.show()
+
+    # Scripts for inboard players and others services
+    if 'scripts' in run_levels or 'all' in run_levels:
+        # launch external scripts, sources and clients
+        print('\n(startaudio): starting init scripts...')
+        for line in [ x for x in open(bp.init_list_path)
+                              if not '#' in x.strip()[0] ]: # ignore comments
+            # dispise options if incorrectly set
+            script = line.strip().split()[0]
+            path = f'{bp.init_scripts_folder}{script}'
+            try:
+                p = Popen(f'{path} start'.split())
+                print(f'pid {p.pid:4}: {script}')
+                with open(f'{bp.pids_folder}{script}.pid', 'w') as pidfile:
+                    pidfile.write(f'{p.pid}')
+            except OSError as err:
+                print(f'error launching script:\n\t{err}')
+            except:
+                print(f'problem launching script {line}')
+
+    # restoring previous state
+    init_state_settings()
+    # restoring inputs
+    init_inputs()
+    # some info
+    pd.show()
 
 if __name__ == '__main__':
 
-    # switch runlevels
+    # select runlevels
     if sys.argv[1:]:
-        run_level = sys.argv[1]
-    else:
-        run_level = 'all'
-    if run_level in ['core', 'all']:
-        # stop proccesses
-        print('\n(startaudio) stopping proccesses\n')
-        stopaudio.main(run_level)
-        print('\n(startaudio) starting runlevel ' + run_level)
-        main(run_level)
+        run_levels = sys.argv[1:]
+
     else:
         print(__doc__)
+        sys.exit()
+
+    print( '\n(startaudio) stopping proccesses\n' )
+    stopaudio.main(run_levels)
+
+    print( '\n(startaudio) starting runlevel ' + " ".join(run_levels) )
+    main(run_levels)
