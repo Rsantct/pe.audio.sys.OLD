@@ -14,7 +14,7 @@
 
    * A basic view by default, a new gear button will display advanced controls.
 
-   * When [istreams] input, a link button allows the user to enter o paste a stream url to be played.
+   * When [istreams] input, a link button allows the user to enter or paste a stream url to be played.
 
    * If available metadata, the page will show the audio bitrate ant the time track info.
 
