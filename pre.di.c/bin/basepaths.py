@@ -28,36 +28,36 @@ HOME = os.path.expanduser("~")
 ## customizable initial values
 
 # folders
-main_folder = HOME + '/pre.di.c/'
-bin_folder = main_folder + 'bin/'
-config_folder = main_folder + 'config/'
-scripts_folder = main_folder + 'scripts/'
+main_folder =         HOME + '/pre.di.c/'
+bin_folder =          main_folder + 'bin/'
+config_folder =       main_folder + 'config/'
+init_scripts_folder = main_folder + 'init/'
 loudspeakers_folder = main_folder + 'loudspeakers/'
-pids_folder = main_folder + '.run/'
+pids_folder =         main_folder + '.run/'
 
 # filenames
-config_filename = 'config.yml'
-state_filename = 'state.yml'
-inputs_filename = 'inputs.yml'
-channels_filename = 'DVB-T.yml'
+config_filename =       'config.yml'
+state_filename =        'state.yml'
+inputs_filename =       'inputs.yml'
+channels_filename =     'DVB-T.yml'
 media_config_filename = 'media.ini'
-mcd_config_filename = 'mcd.ini'
-script_list_filename = 'scripts'
+mcd_config_filename =   'mcd.ini'
+init_list_filename =    'init'
 
-speaker_filename = 'speaker.yml'
+speaker_filename =      'speaker.yml'
 
 ## program composed values
 
 # paths
 
-config_path = config_folder + config_filename
-state_path = config_folder + state_filename
-inputs_path = config_folder + inputs_filename
-script_list_path = config_folder + script_list_filename
+config_path =       config_folder + config_filename
+state_path =        config_folder + state_filename
+inputs_path =       config_folder + inputs_filename
+init_list_path =    config_folder + init_list_filename
 
-channels_path = config_folder + channels_filename
+channels_path =     config_folder + channels_filename
 media_config_path = config_folder + media_config_filename
-mcd_config_path = config_folder + mcd_config_filename
+mcd_config_path =   config_folder + mcd_config_filename
 
 # we still don't know the loudspeaker name, so speaker_path
 # is built downstream
