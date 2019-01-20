@@ -137,7 +137,7 @@ if [ "$keepConfig" ]; then
 
     echo "(i) Restoring user config files"
 
-    # HOME:
+    # HOME DIR:
     echo "    ".asoundrc
     mv .asoundrc.LAST               .asoundrc               >/dev/null 2>&1
 
@@ -155,12 +155,15 @@ if [ "$keepConfig" ]; then
 
     cd pre.di.c
 
-    # CONFIG ( *LAST will include '*.yml' files as well the 'init' file )
+    # CONFIG FOLDER ( *LAST will include '*.yml' files as well the 'init' file )
     for file in config/*LAST ; do
         nfile=${file%.LAST}         # removes trailing .LAST '%'
         echo "    "$nfile
         mv $file $nfile
     done
+    
+    # Restoring USER CUSTOM INIT SCRIPTs
+    mv init/sound-cards-prepare.LAST    init/sound-cards-prepare  >/dev/null 2>&1
 
 ########################################################################
 # If NO KEEPING CONFIG, then overwrite:
