@@ -10,7 +10,7 @@
 
 * A volume control by using a mouse has been introduced.
 
-* Control web page enhancements.
+* Control web page enhancements: a basic view by default, a new gear button will display advanced controls.
 
 * If your pre.di.c machine uses a Spotify desktop client, full metadata info will be displayed under the control web page.
 
