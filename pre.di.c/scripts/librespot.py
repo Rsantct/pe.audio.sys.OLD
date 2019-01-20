@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-    Launch 'librespot', a Spotify Connect player client
+    Launchs '/usr/bin/librespot': a Spotify Connect player client
 
-    use:    librespot.py   start | stop
+    use:    librespot   start | stop
 """
 
 import sys
@@ -35,6 +35,6 @@ if sys.argv[1:]:
             'stop'  : stop
             }[ sys.argv[1] ]()
     except:
-        print('(librespot.py) bad option')
+        print( '(init/librespot) bad option' )
 else:
     print(__doc__)
