@@ -12,13 +12,13 @@ from subprocess import Popen
 
 def start():
     tmp = "pactl load-module module-jack-sink channels=2 client_name=pulse_sink connect=False"
-    Popen(tmp.split())
+    Popen( tmp.split() )
     tmp = "pacmd set-default-sink jack_out"
-    Popen(tmp.split())
+    Popen( tmp.split() )
 
 def stop():
     tmp = "pactl unload-module module-jack-sink"
-    Popen(tmp.split())
+    Popen( tmp.split() )
 
 if sys.argv[1:]:
     try:
@@ -27,6 +27,6 @@ if sys.argv[1:]:
             'stop'  : stop
             }[ sys.argv[1] ]()
     except:
-        print('(pulseaudio-jack-sink) bad option')
+        print( '(init/pulseaudio-jack-sink) bad option' )
 else:
     print(__doc__)
