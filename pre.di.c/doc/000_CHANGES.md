@@ -22,32 +22,33 @@
     * scripts inside the `init` folder leaving the `.py` or `.sh` extension.
     * `mpd_load.py` renamed to `mpd`
 
-    ```
-    $HOME/
-        ├── cdda_fifo   dvb_fifo    ...
-        │    
-        ├── bin/     (user bin folder including some pre.di.c tools)
-        │    
-        ├── pre.di.c/
-            │
-            ├── bin
-            │   │   basepaths.py    peq_control.py  startaudio.py
-            │   └── control.py      predic.py       stopaudio.py
-            │       getconfigs.py   server.py
-            │
-            ├── init
-            │   └── alsa_loop       mpd     ...     ...
-            │
-            ├── clients
-            │   │
-            │   ├── bin
-            │   │   └── aux         players         mouse_volume     ...
-            │   │
-            │   ├── macros
-            │   │   └── 1_RNE       2_R.Clasica     ...     ...
-            │   │
-            │   └── www   (the web page, server side and client side code)
-    ```
+
+```
+$HOME/
+  ├── cdda_fifo   dvb_fifo    ...
+  │    
+  ├── bin/     (user bin folder including some pre.di.c tools)
+  │    
+  ├── pre.di.c/
+      │
+      ├── bin
+      │   │   basepaths.py    peq_control.py  startaudio.py
+      │   └── control.py      predic.py       stopaudio.py
+      │       getconfigs.py   server.py
+      │
+      ├── init
+      │   └── alsa_loop       mpd     ...     ...
+      │
+      ├── clients
+      │   │
+      │   ├── bin
+      │   │   └── aux         players         mouse_volume     ...
+      │   │
+      │   ├── macros
+      │   │   └── 1_RNE       2_R.Clasica     ...     ...
+      │   │
+      │   └── www   (the web page, server side and client side code)
+```
 
 ## New server
 
