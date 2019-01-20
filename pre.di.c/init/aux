@@ -2,7 +2,7 @@
 """
     Starts / stops a server that process trough by the 'aux' module
     
-    use:   scripts/aux.py    start | stop
+    use:   aux    start | stop
 """
 
 import sys, os
@@ -17,7 +17,7 @@ def start():
 def stop():
     Popen( [ 'pkill', '-KILL', '-f', f'{server_path} aux' ] )
     # harakiri
-    Popen( ['pkill', '-KILL', '-f',  'scripts/aux.py'] )
+    Popen( ['pkill', '-KILL', '-f',  'init/aux'] )
 
 if sys.argv[1:]:
     try:
@@ -26,6 +26,6 @@ if sys.argv[1:]:
             'stop'  : stop
             }[ sys.argv[1] ]()
     except:
-        print( '(scripts/aux.py) bad option' )
+        print( '(init/aux) bad option' )
 else:
     print(__doc__)
