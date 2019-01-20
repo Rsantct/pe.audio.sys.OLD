@@ -21,6 +21,7 @@
     * `scripts` folder renamed to `init`
     * scripts inside the `init` folder leaving the `.py` or `.sh` extension.
     * `mpd_load.py` renamed to `mpd`
+    * updating the install script `.install/update_predic.sh`
 
 
 ```
