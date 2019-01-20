@@ -25,7 +25,8 @@ pcm.jack {
 }
 
 # This plugin is intended to be used from alsa players
-# that directly want to play to pre.di.c bypassing the inputs selector.
+# that directly want to play to pre.di.c bypassing the inputs selector,
+# e.g. the high volume beep alert from the mouse_volume_daemon.py
 pcm.jackbrutefir {
     type plug
     slave { pcm "rawjack2brutefir" }
