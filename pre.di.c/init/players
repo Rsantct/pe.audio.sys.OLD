@@ -2,7 +2,7 @@
 """
     Starts / stops a server that process trough by the 'players' module
     
-    use:   scripts/players.py    start | stop
+    use:   players    start | stop
 """
 
 import sys, os
@@ -17,7 +17,7 @@ def start():
 def stop():
     Popen( [ 'pkill', '-KILL', '-f', f'{server_path} players' ] )
     # harakiri
-    Popen( ['pkill', '-KILL', '-f',  'scripts/players.py'] )
+    Popen( ['pkill', '-KILL', '-f',  'init/players'] )
 
 if sys.argv[1:]:
     try:
@@ -26,6 +26,6 @@ if sys.argv[1:]:
             'stop'  : stop
             }[ sys.argv[1] ]()
     except:
-        print( '(scripts/players.py) bad option' )
+        print( '(init/players) bad option' )
 else:
     print(__doc__)
