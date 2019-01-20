@@ -22,12 +22,15 @@
 # You should have received a copy of the GNU General Public License
 # along with pre.di.c.  If not, see <https://www.gnu.org/licenses/>.
 
-"""Stops predic audio system
+"""
+    Stops predic audio system
+
     Usage:
-    stopaudio.py [ core | scripts | all ]   (default 'all')
-    core: jack, brutefir, ecasound, server
-    scripts: everything else (players and clients)
-    all: all of the above
+    stopaudio.py    core | scripts | all
+
+    core:       jack, brutefir, ecasound, server
+    scripts:    everything else (players and clients)
+    all:        all of the above
 """
 
 import sys
@@ -41,9 +44,9 @@ import predic as pd
 fnull = open(os.devnull, 'w')
 
 
-def main(run_level):
+def main(run_levels):
 
-    if run_level in ['core', 'all']:
+    if 'core' in run_levels or 'all' in run_levels:
 
         # controlserver
         print('(stopaudio) stopping server')
@@ -68,14 +71,14 @@ def main(run_level):
         print('(stopaudio) stopping jackd')
         run ( 'killall -KILL jackd'.split(), stdout=fnull, stderr=fnull )
 
-    if run_level in ['scripts', 'all']:
+    if 'scripts' in run_levels or 'all' in run_levels:
 
         # stop external scripts, sources and clients
-        for line in [ x for x in open(bp.script_list_path)
+        for line in [ x for x in open(bp.init_list_path)
                               if not '#' in x.strip()[0] ]: # ignore comments
             # dispise options if incorrectly set
             script = line.strip().split()[0]
-            script_path = f'{bp.scripts_folder}{script}'
+            script_path = f'{bp.init_scripts_folder}{script}'
             print( "(stopaudio) stopping: " + script_path.replace(bp.main_folder, '') )
             try:
                 command = f'{script_path} stop'
@@ -90,11 +93,13 @@ def main(run_level):
 
 if __name__ == '__main__':
 
-    run_level = 'all'
+    # select runlevels
     if sys.argv[1:]:
-        run_level = sys.argv[1]
-    if run_level in ['core', 'players', 'all']:
-        print('(stopaudio) stopping', run_level)
-        main(run_level)
+        run_levels = sys.argv[1:]
+
     else:
         print(__doc__)
+        sys.exit()
+
+    print('\n(stopaudio) stopping proccesses\n')
+    main(run_levels)
