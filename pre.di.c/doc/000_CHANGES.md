@@ -1,10 +1,18 @@
 ## This fork main changes versus the official repository
 
-### 2019 work in progress
+### 2019 works in progress
 
-- Split mplayer related scripts, i.e. `DVB` and `istreams`, to leave a start/stop script under the `init` folder and a separate on the fly control script under `clients/bin`.
+- Splitting the mplayer related scripts, i.e. `DVB` and `istreams`, to leave a start/stop script under the `init` folder and a separate on the fly control script under `clients/bin`.
+
+- Recover the LCD display from FIRtro.
 
 ### 2019-Jan:
+
+* A volume control by using a mouse has been introduced.
+
+* Control web page enhancements.
+
+* If you use a Spotify desktop client, full metadata info will be displayed under whe control web page.
 
 * Minor changes on run level options into `stopaudio.py` and `startaudio.py`.
 
@@ -14,7 +22,7 @@
 
 * `DVB.py` has been rewritten.
 
-* New server mechanism
+* New server mechanism, see below.
 
 * Code arrangement ( issue #29 ), including:
 
@@ -77,12 +85,6 @@ Also, an optimization has been done regarding the original `server.py` mechanism
 
 ## DVB.py
 
-    Starts and stops Mplayer for DVB-T playback.
-    Also used to change on the fly the played stream.
-    DVB-T tuned channels are ussually stored at
-        ~/.mplayer/channels.conf
-    User settings (presets, default) can be configured into:
-        config/DVB-T.yml
     Usage:   DVB.py     start  [ <preset_num> | <channel_name> ]
                         stop
                         prev  (load previous from recent presets)
