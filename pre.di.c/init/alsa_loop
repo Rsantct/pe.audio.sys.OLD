@@ -1,29 +1,46 @@
 #!/usr/bin/env python3
 
-""" sets up alsa_loop ports in jack to be used from ALSA backend players
+""" sets up alsa_loop ports in jack to be used from ALSA sound backend players
 
     use:    alsa_loop   start | stop
 """
 
 import sys
-from subprocess import run
+from subprocess import run, check_output
 from predic import jack_loop
+from time import sleep
+
+def wait4loopdown(timeout=5):
+    step    = .2
+    times = timeout / step
+    while times:
+        try:
+            tmp = check_output( 'jack_lsp'.split() ).decode()
+            if not 'alsa_loop' in tmp:
+                break
+        except:
+            break
+        sleep(step)
+        times -= 1
 
 def start():
-    # jack_loop will keep the loop alive
+    # the jack_loop function from the predi.py module will keep the loop alive
     jack_loop('alsa_loop')
 
 def stop():
-    run( ['pkill', '-f',  'init/alsa_loop'] )
+    run( ['pkill', '-KILL', '-f', 'alsa_loop start'] )
+    wait4loopdown()
     sys.exit()
 
-if sys.argv[1:]:
-    try:
-        option = {
-            'start' : start,
-            'stop'  : stop
-            }[ sys.argv[1] ]()
-    except:
-        print('(init/alsa_loop) bad option')
-else:
-    print(__doc__)
+if __name__ == '__main__':
+
+    if sys.argv[1:]:
+        option = sys.argv[1]
+        if option == 'start':
+            start()
+        elif option == 'stop':
+            stop()
+        else:
+            print(__doc__)
+    else:
+        print(__doc__)
