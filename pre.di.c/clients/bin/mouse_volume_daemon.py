@@ -27,7 +27,7 @@
     crw-rw---- 1 root input 13, 63 Mar 19 20:53 mice
     crw-rw---- 1 root input 13, 32 Mar 19 20:53 mouse0
 
-    On the above example can be seen that the group is 'input'
+    On the above example it can be seen that the group is 'input'
 
 """
 # v0.2beta: beeps by running the synth from SoX (play)
