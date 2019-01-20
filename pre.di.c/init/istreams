@@ -29,10 +29,10 @@
     
     Also used to change on the fly the played stream.
 
-    Internet stream presets can be configured into:
+    Internet stream presets can be configured inside:
         config/istreams.yml
 
-    Use:   istreams.py  start  [ <preset_num> | <preset_name> ]
+    Use:    istreams    start  [ <preset_num> | <preset_name> ]
                         stop
                         preset <preset_num>
                         name   <preset_name>
@@ -124,7 +124,6 @@ def stop():
     pd.kill_pid(program_alias)
     # kill bill
     Popen( 'pkill -KILL -f istreams'.split() )
-    Popen( 'pkill -KILL -f istreams.py'.split() )
 
 if __name__ == '__main__':
 
@@ -172,7 +171,7 @@ if __name__ == '__main__':
             load_url( sys.argv[2] )
 
         else:
-            print( '(scripts/istreams.py) Bad option' )
+            print( '(init/istreams) Bad option' )
 
     else:
         print(__doc__)
