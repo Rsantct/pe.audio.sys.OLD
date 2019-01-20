@@ -32,6 +32,10 @@ beep_options: ''
 # Max digital gain (dB)
 gain_max: 6
 
+# Some daemon can read this to alert the user if reached,
+# i.e. a mouse volume level control:
+alert_level: -15
+
 # Zeroes some settings on startup (True/False)
 tone_reset_on_startup : False
 balance_reset_on_startup : False
