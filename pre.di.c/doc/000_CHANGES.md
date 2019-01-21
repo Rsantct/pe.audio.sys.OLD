@@ -16,13 +16,13 @@
 
    * When [istreams] input, a link button allows the user to enter or paste a stream url to be played.
 
-   * If available metadata, the page will show the audio bitrate ant the time track info.
+   * If available metadata, the page will show the audio bitrate and the time track info.
 
 * If your pre.di.c machine uses a Spotify desktop client, full metadata info will be displayed under the control web page.
 
 * Minor changes on run level options into `stopaudio.py` and `startaudio.py`.
 
-* Minor code under `startaudio.py` to able Jack to run under Pulseaudio desktop machines.
+* Minor code mod under `startaudio.py` to able Jack to run under Pulseaudio desktop machines.
 
 * Minor code mod under `start_pid()` at `predic.py` to able processes (e.g. mplayer) to redirect his stdout and stderr to a file that could be read later from others process.
 
@@ -70,7 +70,7 @@ $HOME/
 
 It has been rewritten the `server.py` code in order to leave it as a general purpose server script that can run specific service modules.
 
-The most important service is the implemented under the **`control.py`** module (formerly `server_process.py`).
+The most important service is the one supported by the **`control.py`** module (formerly `server_process.py`).
 
 This way the server can runs also other general interest service modules.
 
@@ -84,9 +84,9 @@ If wanna run another server for auxiliary tasks:
 
 The arguments `control` or `aux` will indicates to `server.py` to IMPORT these module names to work.
 
-The addresses and ports mapping to run each service are specified under `config/config.yml`
-
 Any service module intended to be used under `server.py` must provide an interfacing function named `do()`.
+
+The addresses and ports mapping to run each service are specified under `config/config.yml`.
 
 Also, an optimization has been done regarding the original `server.py` mechanism: it has been omitted the status dict when calling `process_commands()` because status is already read by default when calling this function.
 
