@@ -10,18 +10,18 @@ https://github.com/AudioHumLab/FIRtro/wiki/855-Display-LCD
 
     apt list lcdproc
 
-If version >= 0.5.6, 
+If version >= 0.5.6, then
 
     apt install lcdproc
 
-If not: see how to compile on the above link.
+If not: see how to compile in the link above.
 
 
 Reboot the machine
 
 ## Testing the LCD
 
-(i) Please uncomment the appropiate driver line for your machine arch:
+(i) Please edit and uncomment the appropiate driver line for your machine arch:
 
     $ nano pre.di.c/clients/lcd/LCDd.conf
 
