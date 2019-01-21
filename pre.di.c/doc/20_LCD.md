@@ -35,6 +35,6 @@ Test the standard packaged client:
     
     $ killall lcdproc      # to stop the show
 
-## Enabling pre.di.c on the LDC
+## Enabling pre.di.c info on the LDC display
 
 WORK IN PROGRESS
