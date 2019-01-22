@@ -1,0 +1,8 @@
+#!/bin/bash
+
+lev=$1
+
+if [[ $lev ]]; then
+    echo "level "$1 | nc -N localhost 9999
+fi
+echo status | nc -N localhost 9999 | grep level
