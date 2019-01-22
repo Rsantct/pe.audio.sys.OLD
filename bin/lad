@@ -1,0 +1,8 @@
+#!/bin/bash
+
+lad=$1
+
+if [[ $lad ]]; then
+    echo "level "$1" add" | nc -N localhost 9999
+fi
+echo status | nc -N localhost 9999 | grep level
