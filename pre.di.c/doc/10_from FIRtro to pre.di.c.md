@@ -38,7 +38,7 @@ Edit and set your current FIR taps lenght, for example if your pcm files are 64K
 
 ### Naming your pcm FIR files 
 
-Run **`do_config_files.py -h`** for help on convention naming pcm files:
+Run **`predic_do_loudspeaker.py -h`** for help on convention naming pcm files:
 
         XO:
           xo.someDescription.pcm
@@ -134,7 +134,7 @@ When you're done, you can generate a candidate set of *low level* files needed f
 
 ```
     cd ~
-    do_config_files.py pre.di.c/loudspeakers/mylspkname
+    predic_do_loudspeaker.py pre.di.c/loudspeakers/mylspkname
 ```
 
  
@@ -163,9 +163,9 @@ jack_options:          -R -ddummy -P8 -C2
 
     `startaudio.py`
 
-You can use the `read_brutefir_process.py` tool to see how coefficients and output mapping are running into Brutefir:
+You can use the `predic_view_brutefir.py` tool to see how coefficients and output mapping are running into Brutefir:
 
-       $ read_brutefir_process.py
+       $ predic_view_brutefir.py
 
        --- Outputs map:
        hi.L       -->    system:playback_1
