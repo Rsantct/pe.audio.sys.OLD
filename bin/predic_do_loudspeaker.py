@@ -2,7 +2,7 @@
 #-*- coding: utf-8 -*-
 """
  Usage:
-        do_config_files.py   /path/to/myLoudspeakerFolder  [ -w ] [ |less ]
+        predic_do_loudspeaker.py   /path/to/myLoudspeakerFolder  [ -w ] [ |less ]
 
         -w   Overwrites the existing 'speaker.yml' and 'brutefir_config',
              otherwise '____.candidate' files will be provided.
