@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
     Shows and changes Brutefir's DRC coeffs
@@ -10,7 +10,7 @@
     drc X   --> changes the drc filtering to #X
 '''
 import sys
-import read_brutefir_process as bf
+import predic_view_brutefir as bf
 from brutefir_cli import bfcli
 
 # Read Brutefir on the fly:
@@ -63,7 +63,7 @@ if __name__ == '__main__':
         if opc.isdigit():
             new_drc = opc
         elif '-h' in opc:
-            print __doc__
+            print( __doc__ )
             sys.exit()
 
     if new_drc:
@@ -72,16 +72,16 @@ if __name__ == '__main__':
         #######################
     else:
         #######################
-        print "\nDRC available:"
+        print( "\nDRC available:" )
         #######################
         for drc in drc_availables:
-            print '#'+str(drc[0]), drc[1]
+            print( '#'+str(drc[0]), drc[1] )
 
     #######################
-    print "\nDRC running:"
+    print( "\nDRC running:" )
     #######################
     for f in drc_current():
-        if f['cname'] <> '-1':
-            print f['fname'] + ':', f['cname'][2:], '( ' + f['cpcm'] + ' )'
+        if f['cname'] != '-1':
+            print( f['fname'] + ':', f['cname'][2:], '( ' + f['cpcm'] + ' )' )
         else:
-            print f['fname'] + ':', '-1'
+            print( f['fname'] + ':', '-1' )
