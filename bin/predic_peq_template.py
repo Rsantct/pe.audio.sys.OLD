@@ -30,7 +30,7 @@
     Cada plugin 'filter' disponde de 4 filtros paramétricos mono.
 
     Uso:
-      ecasound_PEQ_template.py  numero_de_filtros  Fs [-w: para salvar en ~/audio]
+      predic_peq_template.py  numero_de_filtros  Fs [-w: para salvar en ~/audio]
 """
 # v2.0:
 # - Plugin LADSPA ya que el LV2 está portado por Nedko y no viene
