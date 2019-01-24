@@ -75,7 +75,8 @@ def main(run_levels):
 
         # stop external scripts, sources and clients
         for line in [ x for x in open(bp.init_list_path)
-                              if not '#' in x.strip()[0] ]: # ignore comments
+                                # ignore commented out and blank lines
+                                if x.strip() and not '#' in x.strip()[0] ]:
             # dispise options if incorrectly set
             script = line.strip().split()[0]
             script_path = f'{bp.init_scripts_folder}{script}'
