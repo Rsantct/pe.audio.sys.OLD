@@ -1,0 +1,20 @@
+# WORK IN PROGRESS
+
+server_addr:        localhost
+server_port:        13666
+
+
+enable_lcd:         false
+
+info_timeout: 2
+
+# opcion de layout de pantalla de status (consultar con bin/server_lcdproc.py -h)
+layout: 2
+
+enable_lcd_big: false
+
+bigscroll_items: [ preset, mono, balance, syseq, peq, drc, loudness ]
+
+# Priority for the muted screen
+show_mute_prio: alert
+
