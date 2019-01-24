@@ -36,8 +36,3 @@ I've found that it is needed to move the following `~/.bashrc` added lines to yo
     # added by Berryconda3 installer
     export PATH="/home/predic/berryconda3/bin:$PATH"
 
-
-### Python packages on Berriconda
-
-Once Berryconda is installed for the user **predic**, instead of `pip`, Python 3 packages has to be managed through by using **`conda`**, the standard Anaconda  manager. More info here: http://docs.anaconda.com/anaconda/user-guide/
-
