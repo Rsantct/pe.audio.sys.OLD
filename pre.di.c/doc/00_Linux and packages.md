@@ -17,3 +17,27 @@ Also check you have the following summary of packages on your linux installation
     apache2
     mpd mpc
 ```
+
+## Python 3 on Raspberry Pi Raspbian
+
+We need Pyton >=3.6, but currently Raspbian is based on Debian *stretch* that comes with Python 3.5. Hope Raspbian updates to Debian *buster* soon.
+
+I've found Berryconda, a Python3.6 distro for Raspbian based in the well known Python distribution Anaconda that works well.
+
+https://github.com/jjhelmus/berryconda
+
+
+    Do you wish the installer to prepend the Berryconda3 install location
+    to PATH in your /home/predic/.bashrc ? [yes|no]
+    [no] >>> yes
+
+I've found that it is needed to move the following `~/.bashrc` added lines to your `~/.profile`
+
+    # added by Berryconda3 installer
+    export PATH="/home/predic/berryconda3/bin:$PATH"
+
+
+### Python packages on Berriconda
+
+Once Berryconda is installed for the user **predic**, instead of `pip`, Python 3 packages has to be managed through by using **`conda`**, the standard Anaconda  manager. More info here: http://docs.anaconda.com/anaconda/user-guide/
+
