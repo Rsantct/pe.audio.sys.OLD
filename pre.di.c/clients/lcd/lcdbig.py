@@ -19,7 +19,7 @@
 #   - Cuando se dibujan widgets 'num' (numeros gordos) los widget 'icon' se cuartean :-/
 #       No hay buena compatibilidad usando 'num' con 'icon', usaremos 'string'.
 
-import client_lcd as cLCD
+import lcd_client as cLCD
 
 def wbig3(c):
     """ devuelve 4 cadenas de ancho 3 para pintar
@@ -346,5 +346,3 @@ def show_scroller(cad="ejemplo de texto largo", screen="bigscroller", speed="1",
 
 if __name__ == "__main__":
     print( __doc__ )
-
-
