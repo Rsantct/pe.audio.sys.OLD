@@ -23,7 +23,6 @@
 # You should have received a copy of the GNU General Public License
 # along with pre.di.c.  If not, see <https://www.gnu.org/licenses/>.
 
-#!/usr/bin/env python3
 """
 
     WORK IN PROGRESSSSSSS
@@ -74,7 +73,7 @@ import yaml
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import basepaths as bp
-import client_lcd
+import lcd_client
 import lcdbig
 import players
 
@@ -82,7 +81,7 @@ import players
 WATCHED_DIR = f'{HOME}/pre.di.c/'
 
 # Read LCD settings
-f = open( f'{bp.config_folder}/lcd.yml', 'r')
+f = open( f'{bp.main_folder}/clients/lcd/lcd.yml', 'r')
 tmp = f.read()
 f.close()
 try:
@@ -348,7 +347,7 @@ class changed_files_handler(FileSystemEventHandler):
 if __name__ == "__main__":
 
     # Registers a client under the system's LCDd server
-    LCD = client_lcd.Client('pre.di.c', host='localhost', port=13666)
+    LCD = lcd_client.Client('pre.di.c', host='localhost', port=13666)
     if LCD.connect():
         LCD.register()
         print ( LCD.query('hello') )
