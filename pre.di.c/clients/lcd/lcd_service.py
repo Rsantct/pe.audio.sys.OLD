@@ -139,6 +139,8 @@ def prepare_widgets():
                 }
 
 def update_status():
+    """ Reads pre.di.c/config/state.yml then updates the LCD """
+    # http://lcdproc.sourceforge.net/docs/lcdproc-0-5-5-user.html
 
     def show_status(data, priority="info"):
         global LEVEL_OLD
@@ -146,17 +148,20 @@ def update_status():
         for key, value in data.items():
             pos = widgets[key]['pos']
             lab = widgets[key]['val']
+
+            # If boolean value, will keep the defalul widget value or will supress it
             if type(value) == bool:
                 if not value:
                     lab = ''
             else:
                 lab += str(value)
+
+            # sintax:  widget_set <screen> <widget> <coordinate> "<text>"
             cmd = f'widget_set scr_1 { key } { pos } "{ lab }"'
             #print(cmd)
             LCD.send( cmd )
             
         if LEVEL_OLD != data['level']:
-            #show_temporary_screen('Level has changed')
             lcdbig.show_level( str(data['level']) )
             LEVEL_OLD = data['level']
 
