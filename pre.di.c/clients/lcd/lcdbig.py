@@ -6,6 +6,14 @@
     - Dígitos grandes para visualizar el volumen.
     - 'MUTE' en tamaño grande 
 """
+##
+##  ACHTUNG: this is spagetti code but still works reasonably
+##
+##  Currently only show_level() is used
+##
+##  :-))
+##
+
 # v1.1
 # - se incorporan aquí las rutinas para hacer scroller de texto de altura 4,
 #   para mostrar el volumen con dígitos grandes,
@@ -19,7 +27,16 @@
 #   - Cuando se dibujan widgets 'num' (numeros gordos) los widget 'icon' se cuartean :-/
 #       No hay buena compatibilidad usando 'num' con 'icon', usaremos 'string'.
 
-import lcd_client as cLCD
+import lcd_client
+
+# Registers a client under the LCDd server
+LCD = lcd_client.Client('big', host='localhost', port=13666)
+if LCD.connect():
+    LCD.register()
+    #print ( LCD.query('hello') )
+    #print ( LCD.get_size() )
+else:
+    print( 'lcdbig.py error' )
 
 def wbig3(c):
     """ devuelve 4 cadenas de ancho 3 para pintar
@@ -102,7 +119,6 @@ def wbig3(c):
         c1=c2=c3=c4=""
 
     return c1,c2,c3,c4
-
 
 def wbig4(c):
     """ devuelve 4 cadenas de ancho 4 para pintar
@@ -197,35 +213,35 @@ def split_by_n( seq, n ):
 
 def _draw_big_digits(digit, pos):
     # auxiliar para la pantalla "level" con dígitos grandes 'num' nativos de LCDproc
-    cLCD.cmd_s('widget_add level dig' + str(pos) + ' num')
-    cLCD.cmd_s('widget_set level dig' + str(pos) + ' ' + str(pos*3) + ' '  + digit)
+    LCD.send('widget_add level dig' + str(pos) + ' num')
+    LCD.send('widget_set level dig' + str(pos) + ' ' + str(pos*3) + ' '  + digit)
 
 def _draw_dot(pos):
     # auxiliar para símbolo no contemplado en los dígitos grandes 'num' nativos de LCDproc
-    cLCD.cmd_s('widget_add level dot     string')
-    cLCD.cmd_s('widget_set level dot  ' + str(pos*3) + ' 4 "#"')
+    LCD.send('widget_add level dot     string')
+    LCD.send('widget_set level dot  ' + str(pos*3) + ' 4 "#"')
 
 def _draw_minus():
     # auxiliar para símbolo no contemplado en los dígitos grandes 'num' nativos de LCDproc
     for i in 1,2,3:
-        cLCD.cmd_s('widget_add level minus' + str(i) + '  string')
-        cLCD.cmd_s('widget_set level minus' + str(i) + ' ' + str(i) + ' 2 "#"')
+        LCD.send('widget_add level minus' + str(i) + '  string')
+        LCD.send('widget_set level minus' + str(i) + ' ' + str(i) + ' 2 "#"')
 
 def _draw_plus():
     # auxiliar para símbolo no contemplado en los dígitos grandes 'num' nativos de LCDproc
     for i in 1,2,3,4,5:
-        cLCD.cmd_s('widget_add level plus' + str(i) + '   string')
-    cLCD.cmd_s('widget_set level plus1   2 1 "#"')
-    cLCD.cmd_s('widget_set level plus2   1 2 "#"')
-    cLCD.cmd_s('widget_set level plus3   2 2 "#"')
-    cLCD.cmd_s('widget_set level plus4   3 2 "#"')
-    cLCD.cmd_s('widget_set level plus5   2 3 "#"')
+        LCD.send('widget_add level plus' + str(i) + '   string')
+    LCD.send('widget_set level plus1   2 1 "#"')
+    LCD.send('widget_set level plus2   1 2 "#"')
+    LCD.send('widget_set level plus3   2 2 "#"')
+    LCD.send('widget_set level plus4   3 2 "#"')
+    LCD.send('widget_set level plus5   2 3 "#"')
 
 def _draw_level(cad, screen="level", priority="info", duration=3):
     # recorre la cadena y pinta +/-, dígitos y punto decimal
-    cLCD.delete_screen("mute")
-    cLCD.delete_screen(screen)
-    cLCD.create_screen(screen, priority=priority, duration=duration)
+    LCD.delete_screen("mute")
+    LCD.delete_screen(screen)
+    LCD.create_screen(screen, priority=priority, duration=duration)
 
     # añade un '+' para pintarlo en caso de valor positivo
     if cad and not "-" in cad:
@@ -251,9 +267,9 @@ def _draw_mute(priority="info"):
     l4 = "|     | \_|  |  |__"
     lineas = l1, l2, l3, l4
 
-    cLCD.delete_screen("level")
-    cLCD.delete_screen("mute")
-    cLCD.create_screen("mute", priority=priority)
+    LCD.delete_screen("level")
+    LCD.delete_screen("mute")
+    LCD.create_screen("mute", priority=priority)
     _draw_lineas(lineas, screen="mute")
 
 def _draw_lineas(lineas, screen, coloffset=1):
@@ -267,10 +283,10 @@ def _draw_lineas(lineas, screen, coloffset=1):
         troceador = split_by_n(lin, 1)
         for col in range(coloffset, 21):
             wID = 'w_' + str(col) + '_' + str(fila)
-            cLCD.cmd_s('widget_add ' + screen + ' ' + wID + ' string')
+            LCD.send('widget_add ' + screen + ' ' + wID + ' string')
             try:
                 c = troceador.next()
-                cLCD.cmd_s('widget_set ' + screen + ' ' + wID + ' ' \
+                LCD.send('widget_set ' + screen + ' ' + wID + ' ' \
                           + str(col) + ' ' + str(fila) + ' ' + c)
             # se ha agotado el generator de troceo:
             except:
@@ -281,22 +297,22 @@ def _draw_lineas_scroller(lineas, screen, speed="1"):
     # Toma 4 lineas de texto y la pinta en scroll
     for i in range(1,5):
         wID = 'w_' + str(i)
-        cLCD.cmd_s('widget_add ' + screen + ' ' + wID + ' scroller')
+        LCD.send('widget_add ' + screen + ' ' + wID + ' scroller')
 
     i = 1
     for linea in lineas:
         linea = linea.replace(" ", "\ ")
         wID = 'w_' + str(i)
-        cLCD.cmd_s('widget_set ' + screen + ' ' + wID + ' ' + \
+        LCD.send('widget_set ' + screen + ' ' + wID + ' ' + \
                   '1 ' + str(i) + ' 20 ' + str(i) + ' m ' + str(speed) + ' ' + linea)
         i += 1
 
 def _pba_big(cad="hola son la 12:34", screen="prueba"):
     # PRUEBA para usar los BigWidgets de lcdbig.py
     for s in "mute", "level":
-        cLCD.delete_screen(s)
-    cLCD.delete_screen(screen)
-    cLCD.create_screen(screen)
+        LCD.delete_screen(s)
+    LCD.delete_screen(screen)
+    LCD.create_screen(screen)
     i = 1
     for c in cad:
         _draw_lineas( lcdbig.wbig3(c), screen, coloffset=i)
@@ -305,15 +321,15 @@ def _pba_big(cad="hola son la 12:34", screen="prueba"):
 def _pba_ver_chars(screen="prueba"):
     # CUTRE prueba para imprimir  80 posibles caracteres empezando por chr(i)
     for s in "mute", "level":
-        cLCD.delete_screen(s)
-    cLCD.delete_screen(screen)
-    cLCD.create_screen(screen)
+        LCD.delete_screen(s)
+    LCD.delete_screen(screen)
+    LCD.create_screen(screen)
     i = 32
     for fila in range(1, 5):
         for col in range(1, 21):
-            cLCD.cmd_s('widget_add ' + screen + ' p_' + str(col) + '_' + str(fila) + '  string')
+            LCD.send('widget_add ' + screen + ' p_' + str(col) + '_' + str(fila) + '  string')
             c = chr(i)
-            cLCD.cmd_s('widget_set ' + screen + ' p_' + str(col) + '_' + str(fila) \
+            LCD.send('widget_set ' + screen + ' p_' + str(col) + '_' + str(fila) \
                           + ' ' + str(col) + ' ' + str(fila) + ' ' + c)
             i += 1
 
@@ -332,8 +348,8 @@ def show_level(level="-12.34", muted=False, screen="level",  \
 #    en un scroller a pantalla completa.
 def show_scroller(cad="ejemplo de texto largo", screen="bigscroller", speed="1", \
                       priority="info", duration=10, timeout=0):
-    cLCD.delete_screen(screen)
-    cLCD.create_screen(screen, priority=priority, duration=duration , timeout=timeout)
+    LCD.delete_screen(screen)
+    LCD.create_screen(screen, priority=priority, duration=duration , timeout=timeout)
     acum = ["", "", "", ""]
     for c in cad + " ":
         #c1,c2,c3,c4 = lcdbig.wbig3(c)
