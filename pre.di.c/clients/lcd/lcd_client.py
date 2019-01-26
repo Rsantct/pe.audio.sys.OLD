@@ -24,7 +24,7 @@
 # along with pre.di.c.  If not, see <https://www.gnu.org/licenses/>.
 
 """ 
-    talks to LCDd
+    Communicates with an LCDd server daemon
 """
 # https://manpages.debian.org/testing/lcdproc/LCDd.8.en.html
 # http://lcdproc.sourceforge.net/docs/current-dev.html
@@ -46,11 +46,11 @@ class Client():
         try:
             self.cli.connect( (self.host, self.port) )
             self.cli.settimeout(.1) # if not timeout s.recv will hang :-/            
-            print (f'Connected to the LCDd server.')
+            print (f'(lcd_client) Connected to the LCDd server.')
             return True
             
         except:
-            print (f'Error connecting to the LCDd server.')
+            print (f'(lcd_client) Error connecting to the LCDd server.')
             self.cli.close()
             return False
 
@@ -75,9 +75,9 @@ class Client():
         ans = self.query('hello' )
         if not "huh?" in ans:
             if 'success' in self.query( f'client_set name {self.cname}' ):
-                print( f'LCDd client \'{self.cname}\' registered' )
+                print( f'(lcd_client) LCDd client \'{self.cname}\' registered' )
             else:
-                print( f'LCDd client \'{self.cname}\' ERROR registering' )
+                print( f'(lcd_client) LCDd client \'{self.cname}\' ERROR registering' )
                 
 
     def get_size( self ):
@@ -110,8 +110,9 @@ class Client():
     
 if __name__ == "__main__":
     
+    # This is only for command line test purpose
     c = Client('test', host='localhost', port=13666)
     if c.connect():
         c.register()
-        print ( c.query('hello') )
-        print ( c.get_size() )
+        print ( '(lcd_client)', c.query('hello') )
+        print ( '(lcd_client)', c.get_size() )
