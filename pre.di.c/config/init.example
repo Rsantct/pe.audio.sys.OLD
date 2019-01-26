@@ -12,4 +12,5 @@ aux                      # Loads a server to switching the amplifier and running
 players                  # Loads a server to interfacing with players
 #mouse_volume            # mouse controls the pre.di.c volume
 #jackminimix             # Loads a Mixer
+#lcd                     # Loads the LCDd server and lcd_service.py 
 
