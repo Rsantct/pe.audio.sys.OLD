@@ -6,7 +6,7 @@
 
 ### 2019-Jan:
 
-* Recovered the LCD display from FIRtro: `init/lcd`, `clients/lcd`
+* Recovered the LCD display from FIRtro: `init/lcd`, `clients/lcd/...`
 
 * A volume control by using a mouse has been introduced. A new parameter `alert_level` can be set inside `config/config.yml`.
 
