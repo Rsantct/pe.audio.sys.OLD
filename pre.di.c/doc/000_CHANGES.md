@@ -2,11 +2,11 @@
 
 ### 2019 works in progress
 
-- Splitting the mplayer related scripts, i.e. `DVB` and `istreams`, to leave a start/stop script under the `init` folder and a separate on the fly control script under `clients/bin`.
-
-- Recover the LCD display from FIRtro.
+* Splitting the mplayer related scripts, i.e. `DVB` and `istreams`, to leave a start/stop script under the `init` folder and a separate on the fly control script under `clients/bin`.
 
 ### 2019-Jan:
+
+* Recovered the LCD display from FIRtro: `init/lcd`, `clients/lcd`
 
 * A volume control by using a mouse has been introduced. A new parameter `alert_level` can be set inside `config/config.yml`.
 
