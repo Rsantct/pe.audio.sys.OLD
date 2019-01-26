@@ -1,0 +1,37 @@
+#!/usr/bin/env python3
+
+"""
+    Starts the LCD server and lcd_service.py
+
+    usage:   lcd   start | stop
+"""
+
+import sys
+from subprocess import Popen
+from time import sleep
+
+import basepaths as bp
+
+def start():
+
+    # the server
+    Popen( f'LCDd -c {bp.main_folder}clients/lcd/LCDd.conf'.split() )
+    sleep(3)
+    # the service for pre.di.c info display
+    Popen( f'python {bp.main_folder}clients/lcd/lcd_service.py'.split() )
+
+def stop():
+
+    Popen( ['pkill', '-f',  'lcd/LCDd.conf'] )
+    Popen( ['pkill', '-f',  'lcd_service.py'] )
+
+if sys.argv[1:]:
+    try:
+        option = {
+            'start' : start,
+            'stop'  : stop
+            }[ sys.argv[1] ]()
+    except:
+        print( '(init/lcd) an error occoured' )
+else:
+    print(__doc__)
