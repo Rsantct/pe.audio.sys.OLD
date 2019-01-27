@@ -18,7 +18,7 @@ def start():
     Popen( f'LCDd -c {bp.main_folder}clients/lcd/LCDd.conf'.split() )
     sleep(3)
     # the service for pre.di.c info display
-    Popen( f'python {bp.main_folder}clients/lcd/lcd_service.py'.split() )
+    Popen( f'python3 {bp.main_folder}clients/lcd/lcd_service.py'.split() )
 
 def stop():
 
