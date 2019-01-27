@@ -22,11 +22,9 @@
 # You should have received a copy of the GNU General Public License
 # along with pre.di.c.  If not, see <https://www.gnu.org/licenses/>.
 
-"""start and stop mplayer for DVB tasks
+"""start and stop MPD
 use it with 'start' and 'stop' as options"""
 
-# Renamed to mpd_load.py  because 'import mpd' does not fails if 
-# python-mpd package were not installed, i.e. the fail is masked.
 
 import os
 import sys
@@ -35,16 +33,14 @@ import math as m
 from subprocess import Popen
 import threading
 
-# Must install the package 'python-mpd', but for Raspberry Pi
-# with berryconda (python 3.6) then 'pip install python-mpd2'
+# Be aware this is python-mpd2 
 import mpd
 
 import predic as pd
 import getconfigs as gc
 
 
-## user config
-
+## user config:
 mpd_path = '/usr/bin/mpd'
 mpd_options = ''
 mpd_alias = 'mpd'
@@ -138,8 +134,8 @@ def stop():
     #pd.kill_pid(mpd_alias)
     # must kill mpd this way:
     Popen('mpd --kill'.split())
-    time.sleep(gc.config['command_delay']*5)
-
+    # harakiri
+    Popen( ['pkill', '-f', 'init/mpd'] )
 
 if sys.argv[1:]:
     try:
