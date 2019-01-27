@@ -1,4 +1,28 @@
-pcm.rawjack2alsaloop {
+# DUMMY MARK TO CHECK IF THE UPDATER KEEPS THIS FILE
+
+# This PLUGIN is intended to be used from alsa players,
+# it is associated to pre.di.c alsa_loop jack ports
+pcm.jack {
+    type plug
+    slave { pcm "Raloop" }
+    hint {
+    description "JACK plugin -> alsa_loop"
+    }
+}
+
+# This PLUGIN is intended to be used from alsa players
+# that directly want to play to pre.di.c bypassing the inputs selector,
+# e.g. the high volume beep alert from the mouse_volume_daemon.py
+pcm.jackbrutefir {
+    type plug
+    slave { pcm "Rbfir" }
+    hint {
+    description "JACK plugin -> brutefir"
+    }
+}
+
+# a RAW pcm (name it shortly, e.g Raloop)
+pcm.Raloop {
     type jack
     playback_ports {
         0 alsa_loop:input_1
@@ -6,7 +30,8 @@ pcm.rawjack2alsaloop {
     }
 }
 
-pcm.rawjack2brutefir {
+# a RAW pcm
+pcm.Rbfir {
     type jack
     playback_ports {
         0 brutefir:in.L
@@ -14,30 +39,9 @@ pcm.rawjack2brutefir {
     }
 }
 
-# This plugin is intended to be used from alsa players
-# associated to pre.di.c inputs on alsa_loop jack ports
-pcm.jack {
-    type plug
-    slave { pcm "rawjack2alsaloop" }
-    hint {
-    description "JACK plugin -> alsa_loop"
-    }
-}
-
-# This plugin is intended to be used from alsa players
-# that directly want to play to pre.di.c bypassing the inputs selector,
-# e.g. the high volume beep alert from the mouse_volume_daemon.py
-pcm.jackbrutefir {
-    type plug
-    slave { pcm "rawjack2brutefir" }
-    hint {
-    description "JACK plugin -> brutefir"
-    }
-}
-
 pcm.!default {
     type plug
-    slave { pcm "rawjack" }
+    slave { pcm "rawjack2alsaloop" }
 }
 
 pcm.alsafile {
@@ -46,3 +50,25 @@ pcm.alsafile {
     file "alsafile.wav"
     format "wav"
 }
+
+
+pcm.UDJ6routed {
+    type        route;
+    slave {
+            pcm        "hw:UDJ6";
+            channels    6;
+    }
+    # ttable.canalSoft.canalReal Ganancia;    
+    ttable.0.0 1;
+    ttable.1.1 1;
+    ttable.2.2 1;
+    ttable.3.3 1;
+    ttable.4.4 1;
+    ttable.5.5 1;
+}
+
+ctl.UDJ6routed {
+        type hw;
+        card "UDJ6";
+}
+
