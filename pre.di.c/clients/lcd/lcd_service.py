@@ -33,6 +33,7 @@ HOME = os.path.expanduser("~")
 import sys
 from time import sleep
 import yaml
+import json
 
 import threading
 from watchdog.observers import Observer
@@ -40,7 +41,7 @@ from watchdog.events import FileSystemEventHandler
 
 import basepaths as bp
 import lcd_client
-import lcdbig
+#import lcdbig
 import players
 
 LEVEL_OLD = None
@@ -97,16 +98,20 @@ def prepare_main_screen():
     # Adding the screen itself:
     LCD.send('screen_add scr_1')
 
-    # Preparing the set of widgets (widgets becomes a global variable)
-    prepare_widgets()
+    # Definig the set of widgets (widgets_xxxx becomes global variables)
+    define_widgets()
 
-    # Adding the widgets to the screen
-    for wName, wProps in widgets.items():
+    # Adding the widgets to the main screen
+    # pre.di.c status widgets
+    for wName, wProps in widgets_state.items():
         cmd = f'widget_add scr_1 { wName } string'
-        #print(cmd)
+        LCD.send( cmd )
+    # metadata players widgets
+    for wName, wProps in widgets_meta.items():
+        cmd = f'widget_add scr_1 { wName } scroller'
         LCD.send( cmd )
 
-def prepare_widgets():
+def define_widgets():
 
     # The screen layout draft:
     #       0        1         2
@@ -115,27 +120,38 @@ def prepare_widgets():
     # 1     Vol: -15.0   Bal: -1
     # 2     B:-1 T:-2  LOUD MONO
     # 3     Input: inputname
-    # 4     DRC:   drcname
+    # 4     metadata_title_marquee
 
-    # The widget collection definition (as global variable)
+    # The widget collection definition (as global variables)
     # Values are defaults, later update_status() will add the current 
     # status info or supress the value in case of booleans.
-    global widgets
-    widgets = { 'input'             : { 'pos':'1  3',    'val':'input:'   },
+    
+    # If position is set to '0 0' the widget will not be displayed
+    
+    global widgets_state # defined text type when prepare_main_screen
+    widgets_state = {
+                'input'             : { 'pos':'1  3',    'val':'input:'   },
                 'level'             : { 'pos':'1  1',    'val':'vol:'     },
                 'headroom'          : { 'pos':'0  0',    'val':'hrm:'     },
                 'balance'           : { 'pos':'14 1',    'val':'bal:'     },
-                'mono'              : { 'pos':'17 2',    'val':'MONO'     },
+                'mono'              : { 'pos':'12 2',    'val':'MONO'     },
                 'muted'             : { 'pos':'1  1',    'val':'MUTED    '},
                 'bass'              : { 'pos':'1  2',    'val':'b:'       },
                 'treble'            : { 'pos':'6  2',    'val':'t:'       },
                 'loudness_ref'      : { 'pos':'0  0',    'val':''         },
-                'loudness_track'    : { 'pos':'12 2',    'val':'LOUD'     },
+                'loudness_track'    : { 'pos':'17 2',    'val':'LOUD'     },
                 'XO_set'            : { 'pos':'0  0',    'val':'xo:'      },
-                'DRC_set'           : { 'pos':'1  4',    'val':'drc:'     },
+                'DRC_set'           : { 'pos':'0  0',    'val':'drc:'     },
                 'PEQ_set'           : { 'pos':'0  0',    'val':'peq:'     },
                 'syseq'             : { 'pos':'0  0',    'val':''         },
                 'polarity'          : { 'pos':'0  0',    'val':'pol'      }
+                }
+
+    global widgets_meta # defined scroller type when prepare_main_screen
+    widgets_meta = {
+                'artist'            : { 'pos':'0  0',    'val':'' },
+                'album'             : { 'pos':'0  0',    'val':'' },
+                'title'             : { 'pos':'1  4',    'val':'' }
                 }
 
 def update_status():
@@ -146,8 +162,8 @@ def update_status():
         global LEVEL_OLD
         
         for key, value in data.items():
-            pos = widgets[key]['pos']
-            lab = widgets[key]['val']
+            pos = widgets_state[key]['pos']
+            lab = widgets_state[key]['val']
 
             # If boolean value, will keep the defalul widget value or will supress it
             if type(value) == bool:
@@ -156,17 +172,47 @@ def update_status():
             else:
                 lab += str(value)
 
-            # sintax:  widget_set <screen> <widget> <coordinate> "<text>"
+            # sintax for string widgets:
+            #   widget_set screen widget coordinate "text"
             cmd = f'widget_set scr_1 { key } { pos } "{ lab }"'
             #print(cmd)
             LCD.send( cmd )
             
         if LEVEL_OLD != data['level']:
-            lcdbig.show_level( str(data['level']) )
+            #lcdbig.show_level( str(data['level']) )
             LEVEL_OLD = data['level']
 
     with open(STATUS_file, 'r') as f:
         show_status( yaml.load( f.read() ) )
+
+def update_meta(metadata, scr='scr_1'):
+    """ Reads pre.di.c metadata dict then updates the LCD """
+    # http://lcdproc.sourceforge.net/docs/lcdproc-0-5-5-user.html
+    
+    metadata = json.loads(metadata)
+
+    for key, value in metadata.items():
+
+        if key in widgets_meta.keys():
+
+            pos =       widgets_meta[key]['pos']
+            label =     widgets_meta[key]['val']
+            label +=    str(value)
+
+            left, top   = pos.split()
+            right       = 20
+            bottom      = top
+            direction   = 'm' # (h)orizontal (v)ertical or (m)arquee
+            speed       = str( LCD_CONFIG['scroller_speed'] )
+            # adding a space for marquee mode
+            if direction == 'm':
+                label += ' '
+
+            # sintax for scroller widgets:
+            #   widget_set screen widget left top right bottom direction speed "text"
+            cmd = f'widget_set {scr} {key} {left} {top} {right} {bottom} {direction} {speed} "{label}"'
+            #print(cmd)
+            LCD.send( cmd )
 
 class changed_files_handler(FileSystemEventHandler):
     """
@@ -182,19 +228,10 @@ class changed_files_handler(FileSystemEventHandler):
             #print('updating status')
             update_status()
 
-        # librespot events file has changed
-        if path == LIBRESPOT_file:
+        # a player events file has changed
+        if path in (LIBRESPOT_file, ISTREAMS_file):
             sleep(1)
-            meta = players.get_librespot_meta() # this does not works well :-/
-            #print('LIBRESPOT:\n', meta)
-            pass
-
-        # librespot events file has changed
-        if path == ISTREAMS_file:
-            sleep(1)
-            meta = players.get_mplayer_info('istreams')
-            #print('ISTREAMS:\n', meta)
-            pass
+            update_meta( players.get_meta() )
 
 if __name__ == "__main__":
 
@@ -202,7 +239,7 @@ if __name__ == "__main__":
     LCD = lcd_client.Client('pre.di.c', host='localhost', port=13666)
     if LCD.connect():
         LCD.register()
-        print ( '(lcd_service )', f'hello: { LCD.query("hello") }' )
+        print( '(lcd_service )', f'hello: { LCD.query("hello") }' )
     else:
         print( 'Error registering pre.di.c on LCDd' )
         sys.exit()
