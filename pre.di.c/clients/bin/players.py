@@ -379,4 +379,4 @@ def do(task):
 
     # A pseudo task, an url to be played back:
     elif task[:7] == 'http://':
-        sp.run( bp.main_folder + f'scripts/istreams.py url {task}'.split() )
+        sp.run( bp.main_folder + f'init/istreams url {task}'.split() )
