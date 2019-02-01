@@ -303,7 +303,7 @@ def get_meta():
     metadata = metaTemplate.copy()
     source = predic_source()
 
-    if   source == 'respotify':
+    if   'librespot' in source or 'raspotify' in source':
         metadata = get_librespot_meta()
     
     elif source == 'spotify':
