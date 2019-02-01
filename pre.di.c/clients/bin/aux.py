@@ -27,12 +27,23 @@
     This module is ussually called from a listening server.
 """
 
+import yaml
 import subprocess as sp
 import os
 HOME = os.path.expanduser("~")
 
 import basepaths as bp
 macros_folder = bp.main_folder + 'clients/macros'
+
+# Reading some user configs for auxilary tasks
+try:
+    with open( f'{bp.config_folder}/aux.yml' , 'r' ) as f:
+        cfg = yaml.load( f.read() )
+    AMP_ON_CMDLINE =  cfg['amp_on_cmdline']
+    AMP_OFF_CMDLINE = cfg['amp_off_cmdline']
+except:
+    AMP_ON_CMDLINE =  'echo For amp switching please configure config/aux.yml'
+    AMP_OFF_CMDLINE = 'echo For amp switching please configure config/aux.yml'
 
 def do(task):
     """
@@ -47,15 +58,15 @@ def do(task):
     ### SWITCHING ON/OFF AN AMPLIFIER
     # notice: subprocess.check_output(cmd) returns bytes-like,
     #         but if cmd fails an exception will be raised, so used with 'try'
-    if task == 'ampli on':
+    if task == 'amp_on':
         try:
-            sp.Popen( f'{HOME}/bin/ampli.sh on'.split() )
+            sp.Popen( AMP_ON_CMDLINE.split() )
             return b'done'
         except:
             return b'error'
-    elif task == 'ampli off':
+    elif task == 'amp_off':
         try:
-            sp.Popen( f'{HOME}/bin/ampli.sh off'.split() )
+            sp.Popen( AMP_OFF_CMDLINE.split() )
             return b'done'
         except:
             return b'error'
