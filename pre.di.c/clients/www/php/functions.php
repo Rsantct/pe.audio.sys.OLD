@@ -118,15 +118,15 @@
     
     // AMPLIFIER switching commands are handled by the 'aux' server
     // Notice: It is expected that the remote script will store the amplifier state
-    //         into the file '~/.ampli' so that the web can update it.
-    elseif ( $command == "amplion" ) {
-        predic_socket( 'aux', 'ampli on');
+    //         into the file '~/.amplifier' so that the web can update it.
+    elseif ( $command == "amp_on" ) {
+        predic_socket( 'aux', 'amp_on');
     }
-    elseif ( $command == "amplioff" ) {
-        predic_socket( 'aux', 'ampli off');
+    elseif ( $command == "amp_off" ) {
+        predic_socket( 'aux', 'amp_off');
     }
-    elseif ( $command == "amplistatus" ) {
-        readfile($home."/.ampli"); // php cannot acces inside /tmp for securety reasons.
+    elseif ( $command == "amp_state" ) {
+        readfile($home."/.amplifier"); // php cannot acces inside /tmp for securety reasons.
     }
 
     // USER MACROS are handled by the 'aux' server
