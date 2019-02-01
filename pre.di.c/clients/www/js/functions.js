@@ -82,18 +82,18 @@ function advanced_toggle() {
 // Switch the amplifier
 function ampli(mode) {
     var myREQ = new XMLHttpRequest();
-    myREQ.open("GET", "php/functions.php?command=ampli" + mode, async=true);
+    myREQ.open("GET", "php/functions.php?command=amp_" + mode, async=true);
     myREQ.send();
 }
 
 // Queries the amplifier switch remote state
 function update_ampli_switch() {
     var myREQ = new XMLHttpRequest();
-    var ampliStatus = '';
-    myREQ.open("GET", "php/functions.php?command=amplistatus", async=false);
+    var amp_state = '';
+    myREQ.open("GET", "php/functions.php?command=amp_state", async=false);
     myREQ.send();
-    ampliStatus = myREQ.responseText.replace('\n','')
-    document.getElementById("onoffSelector").value = ampliStatus;
+    amp_state = myREQ.responseText.replace('\n','')
+    document.getElementById("onoffSelector").value = amp_state;
 }
 
 //////// USER MACROS ////////
