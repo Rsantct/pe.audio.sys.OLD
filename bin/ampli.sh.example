@@ -4,10 +4,10 @@
 
 if [[ $1 == "on" ]]; then
     ~/bin/regleta.py 2 4 on
-    echo "on" > ~/.ampli
+    echo "on" > ~/.amplifier
 elif [[ $1 == "off" ]]; then
     ~/bin/regleta.py 2 4 off
-    echo "off" > ~/.ampli
+    echo "off" > ~/.amplifier
 fi
 
 ~/bin/regleta.py
