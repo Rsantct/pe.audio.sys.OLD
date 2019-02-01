@@ -54,13 +54,31 @@ metaTemplate = {
     'title':    '-'
     }
 
-# Gets librespot bitrate from librespot running process:
+# Check for the SPOTIFY Client in use:
+SPOTIFY_client = None
+librespot_bitrate = '-'
+spotify_bitrate   = '-'
+# Check if a desktop client is running:
 try:
-    tmp = sp.check_output( 'pgrep -fa /usr/bin/librespot'.split() ).decode()
-    # /usr/bin/librespot --name rpi3clac --bitrate 320 --backend alsa --device jack --disable-audio-cache --initial-volume=99
-    librespot_bitrate = tmp.split('--bitrate')[1].split()[0].strip()
+    sp.check_output( 'pgrep -f Spotify'.split() )
+    # still pending how to retrieve the Desktop client bitrate
+    SPOTIFY_client = 'desktop'
 except:
-    librespot_bitrate = '-'
+    pass
+# Check if 'librespot' (a Spotify Connect daemon) is running:
+try:
+    sp.check_output( 'pgrep -f librespot'.split() )
+    SPOTIFY_client = 'librespot'
+    # Gets librespot bitrate from librespot running process:
+    try:
+        tmp = sp.check_output( 'pgrep -fa /usr/bin/librespot'.split() ).decode()
+        # /usr/bin/librespot --name rpi3clac --bitrate 320 --backend alsa --device jack --disable-audio-cache --initial-volume=99
+        librespot_bitrate = tmp.split('--bitrate')[1].split()[0].strip()
+    except:
+        pass
+except:
+    pass
+
     
 def timeFmt(x):
     # x must be float
@@ -257,8 +275,8 @@ def get_spotify_meta():
 
     md = metaTemplate.copy()
     md['player'] = 'Spotify'
-    
-    
+    md['bitrate'] = spotify_bitrate
+
     try:
         events_file = f'{bp.main_folder}/.spotify_events'
         f = open( events_file, 'r' )
@@ -303,12 +321,12 @@ def get_meta():
     metadata = metaTemplate.copy()
     source = predic_source()
 
-    if   'librespot' in source or 'raspotify' in source:
-        metadata = get_librespot_meta()
-    
-    elif source == 'spotify':
-        metadata = get_spotify_meta()
-
+    if   'librespot' in source or 'spotify' in source.lower():
+        if SPOTIFY_client == 'desktop':
+            metadata = get_spotify_meta()
+        elif SPOTIFY_client == 'librespot':
+            metadata = get_librespot_meta()
+        
     elif source == 'mpd':
         metadata = mpd_client('get_meta')
 
