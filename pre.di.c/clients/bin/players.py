@@ -38,13 +38,13 @@ import json
 import basepaths as bp
 
 # MPD settings:
-mpd_host    = 'localhost'
-mpd_port    = 6600
-mpd_passwd  = None
+MPD_HOST    = 'localhost'
+MPD_PORT    = 6600
+MPD_PASSWD  = None
 
 # The METADATA GENERIC TEMPLATE for pre.di.c clients, for example the web control page:
 # Remember to use copies of this ;-)
-metaTemplate = {
+METATEMPLATE = {
     'player':   '-',
     'time_pos': '-:-',
     'time_tot': '-:-',
@@ -55,20 +55,19 @@ metaTemplate = {
     }
 
 # Check for the SPOTIFY Client in use:
-SPOTIFY_client = None
+SPOTIFY_CLIENT = None
 librespot_bitrate = '-'
 spotify_bitrate   = '-'
 # Check if a desktop client is running:
 try:
     sp.check_output( 'pgrep -f Spotify'.split() )
     # still pending how to retrieve the Desktop client bitrate
-    SPOTIFY_client = 'desktop'
+    SPOTIFY_CLIENT = 'desktop'
 except:
     pass
 # Check if 'librespot' (a Spotify Connect daemon) is running:
 try:
     sp.check_output( 'pgrep -f librespot'.split() )
-    SPOTIFY_client = 'librespot'
     # Gets librespot bitrate from librespot running process:
     try:
         tmp = sp.check_output( 'pgrep -fa /usr/bin/librespot'.split() ).decode()
@@ -76,6 +75,7 @@ try:
         librespot_bitrate = tmp.split('--bitrate')[1].split()[0].strip()
     except:
         pass
+    SPOTIFY_CLIENT = 'librespot'
 except:
     pass
 
@@ -102,7 +102,7 @@ def mpd_client(query):
     def get_meta():
         """ gets info from mpd """
 
-        md = metaTemplate.copy()
+        md = METATEMPLATE.copy()
         md['player'] = 'MPD'
 
         if mpd_online:
@@ -151,9 +151,9 @@ def mpd_client(query):
 
     client = mpd.MPDClient()
     try:
-        client.connect(mpd_host, mpd_port)
-        if mpd_passwd:
-            client.password(mpd_passwd)
+        client.connect(MPD_HOST, MPD_PORT)
+        if MPD_PASSWD:
+            client.password(MPD_PASSWD)
         mpd_online = True
     except:
         mpd_online = False
@@ -175,7 +175,7 @@ def get_librespot_meta():
     # More info can be retrieved from the spotify web, but it is necessary to register
     # for getting a privative and unique http request token for authentication.
 
-    md = metaTemplate.copy()
+    md = METATEMPLATE.copy()
     md['player'] = 'Spotify'
     md['bitrate'] = librespot_bitrate
 
@@ -208,7 +208,7 @@ def get_mplayer_info(service):
     """ gets metadata from Mplayer as per
         http://www.mplayerhq.hu/DOCS/tech/slave.txt """
 
-    md = metaTemplate.copy()
+    md = METATEMPLATE.copy()
     md['player'] = 'Mplayer'
 
     # This is the file were Mplayer standard output has been redirected to,
@@ -273,7 +273,7 @@ def predic_source():
 
 def get_spotify_meta():
 
-    md = metaTemplate.copy()
+    md = METATEMPLATE.copy()
     md['player'] = 'Spotify'
     md['bitrate'] = spotify_bitrate
 
@@ -318,13 +318,13 @@ def get_meta():
         '{player: xxxx, artist: xxxx, album:xxxx, title:xxxx, etc... }'
         Then will return a bytes-like object from the referred string.
     """
-    metadata = metaTemplate.copy()
+    metadata = METATEMPLATE.copy()
     source = predic_source()
 
     if   'librespot' in source or 'spotify' in source.lower():
-        if SPOTIFY_client == 'desktop':
+        if SPOTIFY_CLIENT == 'desktop':
             metadata = get_spotify_meta()
-        elif SPOTIFY_client == 'librespot':
+        elif SPOTIFY_CLIENT == 'librespot':
             metadata = get_librespot_meta()
         
     elif source == 'mpd':
