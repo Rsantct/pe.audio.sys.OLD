@@ -4,6 +4,10 @@
 
 * Splitting the mplayer related scripts, i.e. `DVB` and `istreams`, to leave a start/stop script under the `init` folder and a separate on the fly control script under `clients/bin`.
 
+### 2019-Feb
+
+* Player controls upgraded with 'rewind' and 'fast forward'. Useful when you want to move along a very long track, for example some internet radio podcast with more than an hour lenght. Also useful for MPD navigate.
+
 ### 2019-Jan:
 
 * Recovered the LCD display from FIRtro: `init/lcd`, `clients/lcd/...`
