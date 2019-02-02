@@ -303,9 +303,39 @@ def get_spotify_meta():
 # Spotify Desktop control
 def spotify_control(cmd):
     """ Controls the Spotify Desktop player
+        It is assumed that you have the mpris2-dbus utility 'playerctl' installed.
+            https://wiki.archlinux.org/index.php/spotify#MPRIS
+        dbus-send command can also work
+            http://www.skybert.net/linux/spotify-on-the-linux-command-line/
     """
-    # WORK IN PROGRESS
-    pass
+    # playerctl - Available Commands:
+    #   play                    Command the player to play
+    #   pause                   Command the player to pause
+    #   play-pause              Command the player to toggle between play/pause
+    #   stop                    Command the player to stop
+    #   next                    Command the player to skip to the next track
+    #   previous                Command the player to skip to the previous track
+    #   position [OFFSET][+/-]  Command the player to go to the position or seek forward/backward OFFSET in seconds
+    #   volume [LEVEL][+/-]     Print or set the volume to LEVEL from 0.0 to 1.0
+    #   status                  Get the play status of the player
+    #   metadata [KEY]          Print metadata information for the current track. Print only value of KEY if passed
+    
+    # (!) Unfortunately, 'position' does not work, so we cannot rewind neither fast forward
+    if cmd in ('play', 'pause', 'next', 'previous' ):
+        sp.Popen( f'playerctl --player=spotify {cmd}'.split() )
+
+    # Retrieving the playback state
+    result = ''
+    if cmd == 'state':
+        try:
+            result = sp.check_output( f'playerctl --player=spotify status'.split() ).decode()
+        except:
+            pass
+    # playerctl just returns 'Playing' or 'Paused'
+    if 'play' in result.lower():
+        return 'play'
+    else:
+        return 'pause'
 
 # librespot (Spotify Connect client) metatata
 def get_librespot_meta():
@@ -363,7 +393,7 @@ def get_meta():
 # Generic function to control any player
 def control(action):
     """ controls the playback """
-    result = ''
+
     source = predic_source()
 
     if   source == 'mpd':
@@ -371,22 +401,21 @@ def control(action):
 
     elif source.lower() == 'spotify' and SPOTIFY_CLIENT == 'desktop':
         # We can control only Spotify Desktop (not librespot)
-        spotify_control(action)
+        result = spotify_control(action)
 
     elif 'tdt' in source or 'dvb' in source:
-        mplayer_cmd(cmd=action, service='dvb')
+        result = mplayer_cmd(cmd=action, service='dvb')
 
     elif predic_source() in ['istreams', 'iradio']:
-        mplayer_cmd(cmd=action, service='istreams')
-
-    else:
-        pass
+        result = mplayer_cmd(cmd=action, service='istreams')
+    
+    # Currently only MPD and Spotify Desktop provide 'state' info.
+    # 'result' can be 'play', 'pause', stop' or ''.
+    if not result:
+        result = '' # to avoid None.encode() error
 
     # As this is used by a server, we will return a bytes-like object:
-    if result:
-        return result.encode()
-    else:
-        return ''.encode()
+    return result.encode()
 
 # Gets the current input source on pre.di.c
 def predic_source():
