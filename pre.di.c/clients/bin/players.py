@@ -79,7 +79,7 @@ try:
 except:
     pass
 
-    
+# A formatting hh:mm:ss function
 def timeFmt(x):
     # x must be float
     h = int( x / 3600 )         # hours
@@ -96,6 +96,7 @@ def get_predic_state():
     f.close()
     return yaml.load(tmp)
 
+# MPD control, status and metadata
 def mpd_client(query):
     """ comuticates to MPD music player daemon """
 
@@ -188,28 +189,7 @@ def mpd_client(query):
 
     return result
 
-def get_librespot_meta():
-    """ gets metadata info from librespot """
-    # Unfortunately librespot only prints out the title metadata, nor artist neither album.
-    # More info can be retrieved from the spotify web, but it is necessary to register
-    # for getting a privative and unique http request token for authentication.
-
-    md = METATEMPLATE.copy()
-    md['player'] = 'Spotify'
-    md['bitrate'] = librespot_bitrate
-
-    try:
-        # Returns the current track title played by librespot.
-        # 'scripts/librespot.py' handles the libresport print outs to be 
-        #                        redirected to 'tmp/.librespotEvents'
-        tmp = sp.check_output( f'tail -n1 {bp.main_folder}/.librespot_events'.split() )
-        md['title'] = tmp.decode().split('"')[-2]
-        # JSON for JavaScript on control web page, NOTICE json requires double quotes:
-    except:
-        pass
-
-    return json.dumps( md )
-
+# Mplayer control
 def mplayer_cmd(cmd, service):
     """ Sends a command to Mplayer trough by its input fifo """
     # Notice: Mplayer sends its responses to the terminal where Mplayer was launched,
@@ -235,6 +215,7 @@ def mplayer_cmd(cmd, service):
 
     sp.Popen( f'echo "{cmd}" > {bp.main_folder}/{service}_fifo', shell=True)
 
+# Mplayer metadata
 def get_mplayer_info(service):
     """ gets metadata from Mplayer as per
         http://www.mplayerhq.hu/DOCS/tech/slave.txt """
@@ -291,22 +272,11 @@ def get_mplayer_info(service):
 
     return json.dumps( md )
 
-def predic_source():
-    """ retrieves the current input source """
-    source = None
-    # It is possible to fail while state file is updating :-/
-    times = 4
-    while times:
-        try:
-            source = get_predic_state()['input']
-            break
-        except:
-            times -= 1
-        time.sleep(.25)
-    return source
-
+# Spotify Desktop metadata
 def get_spotify_meta():
-
+    """ Gets the metadata info retrieved by the daemon init/spotify_monitor
+        which monitorizes a Spotify Desktop Client
+    """
     md = METATEMPLATE.copy()
     md['player'] = 'Spotify'
     md['bitrate'] = spotify_bitrate
@@ -346,7 +316,38 @@ def get_spotify_meta():
         pass
 
     return json.dumps( md )
-    
+
+# Spotify Desktop control
+def spotify_control(cmd):
+    """ Controls the Spotify Desktop player
+    """
+    # WORK IN PROGRESS
+    pass
+
+# librespot (Spotify Connect client) metatata
+def get_librespot_meta():
+    """ gets metadata info from librespot """
+    # Unfortunately librespot only prints out the title metadata, nor artist neither album.
+    # More info can be retrieved from the spotify web, but it is necessary to register
+    # for getting a privative and unique http request token for authentication.
+
+    md = METATEMPLATE.copy()
+    md['player'] = 'Spotify'
+    md['bitrate'] = librespot_bitrate
+
+    try:
+        # Returns the current track title played by librespot.
+        # 'scripts/librespot.py' handles the libresport print outs to be 
+        #                        redirected to 'tmp/.librespotEvents'
+        tmp = sp.check_output( f'tail -n1 {bp.main_folder}/.librespot_events'.split() )
+        md['title'] = tmp.decode().split('"')[-2]
+        # JSON for JavaScript on control web page, NOTICE json requires double quotes:
+    except:
+        pass
+
+    return json.dumps( md )
+
+# Generic function to get meta from any player: MPD, Mplayer or Spotify
 def get_meta():
     """ Makes a dictionary-like string with the current track metadata
         '{player: xxxx, artist: xxxx, album:xxxx, title:xxxx, etc... }'
@@ -376,6 +377,7 @@ def get_meta():
     # As this is used by a server, we will return a bytes-like object:
     return metadata.encode()
 
+# Generic function to control any player
 def control(action):
     """ controls the playback """
     result = ''
@@ -386,8 +388,7 @@ def control(action):
 
     elif source.lower() == 'spotify' and SPOTIFY_CLIENT == 'desktop':
         # We can control only Spotify Desktop (not librespot)
-        # WORK IN PROGRESS
-        pass
+        spotify_control(action)
 
     elif 'tdt' in source or 'dvb' in source:
         mplayer_cmd(cmd=action, service='dvb')
@@ -404,6 +405,22 @@ def control(action):
     else:
         return ''.encode()
 
+# Gets the current input source on pre.di.c
+def predic_source():
+    """ retrieves the current input source """
+    source = None
+    # It is possible to fail while state file is updating :-/
+    times = 4
+    while times:
+        try:
+            source = get_predic_state()['input']
+            break
+        except:
+            times -= 1
+        time.sleep(.25)
+    return source
+
+# Interface entry function to this module
 def do(task):
     """
         This do() is the entry interface function from a listening server.
