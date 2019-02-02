@@ -79,23 +79,6 @@ try:
 except:
     pass
 
-# A formatting hh:mm:ss function
-def timeFmt(x):
-    # x must be float
-    h = int( x / 3600 )         # hours
-    x = int( round(x % 3600) )  # updating x to reamining seconds
-    m = int( x / 60 )           # minutes from the new x
-    s = int( round(x % 60) )    # and seconds
-    return f'{h:0>2}:{m:0>2}:{s:0>2}'
-
-def get_predic_state():
-    """ returns the YAML pre.di.c's status info """
-
-    f = open( bp.main_folder + 'config/state.yml', 'r')
-    tmp = f.read()
-    f.close()
-    return yaml.load(tmp)
-
 # MPD control, status and metadata
 def mpd_client(query):
     """ comuticates to MPD music player daemon """
@@ -419,6 +402,24 @@ def predic_source():
             times -= 1
         time.sleep(.25)
     return source
+
+# Gets the dictionary of pre.di.c status
+def get_predic_state():
+    """ returns the YAML pre.di.c's status info """
+
+    f = open( bp.main_folder + 'config/state.yml', 'r')
+    tmp = f.read()
+    f.close()
+    return yaml.load(tmp)
+
+# Auxiliary function to format hh:mm:ss
+def timeFmt(x):
+    # x must be float
+    h = int( x / 3600 )         # hours
+    x = int( round(x % 3600) )  # updating x to reamining seconds
+    m = int( x / 60 )           # minutes from the new x
+    s = int( round(x % 60) )    # and seconds
+    return f'{h:0>2}:{m:0>2}:{s:0>2}'
 
 # Interface entry function to this module
 def do(task):
