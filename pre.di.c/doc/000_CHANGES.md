@@ -6,7 +6,7 @@
 
 ### 2019-Feb
 
-* Player controls upgraded with 'rewind' and 'fast forward'. Useful when you want to move along a very long track, for example some internet radio podcast with more than an hour lenght. Also useful for MPD navigate.
+* Web control playback buttons upgraded with 'rewind' and 'fast forward'. Useful when you want to move along a high lenght track, for example some internet radio podcast. Also useful for MPD navigate. Spotify Desktop included on playback buttons operation.
 
 ### 2019-Jan:
 
