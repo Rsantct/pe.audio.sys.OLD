@@ -146,12 +146,14 @@ def mpd_client(query):
 
     def next():
         if mpd_online:
-            client.next()
+            try:    client.next()   # avoid error when some playlist have wrong items
+            except: pass
             return client.status()['state']
 
     def previous():
         if mpd_online:
-            client.previous()
+            try:    client.previous()
+            except: pass
             return client.status()['state']
 
     def rew():                    # for REW and FF will move 30 seconds
