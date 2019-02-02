@@ -125,28 +125,43 @@ def mpd_client(query):
         
         return json.dumps( md )
 
+    def state():
+        if mpd_online:
+            return client.status()['state']
+
     def stop():
         if mpd_online:
             client.stop()
             return client.status()['state']
+
     def pause():
         if mpd_online:
             client.pause()
             return client.status()['state']
+
     def play():
         if mpd_online:
             client.play()
             return client.status()['state']
+
     def next():
         if mpd_online:
             client.next()
             return client.status()['state']
+
     def previous():
         if mpd_online:
             client.previous()
             return client.status()['state']
-    def state():
+
+    def rew():                    # for REW and FF will move 30 seconds
         if mpd_online:
+            client.seekcur('-30')
+            return client.status()['state']
+
+    def ff():
+        if mpd_online:
+            client.seekcur('+30')
             return client.status()['state']
 
     client = mpd.MPDClient()
@@ -159,12 +174,14 @@ def mpd_client(query):
         mpd_online = False
 
     result = {  'get_meta':   get_meta,
+                'state':      state,
                 'stop':       stop,
                 'pause':      pause,
                 'play':       play,
                 'next':       next,
                 'previous':   previous,
-                'state':      state
+                'rew':        rew,
+                'ff':         ff
              }[query]()
 
     return result
@@ -196,11 +213,23 @@ def mplayer_cmd(cmd, service):
     # Notice: Mplayer sends its responses to the terminal where Mplayer was launched,
     #         or to a redirected file.
 
-    # We prefer to translate previuos/next commands to seeking -/+ 60 seconds:
-    if cmd == 'previous':
-        cmd = 'seek -60 0' # 0: relative (http://www.mplayerhq.hu/DOCS/tech/slave.txt)
-    if cmd == 'next':
-        cmd = 'seek +60 0'
+    # 'seek xxx 0' -> seeks relative xxx seconds (http://www.mplayerhq.hu/DOCS/tech/slave.txt)
+    # 'seek xxx 1' -> seeks to xxx %
+    # 'seek xxx 2' -> seeks to absolute xxx seconds
+    
+    if service == 'istreams':
+        # useful when playing a mp3 stream e.g. some long playing time podcast url
+        if cmd == 'previous':   cmd = 'seek -300 0'
+        if cmd == 'rew':        cmd = 'seek -60  0'
+        if cmd == 'ff':         cmd = 'seek +60  0'
+        if cmd == 'next':       cmd = 'seek +300 0'
+
+    if service == 'dvb':
+        # (i) all this stuff is testing and not much useful
+        if cmd == 'previous':   cmd = 'tv_step_channel previous'
+        if cmd == 'rew':        cmd = 'seek_chapter -1 0'
+        if cmd == 'ff':         cmd = 'seek_chapter +1 0'
+        if cmd == 'next':       cmd = 'tv_step_channel next'
 
     sp.Popen( f'echo "{cmd}" > {bp.main_folder}/{service}_fifo', shell=True)
 
@@ -245,6 +274,9 @@ def get_mplayer_info(service):
             md['bitrate'] = bitrate.split()[0]
 
         if 'ANS_FILENAME=' in tmp[1]:
+            # this way will return the whole url:
+            #md['title'] = tmp[1].split('ANS_FILENAME=')[1]
+            # this way will return just the filename:
             md['title'] = tmp[1].split('ANS_FILENAME=')[1].split('?')[0].replace("'","")
 
         if 'ANS_TIME_POSITION=' in tmp[2]:
@@ -345,17 +377,18 @@ def get_meta():
 def control(action):
     """ controls the playback """
     result = ''
+    source = predic_source()
 
-    if   predic_source() == 'mpd':
+    if   source == 'mpd':
         result = mpd_client(action)
 
-    elif predic_source() == 'spotify':
+    elif source.lower() == 'spotify' and SPOTIFY_CLIENT == 'desktop':
+        # We can control only Spotify Desktop (not librespot)
         # WORK IN PROGRESS
         pass
 
-    elif predic_source() == 'tdt':
-        # WORK IN PROGRESS
-        pass
+    elif 'tdt' in source or 'dvb' in source:
+        mplayer_cmd(cmd=action, service='dvb')
 
     elif predic_source() in ['istreams', 'iradio']:
         mplayer_cmd(cmd=action, service='istreams')
@@ -379,21 +412,14 @@ def do(task):
     # First clearing the new line
     task = task.replace('\n','')
 
-    # Tasks to querying the current music player
+    # Tasks querying the current music player.
     if   task == 'player_get_meta':
         return get_meta()
-    elif task == 'player_state':
-        return control('state')
-    elif task == 'player_stop':
-        return control('stop')
-    elif task == 'player_pause':
-        return control('pause')
-    elif task == 'player_play':
-        return control('play')
-    elif task == 'player_next':
-        return control('next')
-    elif task == 'player_previous':
-        return control('previous')
+
+    # Playback control. (i) Some commands need to be adequated later, depending on the player,
+    # e.g. Mplayer does not understand 'previous', 'next' ...
+    elif task[7:] in ('state', 'stop', 'pause', 'play', 'next', 'previous', 'rew', 'ff'):
+        return control( task[7:] )
 
     # A pseudo task, an url to be played back:
     elif task[:7] == 'http://':
