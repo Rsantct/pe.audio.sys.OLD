@@ -40,7 +40,9 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
     <!-- The javascript functions used when an event occurs on this page body's -->
     <script src="js/functions.js"></script>
 
-    <!-- Styles, WARNING do not use comments inside this tag -->
+    <!-- Styles. WARNING do not use comments inside this tag -->
+    <!--         The .xxxxx refers to classes definitions -->
+    
     <style>
 
         body    { color:white;
@@ -102,12 +104,19 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
         
         .button_cell        { width: 33%; min-width: 33%; border-style: none; }
                 
-        .macro_buttons     { width: 100%;
+        .macro_buttons      { width: 100%;
                             font-size:0.80em;
                             box-shadow: 0 5px 10px 0 rgba(200,200,200,0.3), 0 3px 10px 0 rgba(0,0,0,0.1);
                             border:2px solid rgb(120,120,120);
                             border-radius: 10px/10px; 
                             min-height: 2.7em; }
+                            
+        .player_controls        { font-size: 1.0em; }
+        td#player_controls_1    { border-style: none; }
+        td#player_controls_2    { border-style: none; }
+
+        .level_buttons          { font-size: 1.0em; }
+        td#level_buttons        { border-style: none; }
 
     </style>
 
@@ -216,12 +225,24 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
         </div><!-- EOF ADVANCED CONTROLS -->
 
         <!-- Playing control -->
-        <div id="player_control_buttons" align="center" display="inline">
-            <button type="button" id="buttonPrevious" onmousedown="playerCtrl('previous')" >&lt;|           </button>
-            <button type="button" id="buttonStop"     onmousedown="playerCtrl('stop')"     >&nbsp;[]&nbsp;  </button>
-            <button type="button" id="buttonPause"    onmousedown="playerCtrl('pause')"    >&nbsp;||&nbsp;  </button>
-            <button type="button" id="buttonPlay"     onmousedown="playerCtrl('play')"     >&nbsp;&gt;&nbsp;</button>
-            <button type="button" id="buttonNext"     onmousedown="playerCtrl('next')"     >|&gt;           </button>
+        <div class="player_controls" id="player_control_buttons" align="center" display="inline">
+            <table id="player_controls">
+            <tr>
+                <td id="player_controls_1" >
+                    <button type="button" id="buttonPrevious" onmousedown="playerCtrl('previous')" >&lt;|           </button>
+                    <button type="button" id="buttonRew"      onmousedown="playerCtrl('rew')"      >&lt;&lt;        </button>
+                    <button type="button" id="buttonFF"       onmousedown="playerCtrl('ff')"       >&gt;&gt;        </button>
+                    <button type="button" id="buttonNext"     onmousedown="playerCtrl('next')"     >|&gt;           </button>
+                </td>
+            </tr>
+            <tr>
+                <td id="player_controls_2">
+                    <button type="button" id="buttonStop"     onmousedown="playerCtrl('stop')"     >&nbsp;[]&nbsp;  </button>
+                    <button type="button" id="buttonPause"    onmousedown="playerCtrl('pause')"    >&nbsp;||&nbsp;  </button>
+                    <button type="button" id="buttonPlay"     onmousedown="playerCtrl('play')"     >&nbsp;&gt;&nbsp;</button>
+                </td>
+            </tr>
+            </table>
         </div>
 
         <!-- Playing info -->
@@ -234,12 +255,16 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
         </div>
 
         <!-- Level butttons -->
-        <div id="level_buttons" align="center" >
-            <button type="button" onmousedown="predic_cmd('level -3 add')"                >- 3</button>
-            <button type="button" onmousedown="predic_cmd('level -1 add')"                >- 1</button>
-            <button type="button" onmousedown="predic_cmd('mute toggle')" id="buttonMute" >  0</button>            
-            <button type="button" onmousedown="predic_cmd('level +1 add')"                >+ 1</button>
-            <button type="button" onmousedown="predic_cmd('level +3 add')"                >+ 3</button>
+        <div class="level_buttons" id="level_buttons" align="center" >
+            <table><tr>
+                <td id="level_buttons">
+                    <button type="button" onmousedown="predic_cmd('level -3 add')"                >-3</button>
+                    <button type="button" onmousedown="predic_cmd('level -1 add')"                >-1</button>
+                    <button type="button" onmousedown="predic_cmd('mute toggle')" id="buttonMute" > 0</button>            
+                    <button type="button" onmousedown="predic_cmd('level +1 add')"                >+1</button>
+                    <button type="button" onmousedown="predic_cmd('level +3 add')"                >+3</button>
+                </td>
+            </tr></table>
         </div>
 
         <!-- uncomment to test javascript functions with this button 
