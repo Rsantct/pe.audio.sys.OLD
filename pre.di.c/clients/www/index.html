@@ -73,15 +73,15 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
 
         td#levelInfo        { width:   5%; text-align: center; border: 1px solid white; border-radius: 10px/10px; }
 
-        td#LoudnessInfo     { border: 1px solid grey; border-radius: 10px/10px; width: 7%; font-size:0.6em;}
-        td#MonoInfo         { border: 1px solid grey; border-radius: 10px/10px; width: 7%; font-size:0.6em;}
+        td#LoudnessInfo     { border: none; width: 7%; font-size:0.6em;}
+        td#MonoInfo         { border: none; width: 7%; font-size:0.6em;}
 
         td#input            { width:  85%; text-align: right;  border: none;}
         
         td#treble           { border: 1px solid grey; border-radius: 10px/10px; }
         td#balance          { border: 1px solid grey; border-radius: 10px/10px; }
         td#bass             { border: 1px solid grey; border-radius: 10px/10px; }
-        td#mono_loud        { border: 1px solid grey; border-radius: 10px/10px; }
+        td#syseq        { border: 1px solid grey; border-radius: 10px/10px; }
         
         table#eq_table      { border: 1px solid grey; border-radius: 10px/10px; }
         td#xo               { border: none; width: 33%; }
@@ -155,8 +155,10 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
                 <!-- Level display -->
                 <td id="levelInfo" rowspan="2"></td>
 
-                <!-- A little indicator if Loudness-->
-                <td id="LoudnessInfo">&nbsp;</td>
+                <!-- Loudness control -->
+                <td id="LoudnessInfo">
+                    <button type="button" id="buttonLoud" onmousedown="predic_cmd('loudness_track toggle')" >L</button>
+                </td>
                 
                 <!-- Inputs selector, will be filled by javascript -->
                 <td id="input" rowspan="2">
@@ -165,8 +167,10 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
                 </td>
             </tr>
             <tr>
-                <!-- A little indicator if Mono-->
-                <td id="MonoInfo">&nbsp;</td>
+                <!-- Mono / Stereo control -->
+                <td id="MonoInfo">
+                    <button type="button" id="buttonMono" onmousedown="predic_cmd('mono toggle')"           >M</button>
+                </td>
             </tr>
             </table>
 
@@ -198,9 +202,7 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
                     <span id="bassInfo">bass</span>
                     <button type="button"                 onmousedown="predic_cmd('bass   +1 add')"  >+</button>
                 </td>
-                <td id="mono_loud">
-                    <button type="button" id="buttonMono" onmousedown="predic_cmd('mono toggle')"           >MONO</button>
-                    <button type="button" id="buttonLoud" onmousedown="predic_cmd('loudness_track toggle')" >LOUD</button>
+                <td id="syseq">
                 </td>
             </tr>
         </table>
