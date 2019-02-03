@@ -288,9 +288,9 @@ function page_update(status) {
         document.getElementById("peqSelector").value    =           status_decode(status, 'PEQ_set');
     }
 
-    // MONO, LOUDNESS buttons text lower case if deactivated
-    document.getElementById("buttonMono").innerHTML = UpLow( 'mono', status_decode(status, 'mono') );
-    document.getElementById("buttonLoud").innerHTML = UpLow( 'loud', status_decode(status, 'loudness_track') );
+    // MONO, LOUDNESS buttons text lower case if deactivated ( not used but leaving this code here)
+    //document.getElementById("buttonMono").innerHTML = UpLow( 'mono', status_decode(status, 'mono') );
+    //document.getElementById("buttonLoud").innerHTML = UpLow( 'loud', status_decode(status, 'loudness_track') );
 
     // Highlights activated buttons and related indicators
     if ( status_decode(status, 'muted') == 'true' ) {
@@ -306,21 +306,21 @@ function page_update(status) {
     }
     if ( status_decode(status, 'mono') == 'true' ) {
         document.getElementById("buttonMono").style.background = "rgb(185, 185, 185)";
-        document.getElementById("buttonMono").style.color = "white";
-        document.getElementById("MonoInfo").innerText = 'M';
+        document.getElementById("buttonMono").style.color = "black";
+        document.getElementById("buttonMono").innerText = 'MO';
     } else {
         document.getElementById("buttonMono").style.background = "rgb(100, 100, 100)";
         document.getElementById("buttonMono").style.color = "lightgray";
-        document.getElementById("MonoInfo").innerText = '·';
+        document.getElementById("buttonMono").innerText = 'ST';
     }
     if ( status_decode(status, 'loudness_track') == 'true' ) {
         document.getElementById("buttonLoud").style.background = "rgb(185, 185, 185)";
         document.getElementById("buttonLoud").style.color = "white";
-        document.getElementById("LoudnessInfo").innerText = 'L';
+        document.getElementById("buttonLoud").innerText = 'LD';
     } else {
         document.getElementById("buttonLoud").style.background = "rgb(100, 100, 100)";
         document.getElementById("buttonLoud").style.color = "lightgray";
-        document.getElementById("LoudnessInfo").innerText = '·';
+        document.getElementById("buttonLoud").innerText = '·';
     }
 
     // Loudspeaker name (can change in some systems)
