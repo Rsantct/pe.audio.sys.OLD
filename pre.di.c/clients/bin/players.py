@@ -199,7 +199,7 @@ def mplayer_cmd(cmd, service):
     sp.Popen( f'echo "{cmd}" > {bp.main_folder}/{service}_fifo', shell=True)
 
 # Mplayer metadata
-def get_mplayer_info(service):
+def mplayer_meta(service):
     """ gets metadata from Mplayer as per
         http://www.mplayerhq.hu/DOCS/tech/slave.txt """
 
@@ -256,7 +256,7 @@ def get_mplayer_info(service):
     return json.dumps( md )
 
 # Spotify Desktop metadata
-def get_spotify_meta():
+def spotify_meta():
     """ Gets the metadata info retrieved by the daemon init/spotify_monitor
         which monitorizes a Spotify Desktop Client
     """
@@ -338,7 +338,7 @@ def spotify_control(cmd):
         return 'pause'
 
 # librespot (Spotify Connect client) metatata
-def get_librespot_meta():
+def librespot_meta():
     """ gets metadata info from librespot """
     # Unfortunately librespot only prints out the title metadata, nor artist neither album.
     # More info can be retrieved from the spotify web, but it is necessary to register
@@ -361,7 +361,7 @@ def get_librespot_meta():
     return json.dumps( md )
 
 # Generic function to get meta from any player: MPD, Mplayer or Spotify
-def get_meta():
+def player_get_meta():
     """ Makes a dictionary-like string with the current track metadata
         '{player: xxxx, artist: xxxx, album:xxxx, title:xxxx, etc... }'
         Then will return a bytes-like object from the referred string.
@@ -371,18 +371,18 @@ def get_meta():
 
     if   'librespot' in source or 'spotify' in source.lower():
         if SPOTIFY_CLIENT == 'desktop':
-            metadata = get_spotify_meta()
+            metadata = spotify_meta()
         elif SPOTIFY_CLIENT == 'librespot':
-            metadata = get_librespot_meta()
+            metadata = librespot_meta()
         
     elif source == 'mpd':
         metadata = mpd_client('get_meta')
 
     elif source == 'istreams':
-        metadata = get_mplayer_info(service=source)
+        metadata = mplayer_meta(service=source)
 
     elif source == 'tdt' or 'dvb' in source:
-        metadata = get_mplayer_info(service='dvb')
+        metadata = mplayer_meta(service='dvb')
 
     else:
         metadata = json.dumps( metadata )
@@ -391,7 +391,7 @@ def get_meta():
     return metadata.encode()
 
 # Generic function to control any player
-def control(action):
+def player_control(action):
     """ controls the playback """
 
     source = predic_source()
@@ -425,7 +425,7 @@ def predic_source():
     times = 4
     while times:
         try:
-            source = get_predic_state()['input']
+            source = predic_state()['input']
             break
         except:
             times -= 1
@@ -433,7 +433,7 @@ def predic_source():
     return source
 
 # Gets the dictionary of pre.di.c status
-def get_predic_state():
+def predic_state():
     """ returns the YAML pre.di.c's status info """
 
     f = open( bp.main_folder + 'config/state.yml', 'r')
@@ -463,12 +463,12 @@ def do(task):
 
     # Tasks querying the current music player.
     if   task == 'player_get_meta':
-        return get_meta()
+        return player_get_meta()
 
     # Playback control. (i) Some commands need to be adequated later, depending on the player,
     # e.g. Mplayer does not understand 'previous', 'next' ...
     elif task[7:] in ('state', 'stop', 'pause', 'play', 'next', 'previous', 'rew', 'ff'):
-        return control( task[7:] )
+        return player_control( task[7:] )
 
     # A pseudo task, an url to be played back:
     elif task[:7] == 'http://':
