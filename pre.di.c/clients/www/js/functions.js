@@ -194,6 +194,7 @@ function update_player_info() {
     var artist      = "-";
     var album       = "-";
     var title       = "-";
+    var track       = "-";
 
     var myREQ = new XMLHttpRequest();
     var tmp = '';
@@ -209,12 +210,14 @@ function update_player_info() {
 		artist      = dicci['artist'];
 		album       = dicci['album'];
 		title       = dicci['title'];
+		track       = dicci['track_num'];
 	}
     // 'player' info not anymore needed because equals to 'input' value
     // document.getElementById("player").innerText = player + ':';
-    document.getElementById("time").innerText       = time_pos + "\n" + time_tot;
     document.getElementById("bitrate").innerText    = bitrate + "\nkbps";
     document.getElementById("artist").innerText     = artist;
+    document.getElementById("track").innerText      = track;
+    document.getElementById("time").innerText       = time_pos + "\n" + time_tot;
     document.getElementById("album").innerText      = album;
     document.getElementById("title").innerText      = title;
 }
