@@ -47,4 +47,4 @@ Test the standard packaged client:
 
 ## Enabling pre.di.c info on the LDC display
 
-WORK IN PROGRESS
+Enable a `lcd` line into the init scripts configuration file `config/init`.
