@@ -89,9 +89,10 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
         td#peq              { border: none; width: 33%; color:grey; }
         
         table#player_info   { text-align: left; }
-        td#time             { border: 1px solid grey; border-radius: 10px/10px; width: 7%; font-size:0.6em;}
         td#bitrate          { border: 1px solid grey; border-radius: 10px/10px; width: 5%; font-size:0.6em;}
         td#artist           { border: 1px solid grey; border-radius: 10px/10px; }
+        td#track            { border: 1px solid grey; border-radius: 10px/10px; width: 3%; font-size:0.6em;}
+        td#time             { border: 1px solid grey; border-radius: 10px/10px; width: 7%; font-size:0.6em;}
         td#album            { border: 1px solid grey; border-radius: 10px/10px; }
         td#title            { border: 1px solid grey; border-radius: 10px/10px; }
 
@@ -248,9 +249,12 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
         <!-- Playing info -->
         <div style="overflow-x:auto;">
             <table id="player_info" >
-                <tr> <td id="bitrate"></td> <td id="artist"></td> <td id="time"> </td></tr>
-                <tr> <td id="album" colspan="3">                              </td></tr>
-                <tr> <td id="title" colspan="3">                               </td></tr>
+                <tr> <td id="bitrate"></td> <td id="artist"></td> <td id="track"></td> <td id="time"></td>
+                </tr>
+                <tr> <td id="album" colspan="4">                              </td>
+                </tr>
+                <tr> <td id="title" colspan="4">                               </td>
+                </tr>
             </table>
         </div>
 
