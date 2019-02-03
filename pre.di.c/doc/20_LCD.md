@@ -16,8 +16,18 @@ If version >= 0.5.6, then
 
 If not: see how to compile in the link above.
 
+## Permissions
 
-Reboot the machine
+Prepare `/etc/udev/rules.d/50-usb.rules`
+
+    # allow access to usb devices for users in dialout group
+    SUBSYSTEM=="usb", MODE="0666", GROUP="dialout"
+
+And include your user into the `dialout` group:
+
+    sudo usermod -G dialout -a predic
+
+**Reboot the machine**
 
 ## Testing the LCD
 
