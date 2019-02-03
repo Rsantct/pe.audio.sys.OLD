@@ -45,13 +45,14 @@ MPD_PASSWD  = None
 # The METADATA GENERIC TEMPLATE for pre.di.c clients, for example the web control page:
 # Remember to use copies of this ;-)
 METATEMPLATE = {
-    'player':   '-',
-    'time_pos': '-:-',
-    'time_tot': '-:-',
-    'bitrate':  '-',
-    'artist':   '-',
-    'album':    '-',
-    'title':    '-'
+    'player':       '-',
+    'time_pos':     '-:-',
+    'time_tot':     '-:-',
+    'bitrate':      '-',
+    'artist':       '-',
+    'album':        '-',
+    'title':        '-',
+    'track_num':    '-'
     }
 
 # Check for the SPOTIFY Client in use:
@@ -92,21 +93,23 @@ def mpd_client(query):
         if mpd_online:
 
             # We try because not all tracks have complete metadata fields:
-            try:    md['artist']   = client.currentsong()['artist']
+            try:    md['artist']    = client.currentsong()['artist']
             except: pass
-            try:    md['album']    = client.currentsong()['album']
+            try:    md['album']     = client.currentsong()['album']
             except: pass
-            try:    md['title']    = client.currentsong()['title']
+            try:    md['title']     = client.currentsong()['title']
             except: pass
-            try:    md['bitrate']  = client.status()['bitrate']   # given in kbps
+            try:    md['track_num'] = client.currentsong()['track']
             except: pass
-            try:    md['time_pos'] = timeFmt( float( client.status()['elapsed'] ) )
+            try:    md['bitrate']   = client.status()['bitrate']   # given in kbps
             except: pass
-            try:    md['time_tot'] = timeFmt( float( client.currentsong()['time'] ) )
+            try:    md['time_pos']  = timeFmt( float( client.status()['elapsed'] ) )
+            except: pass
+            try:    md['time_tot']  = timeFmt( float( client.currentsong()['time'] ) )
             except: pass
 
             client.close()
-        
+
         return json.dumps( md )
 
     def state():
@@ -286,13 +289,16 @@ def spotify_meta():
         # "xesam:url": "https://open.spotify.com/track/5UmNPIwZitB26cYXQiEzdP"
         # }
 
+        # regular fields:
         for k in ('artist', 'album', 'title'):
             value = tmp[ f'xesam:{k}']
             if type(value) == list:
                 md[k] = ' '.join(value)
             elif type(value) == str:
                 md[k] = value
-        
+        # track_num:
+        md['track_num'] = tmp["xesam:trackNumber"]
+        # and time lenght:
         md['time_tot'] = timeFmt( tmp["mpris:length"]/1e6 )
 
     except:
