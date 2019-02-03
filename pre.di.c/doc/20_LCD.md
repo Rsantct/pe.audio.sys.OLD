@@ -16,7 +16,7 @@ If version >= 0.5.6, then
 
 If not: see how to compile in the link above.
 
-## Permissions
+## usb4all needs USB permissions
 
 Prepare `/etc/udev/rules.d/50-usb.rules`
 
