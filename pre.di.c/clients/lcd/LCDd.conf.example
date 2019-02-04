@@ -13,11 +13,9 @@
 # (*) Uncomment depending on your machine AMD/Intel or ARM (Raspberry Pi etc)
 #DriverPath=/usr/lib/x86_64-linux-gnu/lcdproc/
 DriverPath=/usr/lib/arm-linux-gnueabihf/lcdproc/
+# The following is for custom build and install lcdproc from sources
+#DriverPath=/usr/local/lib/lcdproc/
 
-NextScreenKey=Right
-PrevScreenKey=Left
-ReportToSyslog=yes
-ToggleRotateKey=Enter
 # (*) This is the driver to manage our LDC display:
 Driver=hd44780
 # (*) Disables the background beating heart:
@@ -31,6 +29,11 @@ GoodBye="____________________"
 GoodBye="    github.com/     "
 GoodBye="    AudioHumLab     "
 GoodBye="____________________"
+
+NextScreenKey=Right
+PrevScreenKey=Left
+ReportToSyslog=yes
+ToggleRotateKey=Enter
 
 
 [menu]
