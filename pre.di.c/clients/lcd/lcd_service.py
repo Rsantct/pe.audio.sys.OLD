@@ -48,9 +48,12 @@ LEVEL_OLD = None
 # Will watch for files changed on this folder and subfolders:
 WATCHED_DIR =       f'{HOME}/pre.di.c/'
 # The files we will pay attention to:
-STATUS_file =       f'{HOME}/pre.di.c/config/state.yml'
-LIBRESPOT_file =    f'{HOME}/pre.di.c/.librespot_events'
-ISTREAMS_file =     f'{HOME}/pre.di.c/.istreams_events'
+STATUS_file     = f'{HOME}/pre.di.c/config/state.yml'
+LIBRESPOT_file  = f'{HOME}/pre.di.c/.librespot_events'
+SPOTIFY_file    = f'{HOME}/pre.di.c/.librespot_events'
+ISTREAMS_file   = f'{HOME}/pre.di.c/.istreams_events'
+DVB_file        = f'{HOME}/pre.di.c/.dvb_events'
+MPD_file        = f'{HOME}/pre.di.c/.mpd_events'
 
 # Read LCD settings
 f = open( f'{bp.main_folder}/clients/lcd/lcd.yml', 'r' )
@@ -247,9 +250,10 @@ class changed_files_handler(FileSystemEventHandler):
             update_status()
 
         # a player events file has changed
-        if path in (LIBRESPOT_file, ISTREAMS_file):
+        if path in (MPD_file, SPOTIFY_file, LIBRESPOT_file, DVB_file, ISTREAMS_file):
             sleep(1)
-            update_meta( players.get_meta() )
+            # needs to decode because players gives bytes-like
+            update_metadata( players.player_get_meta().decode() , mode='composed_marquee')
 
 if __name__ == "__main__":
 
@@ -273,8 +277,8 @@ if __name__ == "__main__":
     #md =  '{"artist":"Some ARTIST",'
     #md += ' "album":"Some ALBUM",'
     #md += ' "title":"ファイヴ・スポット・アフター・ダーク"}'
-    md = players.player_get_meta().decode() # players gives bytes-like
-    update_metadata( md , mode='composed_marquee')
+    # needs to decode because players gives bytes-like
+    update_metadata( players.player_get_meta().decode() , mode='composed_marquee')
 
     # Starts a WATCHDOG to see pre.di.c files changes,
     # and handle these changes to update the LCD display
