@@ -250,9 +250,14 @@ class changed_files_handler(FileSystemEventHandler):
             update_status()
 
         # a player events file has changed
-        if path in (MPD_file, SPOTIFY_file, LIBRESPOT_file, DVB_file, ISTREAMS_file):
-            sleep(1)
-            # needs to decode because players gives bytes-like
+        if path in (STATUS_file,
+                    MPD_file,
+                    SPOTIFY_file,
+                    LIBRESPOT_file,
+                    DVB_file,
+                    ISTREAMS_file):
+            sleep(1) # avoids bouncing
+            # needs decode() because players gives bytes-like
             update_metadata( players.player_get_meta().decode() , mode='composed_marquee')
 
 if __name__ == "__main__":
