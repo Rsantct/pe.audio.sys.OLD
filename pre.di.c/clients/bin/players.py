@@ -110,6 +110,11 @@ def mpd_client(query):
 
             client.close()
 
+        # As an add-on, we will update an event file on the flavour of mplayer or librespot,
+        # to be monitored by any event changes service as for example lcd_service.py
+        with open( f'{bp.main_folder}/.mpd_events', 'w' ) as file:
+            file.write( json.dumps( md ) )
+        
         return json.dumps( md )
 
     def state():
@@ -401,6 +406,7 @@ def player_control(action):
     """ controls the playback """
 
     source = predic_source()
+    result = ''
 
     if   source == 'mpd':
         result = mpd_client(action)
