@@ -151,7 +151,8 @@ def define_widgets():
     widgets_meta = {
                 'artist'            : { 'pos':'0  0',    'val':'' },
                 'album'             : { 'pos':'0  0',    'val':'' },
-                'title'             : { 'pos':'1  4',    'val':'' }
+                'title'             : { 'pos':'0  0',    'val':'' },
+                'bottom_marquee'    : { 'pos':'1  4',    'val':'' },
                 }
 
 def update_status():
@@ -185,20 +186,37 @@ def update_status():
     with open(STATUS_file, 'r') as f:
         show_status( yaml.load( f.read() ) )
 
-def update_meta(metadata, scr='scr_1'):
+def update_metadata(metadata, mode='composed_marquee', scr='scr_1'):
     """ Reads pre.di.c metadata dict then updates the LCD """
     # http://lcdproc.sourceforge.net/docs/lcdproc-0-5-5-user.html
+
+    def compose_marquee(md):
+        """ compose a string to be displayed on a LCD bottom line marquee.
+        """
+        
+        tmp = '{ "bottom_marquee":"'
+        for k,v in json.loads(md).items():
+            if k in ('artist', 'album', 'title') and v != '-':
+                tmp += k[:2] + ':' + str(v) + ' '
+        tmp += '" }'
+        
+        return tmp
     
-    metadata = json.loads(metadata)
+    # This compose a unique marquee widget with all metadata fields:
+    if mode == 'composed_marquee':
+        metadata = json.loads( compose_marquee(metadata) )
+    # This is if you want to use separate widgets kind of:
+    else:
+        metadata = json.loads(metadata)
 
     for key, value in metadata.items():
 
         if key in widgets_meta.keys():
-
+        
             pos =       widgets_meta[key]['pos']
             label =     widgets_meta[key]['val']
             label +=    str(value)
-
+        
             left, top   = pos.split()
             right       = 20
             bottom      = top
@@ -207,7 +225,7 @@ def update_meta(metadata, scr='scr_1'):
             # adding a space for marquee mode
             if direction == 'm':
                 label += ' '
-
+        
             # sintax for scroller widgets:
             #   widget_set screen widget left top right bottom direction speed "text"
             cmd = f'widget_set {scr} {key} {left} {top} {right} {bottom} {direction} {speed} "{label}"'
@@ -250,6 +268,13 @@ if __name__ == "__main__":
 
     # Displays the state of pre.di.c
     update_status()
+    
+    # Displays metadata
+    #md =  '{"artist":"Some ARTIST",'
+    #md += ' "album":"Some ALBUM",'
+    #md += ' "title":"ファイヴ・スポット・アフター・ダーク"}'
+    md = players.player_get_meta().decode() # players gives bytes-like
+    update_metadata( md , mode='composed_marquee')
 
     # Starts a WATCHDOG to see pre.di.c files changes,
     # and handle these changes to update the LCD display
