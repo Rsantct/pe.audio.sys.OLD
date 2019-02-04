@@ -47,7 +47,7 @@ import players
 LEVEL_OLD = None
 # Will watch for files changed on this folder and subfolders:
 WATCHED_DIR =       f'{HOME}/pre.di.c/'
-# The files we will pay attention to:
+# The files we are going to pay attention to:
 STATUS_file     = f'{HOME}/pre.di.c/config/state.yml'
 LIBRESPOT_file  = f'{HOME}/pre.di.c/.librespot_events'
 SPOTIFY_file    = f'{HOME}/pre.di.c/.librespot_events'
