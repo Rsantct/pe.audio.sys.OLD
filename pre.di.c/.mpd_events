@@ -1,0 +1,4 @@
+An auxiliary file to players.py to dump here metadata fron current song, when queried,
+then other daemon monitor services can notice it.
+
+Other related '.playerX_events' files are generated internally.
