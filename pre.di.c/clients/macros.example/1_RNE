@@ -1,4 +1,6 @@
 #!/bin/bash
 
 $HOME/pre.di.c/init/istreams preset 1
+
+sleep .5 # because retuning takes a bit
 echo "input istreams" | nc -N localhost 9999
