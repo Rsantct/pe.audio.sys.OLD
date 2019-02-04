@@ -406,6 +406,7 @@ def player_control(action):
     """ controls the playback """
 
     source = predic_source()
+    result = ''
 
     if   source == 'mpd':
         result = mpd_client(action)
