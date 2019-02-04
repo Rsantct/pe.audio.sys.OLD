@@ -305,22 +305,22 @@ function page_update(status) {
         document.getElementById("levelInfo").style.color = "white";
     }
     if ( status_decode(status, 'mono') == 'true' ) {
-        document.getElementById("buttonMono").style.background = "rgb(185, 185, 185)";
-        document.getElementById("buttonMono").style.color = "black";
+        document.getElementById("buttonMono").style.background = "rgb(100, 0, 0)";
+        document.getElementById("buttonMono").style.color = "rgb(255, 200, 200)";
         document.getElementById("buttonMono").innerText = 'MO';
     } else {
-        document.getElementById("buttonMono").style.background = "rgb(100, 100, 100)";
-        document.getElementById("buttonMono").style.color = "lightgray";
+        document.getElementById("buttonMono").style.background = "rgb(0, 90, 0)";
+        document.getElementById("buttonMono").style.color = "white";
         document.getElementById("buttonMono").innerText = 'ST';
     }
     if ( status_decode(status, 'loudness_track') == 'true' ) {
-        document.getElementById("buttonLoud").style.background = "rgb(185, 185, 185)";
+        document.getElementById("buttonLoud").style.background = "rgb(0, 90, 0)";
         document.getElementById("buttonLoud").style.color = "white";
         document.getElementById("buttonLoud").innerText = 'LD';
     } else {
         document.getElementById("buttonLoud").style.background = "rgb(100, 100, 100)";
-        document.getElementById("buttonLoud").style.color = "lightgray";
-        document.getElementById("buttonLoud").innerText = '·';
+        document.getElementById("buttonLoud").style.color = "rgb(150, 150, 150)";
+        document.getElementById("buttonLoud").innerText = 'LD';
     }
 
     // Loudspeaker name (can change in some systems)
