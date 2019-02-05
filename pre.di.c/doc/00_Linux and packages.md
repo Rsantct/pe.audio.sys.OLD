@@ -45,11 +45,26 @@ https://tutorials.technology/tutorials/67-Installing-python-36-on-raspberrypi.ht
     make
 
 Now, optionally you can resume reading a dozen of chapters of your favourite book :-)
-... about 3 h later:
+... **about 3 h later**:
 
     sudo make altinstall
 
-You are done. Remove your `tmp/` stuff
+You are done, but now you have both 3.5 and 3.6 (under /usr/local).
+
+Your python3 stills points to 3.5:
+
+    $ ls -lh /usr/bin/python3*
+    lrwxrwxrwx 1 root root    9 Jan 20  2017 /usr/bin/python3 -> python3.5
+    -rwxr-xr-x 2 root root 3.8M Sep 27 19:25 /usr/bin/python3.5
+    -rwxr-xr-x 2 root root 3.8M Sep 27 19:25 /usr/bin/python3.5m
+    lrwxrwxrwx 1 root root   10 Jan 20  2017 /usr/bin/python3m -> python3.5m
+
+Replace it to 3.6:
+
+    $ sudo rm /usr/bin/python3
+    $ sudo ln -s /usr/local/bin/python3.6 /usr/bin/python3
+
+Finally remove your `tmp/` stuff.
 
 Removing above packages used for building does not worth it, immo.
 
