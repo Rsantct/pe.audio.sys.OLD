@@ -45,6 +45,7 @@ https://tutorials.technology/tutorials/67-Installing-python-36-on-raspberrypi.ht
     make
 
 Now, optionally you can resume reading a dozen of chapters of your favourite book :-)
+... about 3 h later:
 
     sudo make altinstall
 
