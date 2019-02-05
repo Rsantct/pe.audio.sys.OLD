@@ -58,11 +58,15 @@ Your python3 stills points to 3.5:
     -rwxr-xr-x 2 root root 3.8M Sep 27 19:25 /usr/bin/python3.5
     -rwxr-xr-x 2 root root 3.8M Sep 27 19:25 /usr/bin/python3.5m
     lrwxrwxrwx 1 root root   10 Jan 20  2017 /usr/bin/python3m -> python3.5m
+    
+    $ ls /usr/local/bin/pip*
+    /usr/local/bin/pip3.6
 
 Replace it to 3.6:
 
     $ sudo rm /usr/bin/python3
     $ sudo ln -s /usr/local/bin/python3.6 /usr/bin/python3
+    $ sudo ln -s /usr/local/bin/pip3.6 /usr/local/bin/pip3
 
 Finally remove your `tmp/` stuff.
 
