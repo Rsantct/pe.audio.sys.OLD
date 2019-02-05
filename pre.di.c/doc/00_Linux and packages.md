@@ -1,6 +1,6 @@
 See here: 
 
-    https://github.com/AudioHumLab/FIRtro/wiki/04a-Instalación-de-Linux-y-paquetes-de-SW
+https://github.com/AudioHumLab/FIRtro/wiki/04a-Instalación-de-Linux-y-paquetes-de-SW
 
 Usually it is enough to integrate the user wich will run pre.di.c into convenient groups:
 
