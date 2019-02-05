@@ -49,8 +49,6 @@ Now, optionally you can resume reading a dozen of chapters of your favourite boo
 
     sudo make altinstall
 
-    sudo pip3 install --upgrade pip
-
 You are done. Remove your `tmp/` stuff
 
 Removing above packages used for building does not worth it, immo.
