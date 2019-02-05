@@ -24,7 +24,7 @@ We need Pyton >=3.6, but currently Raspbian is based on Debian *stretch* that co
 
 ### Python 3.6.x from sources
 
-https://tutorials.technology/tutorials/67-Installing-python-36-on-raspberrypi.html
+https://realpython.com/installing-python/#compiling-python-from-source
 
     sudo apt-get update
 
