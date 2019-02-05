@@ -38,9 +38,13 @@ Say **'Y'** to keep your current config.
 
 ### The web page
 
-To updating your Apache web server you'll need sudo credentials.
+Last step in installing/updating script will update your Apache web server: you'll need sudo credentials.
 
-Once done you can check the control web from some LAN computer or smartphone
+Once done you can check the control web from some LAN computer or smartphone.
 
     http://yourPredicHostname.local
+
+If the control web page seems not to work, please be sure you have:
+
+    sudo apt install apache2 libapache2-mod-php
 
