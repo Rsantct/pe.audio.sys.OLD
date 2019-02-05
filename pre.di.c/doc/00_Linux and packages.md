@@ -14,7 +14,7 @@ Also check you have the following summary of packages on your linux installation
 
 We need Pyton >=3.6, but currently Raspbian is based on Debian *stretch* that comes with Python 3.5. Hope Raspbian updates to Debian *buster* soon.
 
-### Python 3.6.x from sources
+### option 1: Python 3.6.x from sources
 
 https://realpython.com/installing-python/#compiling-python-from-source
 
@@ -69,7 +69,7 @@ Finally remove your `tmp/` stuff.
 
 Removing above packages used for building does not worth it, immo.
 
-### Berryconda
+### option 2: Berryconda
 I've found Berryconda, a Python3.6 distro for Raspbian based in the well known Python distribution Anaconda that works well.
 
 https://github.com/jjhelmus/berryconda
