@@ -19,6 +19,10 @@ python3 -m pip install python-mpd2
 - **https://jackclient-python.readthedocs.io**
 ```
     sudo python3 -m pip install --upgrade setuptools
+    
+    # maybe necessary:
+        sudo apt install libffi-dev
+    
     sudo python3 -m pip install cffi
     sudo python3 -m pip install JACK-Client
 ```
