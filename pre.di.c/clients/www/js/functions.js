@@ -297,7 +297,7 @@ function page_update(status) {
         document.getElementById("buttonMute").style.background = "rgb(185, 185, 185)";
         document.getElementById("buttonMute").style.color = "white";
         document.getElementById("buttonMute").style.fontWeight = "bolder";
-        document.getElementById("levelInfo").style.color = "darkgray";
+        document.getElementById("levelInfo").style.color = "rgb(150, 90, 90)";
     } else {
         document.getElementById("buttonMute").style.background = "rgb(100, 100, 100)";
         document.getElementById("buttonMute").style.color = "lightgray";
