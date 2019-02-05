@@ -60,6 +60,11 @@ Replace it to 3.6:
     $ sudo ln -s /usr/local/bin/python3.6 /usr/bin/python3
     $ sudo ln -s /usr/local/bin/pip3.6 /usr/local/bin/pip3
 
+
+To `pip3` to avoid `lsb_release` errors, google searching proposes the following, and I have done it on my system :-/
+
+    $ sudo mv /usr/bin/lsb_realease /usr/bin/lsb_realease.BAK
+
 Finally remove your `tmp/` stuff.
 
 Removing above packages used for building does not worth it, immo.
