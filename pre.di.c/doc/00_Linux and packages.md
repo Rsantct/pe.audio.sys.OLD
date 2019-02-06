@@ -71,7 +71,7 @@ Finally remove your `tmp/` stuff.
 
 Removing above packages used for building does not worth it, immo.
 
-### option 2: Berryconda
+### option 2: Berryconda (preferred)
 I've found Berryconda, a Python3.6 distro for Raspbian based in the well known Python distribution Anaconda that works well.
 
 https://github.com/jjhelmus/berryconda
