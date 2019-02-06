@@ -7,7 +7,7 @@
 
 import sys
 import numpy as np
-from signal.scipy import hilbert
+from scipy.signal import hilbert
 import yaml
 import basepaths as bp
 import getconfigs as gc
