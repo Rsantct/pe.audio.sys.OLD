@@ -37,9 +37,9 @@ def do_plot():
 
 if __name__ == '__main__':
     
-    room_gain    = 0
-    house_corner = 0 
-    house_atten  = 0
+    room_gain    = -1
+    house_corner = -1 
+    house_atten  = -1
     
     # Read options from command line
     for opc in sys.argv[1:]:
@@ -58,18 +58,20 @@ if __name__ == '__main__':
         lspk_path  += f'/{lspk_name}.yml'
         with open( lspk_path , 'r' ) as f:
             lspk_config = yaml.load( f.read() )
-        if not room_gain:
+
+        if room_gain     == -1:
             room_gain    = lspk_config['room_gain']   
-        if not house_corner:
+        if house_corner  == -1:
             house_corner = lspk_config['house_corner']
-        if not house_atten:
+        if house_atten   == -1:
             house_atten  = lspk_config['house_atten']
+
     except:
         print( 'Error reading loudspeaker definition file' )
         print(__doc__)
         sys.exit()
 
-    # Filenames can be suffixed with the room and house dBs :-)
+    # Filenames suffixed with the room and house dBs :-)
     suffix = '+' + str(round(room_gain, 1)) + '-' + str(round(house_atten, 1))
     syseq_mag_path = f'{lspk_path.replace(".yml", "_target_mag.dat").replace(".dat", "_"+suffix+".dat")}'
     syseq_pha_path = f'{lspk_path.replace(".yml", "_target_pha.dat").replace(".dat", "_"+suffix+".dat")}'
