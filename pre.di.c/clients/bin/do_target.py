@@ -2,7 +2,7 @@
 """
     Calculates the target curve of the loudspeaker system.
    
-    usage: syseq.py   /path/to/yourLoudspeakerFolder
+    usage: do_target.py   /path/to/yourLoudspeakerFolder
     
     (i) You need to define yourLoudspeaker.yml file accordingly
 """
