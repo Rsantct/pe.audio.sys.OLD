@@ -4,7 +4,7 @@ target_spl:     82
 
 room_gain:      3.0
 house_corner:   500
-house_gain:    -1.5
+house_atten:    1.5
 
 drc_sets:
     none:               none                        none
