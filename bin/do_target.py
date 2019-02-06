@@ -2,8 +2,10 @@
 """
     Calculates the target curve of the loudspeaker system.
    
-    usage: do_target.py   /path/to/yourLoudspeakerFolder
+    usage:  do_target.py   /path/to/yourLoudspeakerFolder [-s]
     
+            -s  Filenames suffixed with the room and house dBs
+
     (i) You need to define yourLoudspeaker.yml file accordingly
 """
 
@@ -34,6 +36,13 @@ def do_plot():
 
 if __name__ == '__main__':
     
+    suffix = 'candidate'
+
+    # Read suffix option from command line
+    for opc in sys.argv[1:]:
+        if opc == '-s':
+            suffix = ''
+
     # Read target parameteres inside loudspeaker definition file
     try:
         lspk_path   = sys.argv[1]
@@ -49,9 +58,11 @@ if __name__ == '__main__':
         print(__doc__)
         sys.exit()
 
-    # Filenames
-    syseq_mag_path = f'{lspk_path.replace(".yml", "_target_mag.dat")}.candidate'
-    syseq_pha_path = f'{lspk_path.replace(".yml", "_target_pha.dat")}.candidate'
+    # Filenames can be suffixed with the room and house dBs :-)
+    if not suffix:
+        suffix = '+' + str(round(room_gain, 1)) + '-' + str(round(house_atten, 1))
+    syseq_mag_path = f'{lspk_path.replace(".yml", "_target_mag.dat").replace(".dat", "_"+suffix+".dat")}'
+    syseq_pha_path = f'{lspk_path.replace(".yml", "_target_pha.dat").replace(".dat", "_"+suffix+".dat")}'
 
     # Prepare target curve
     freq   = np.loadtxt( f'{bp.config_folder}/{gc.config["frequencies"]}' )
