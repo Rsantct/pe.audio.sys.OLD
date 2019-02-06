@@ -1,23 +1,27 @@
 #!/usr/bin/env python3
 """
-    Calculates the target curve of the loudspeaker system.
-   
-    usage:  do_target.py   /path/to/yourLoudspeakerFolder [-s]
-    
-            -s  Filenames suffixed with the room and house dBs
+  Calculates the target curve of the loudspeaker system.
 
-    (i) You need to define yourLoudspeaker.yml file accordingly
+  usage: do_target.py /path/to/yourLoudspeakerFolder [-s] | [-r] [-c] [-h]
+    
+        -s      Filenames suffixed with the room and house dBs
+                from yourLoudspeaker.yml (i)
+        
+        -rXX    romm_gain    +XX dB
+        -cXX    house_corner  XX Hz
+        -hXX    house_curve  -XX dB
+
+  (i) You need to define yourLoudspeaker.yml file accordingly
 """
 
 import sys
 import numpy as np
 from scipy.signal import hilbert
+import matplotlib.pyplot as plt
 import yaml
 import basepaths as bp
 import getconfigs as gc
 import curves
-
-import matplotlib.pyplot as plt
 
 def do_plot():
     # notice freq is already log spaced
@@ -37,22 +41,35 @@ def do_plot():
 if __name__ == '__main__':
     
     suffix = 'candidate'
-
-    # Read suffix option from command line
+    room_gain    = 0
+    house_corner = 0 
+    house_atten  = 0
+    
+    # Read options from command line
     for opc in sys.argv[1:]:
         if opc == '-s':
             suffix = ''
-
+        if opc[:2] == '-r':
+            room_gain    = float( opc[2:] )
+        if opc[:2] == '-c':
+            house_corner = float( opc[2:] )
+        if opc[:2] == '-h':
+            house_atten  = float( opc[2:] )
+    
     # Read target parameteres inside loudspeaker definition file
+    # (i) Command line takes precedence
     try:
         lspk_path   = sys.argv[1]
         lspk_name = f'{lspk_path.split("/")[-1]}'
         lspk_path  += f'/{lspk_name}.yml'
         with open( lspk_path , 'r' ) as f:
             lspk_config = yaml.load( f.read() )
-        room_gain    = lspk_config['room_gain']   
-        house_corner = lspk_config['house_corner']
-        house_atten  = lspk_config['house_atten']
+        if not room_gain:
+            room_gain    = lspk_config['room_gain']   
+        if not house_corner:
+            house_corner = lspk_config['house_corner']
+        if not house_atten:
+            house_atten  = lspk_config['house_atten']
     except:
         print( 'Error reading loudspeaker definition file' )
         print(__doc__)
@@ -77,7 +94,8 @@ if __name__ == '__main__':
     # Compose magnitudes
     eq_mag = eq_mag + house + room
     # Derive the phase ( notice mag is in dB )
-    eq_pha = np.angle( ( hilbert( np.abs( 10**(eq_mag/20) ) ) ) )
+    #eq_pha = np.angle( ( hilbert( np.abs( 10**(eq_mag/20) ) ) ) )
+    eq_pha = np.zeros(len(freq))
 
     # Write data to file
     np.savetxt (syseq_mag_path, eq_mag)
