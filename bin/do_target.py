@@ -2,11 +2,8 @@
 """
   Calculates the target curve of the loudspeaker system.
 
-  usage: do_target.py /path/to/yourLoudspeakerFolder [-s] | [-r] [-c] [-h]
-    
-        -s      Filenames suffixed with the room and house dBs
-                from yourLoudspeaker.yml (i)
-        
+  usage: do_target.py /path/to/yourLoudspeakerFolder [-r] [-c] [-h]
+
         -rXX    romm_gain    +XX dB
         -cXX    house_corner  XX Hz
         -hXX    house_curve  -XX dB
@@ -40,15 +37,12 @@ def do_plot():
 
 if __name__ == '__main__':
     
-    suffix = 'candidate'
     room_gain    = 0
     house_corner = 0 
     house_atten  = 0
     
     # Read options from command line
     for opc in sys.argv[1:]:
-        if opc == '-s':
-            suffix = ''
         if opc[:2] == '-r':
             room_gain    = float( opc[2:] )
         if opc[:2] == '-c':
@@ -76,8 +70,7 @@ if __name__ == '__main__':
         sys.exit()
 
     # Filenames can be suffixed with the room and house dBs :-)
-    if not suffix:
-        suffix = '+' + str(round(room_gain, 1)) + '-' + str(round(house_atten, 1))
+    suffix = '+' + str(round(room_gain, 1)) + '-' + str(round(house_atten, 1))
     syseq_mag_path = f'{lspk_path.replace(".yml", "_target_mag.dat").replace(".dat", "_"+suffix+".dat")}'
     syseq_pha_path = f'{lspk_path.replace(".yml", "_target_pha.dat").replace(".dat", "_"+suffix+".dat")}'
 
