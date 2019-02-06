@@ -8,7 +8,8 @@ Usually it is enough to integrate the user wich will run pre.di.c into convenien
 
 Also install the following packages on your linux installation:
 
-    sudo apt install alsa-utils jackd2 brutefir ecasound ecatools python-ecasound mpd mpc mplayer
+    sudo apt install alsa-utils libjack-jackd2-dev libasound2-dev libasound2-plugins
+    sudo apt install jackd2 brutefir ecasound ecatools python-ecasound mpd mpc mplayer
     sudo apt install ladspa-sdk fil-plugins zita-ajbridge zita-njbridge apache2 libapache2-mod-php
 
 ## Python 3 on Raspberry Pi Raspbian
