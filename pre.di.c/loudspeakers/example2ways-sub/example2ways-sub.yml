@@ -18,9 +18,12 @@
 # This example ilustrates how to prepare different xover pcm for tweeters L and R
 
 fs: 44100
-target_spl:     82
-room_gain:      5.0
-house_gain:     -2.0
+
+target_spl:     85
+
+room_gain:      3.0
+house_corner:   500
+house_atten:    1.5
 
 drc_sets:
     nearfield:          drc.L_nearfield_mp.pcm      drc.R_nearfield_mp.pcm
