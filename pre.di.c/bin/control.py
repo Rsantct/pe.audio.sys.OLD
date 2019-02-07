@@ -361,7 +361,7 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
         return state
 
 
-    def change_target(throw_it):
+    def reload_target(throw_it):
 
         try:
             (curves['target_mag'], curves['target_pha']) = pd.get_target()
@@ -589,7 +589,7 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
 
     try:
         state = {
-            'target':           change_target,
+            'target':           reload_target,
             'show':             pd.show,
             'input':            change_input,
             'xo':               change_xovers,
