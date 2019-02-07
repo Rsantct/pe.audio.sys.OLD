@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 """
-  Calculates the target curve of the loudspeaker system.
+  Calculates target curves for a loudspeaker system,
+  and shows graphs of them.
 
   Usage:
   
-    predic_target.py /path/to/yourLoudspeakerFolder [-rXX] [-cXX] [-hXX]
+    predic_do_target.py /path/to/yourLspkFolder [-rXX] [-cXX] [-hXX]
 
         -rXX    romm_gain    +XX dB
         -cXX    house_corner  XX Hz
         -hXX    house_curve  -XX dB
 
-  (i) You need to define yourLoudspeaker.yml file accordingly
+  (i) If any option is omitted, you need to define them 
+      inside 'yourLoudspeaker.yml' file accordingly.
 """
 
 import sys
@@ -71,8 +73,8 @@ if __name__ == '__main__':
             house_atten  = lspk_config['house_atten']
 
     except:
-        print( 'Error reading loudspeaker definition file' )
         print(__doc__)
+        print( '    Error reading loudspeaker definition file\n' )
         sys.exit()
 
     # Filenames suffixed with the room and house dBs :-)
