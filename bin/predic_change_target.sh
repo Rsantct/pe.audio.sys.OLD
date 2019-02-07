@@ -43,3 +43,5 @@ for f in *target_*; do
 
 done
 
+# Finally, orders pre.di.c to reload the new curves:
+echo "reload_target" | nc -N localhost 9999
