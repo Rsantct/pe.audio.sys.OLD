@@ -55,6 +55,7 @@ try:
         'target_mag'          : np.loadtxt(gc.target_mag_path),
         'target_pha'          : np.loadtxt(gc.target_pha_path)
         }
+
 except:
     print('Failed to load EQ files')
     sys.exit(-1)
@@ -362,12 +363,15 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
 
 
     def reload_target(throw_it):
+    # throw_it because no arguments are needed here and always given
 
         try:
-            (curves['target_mag'], curves['target_pha']) = pd.get_target()
+            ( curves['target_mag'], curves['target_pha'] ) = pd.read_target()
+            #print('DEBUG TARGET\n', curves['target_mag'])
             state = change_gain(gain, do_change_eq=True)
         except:
             warnings.append('Something went wrong when changing target state')
+        return state
 
 
     def change_loudness_track(loudness_track, state=state):
@@ -609,7 +613,7 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
 
     except KeyError:
         warnings.append(f"Unknown command '{command}'")
-
+    
     except:
         warnings.append(f"Problems in command '{command}'")
 
