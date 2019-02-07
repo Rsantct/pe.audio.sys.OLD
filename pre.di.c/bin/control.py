@@ -174,15 +174,6 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
     ## internal functions for do() actions:
     #######################################
 
-    def change_target(throw_it):
-
-        try:
-            (curves['target_mag'], curves['target_pha']) = pd.get_target()
-            state = change_gain(gain, do_change_eq=True)
-        except:
-            warnings.append('Something went wrong when changing target state')
-
-
     def change_input(input, state=state):
 
         state['input'] = input
@@ -368,6 +359,15 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
             state['muted'] = state_old['muted']
             warnings.append('Something went wrong when changing mute state')
         return state
+
+
+    def change_target(throw_it):
+
+        try:
+            (curves['target_mag'], curves['target_pha']) = pd.get_target()
+            state = change_gain(gain, do_change_eq=True)
+        except:
+            warnings.append('Something went wrong when changing target state')
 
 
     def change_loudness_track(loudness_track, state=state):
