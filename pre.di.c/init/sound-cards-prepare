@@ -7,7 +7,7 @@
 # CARDS BELOW ARE USER CASE, PLEASE UPDATE WITH YOURS
 
 # Release cards from Pulseaudio to be used by pre.di.c:
-if [[ $(pgrep -f puxlseaudio) ]]; then
+if [[ $(pgrep -f pulseaudio) ]]; then
 
     # DX
     #pactl set-card-profile alsa_card.pci-0000_02_04.0                   off
