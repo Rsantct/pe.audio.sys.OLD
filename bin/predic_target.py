@@ -2,7 +2,7 @@
 """
   Calculates the target curve of the loudspeaker system.
 
-  usage: do_target.py /path/to/yourLoudspeakerFolder [-r] [-c] [-h]
+  usage: predic_do_target.py /path/to/yourLoudspeakerFolder [-r] [-c] [-h]
 
         -rXX    romm_gain    +XX dB
         -cXX    house_corner  XX Hz
