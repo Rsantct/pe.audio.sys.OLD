@@ -33,6 +33,7 @@ import numpy as np
 import subprocess as sp
 import jack
 import threading
+import yaml
 
 import basepaths as bp
 import getconfigs as gc
@@ -235,13 +236,23 @@ def calc_input_gain(input):
     return (gc.inputs[input]['gain'] if input in gc.inputs else 0)
 
 
-def get_target():
+def read_target():
 
     # reload target, so we can change it for testing
     # overwriting the target files outside predic
-    target_mag = np.loadtxt(gc.target_mag_path)
-    target_pha = np.loadtxt(gc.target_pha_path)
 
+    # Need to refresh speaker contents, not using 
+    # getconfigs because it is a start snapshot.
+    lspkName = gc.config["loudspeaker"]
+    lspkPath = f'{bp.loudspeakers_folder}/{lspkName}'
+    with open( f'{lspkPath}/speaker.yml', 'r' ) as f:
+            speaker = yaml.load( f.read() )
+    target_mag_path = f'{lspkPath}/{speaker["target_mag_curve"]}'
+    target_pha_path = f'{lspkPath}/{speaker["target_pha_curve"]}'
+    target_mag = np.loadtxt(target_mag_path)
+    target_pha = np.loadtxt(target_pha_path)
+    #print(target_mag) # debug
+    
     return target_mag, target_pha
 
 
@@ -252,7 +263,7 @@ def show( throw_it=None, state=gc.state ):
     """
 
     gain            = calc_gain(gc.state['level'] , gc.state['input'])
-    headroom        = calc_headroom(gain, gc.state['balance'], get_target()[0])
+    headroom        = calc_headroom(gain, gc.state['balance'], read_target()[0])
     input_gain      = calc_input_gain(gc.state['input'])
     muted           = ('(muted)' if gc.state['muted'] else ' ')
     tracking_loud   = (' ' if gc.state['loudness_track'] else '(tracking off)')
