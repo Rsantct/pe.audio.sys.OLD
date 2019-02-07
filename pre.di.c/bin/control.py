@@ -593,7 +593,7 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
 
     try:
         state = {
-            'target':           reload_target,
+            'reload_target':    reload_target,
             'show':             pd.show,
             'input':            change_input,
             'xo':               change_xovers,
