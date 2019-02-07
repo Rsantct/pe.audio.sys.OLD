@@ -178,7 +178,7 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
 
         try:
             (curves['target_mag'], curves['target_pha']) = pd.get_target()
-            state = change_gain(gain, True)
+            state = change_gain(gain, do_change_eq=True)
         except:
             warnings.append('Something went wrong when changing target state')
 
@@ -205,7 +205,7 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
                     , gc.inputs[input]['resampled']):
                     # input change went OK
                 state = change_xovers(state['XO_set'])
-                state = change_gain(gain, True)
+                state = change_gain(gain, do_change_eq=True)
             else:
                 warnings.append('Error changing to input ' + input)
                 state['input']  = state_old['input']
@@ -395,7 +395,7 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
         try:
             state['loudness_ref'] = (float(loudness_ref)
                                     + state['loudness_ref'] * add)
-            state = change_gain(gain, True)
+            state = change_gain(gain, do_change_eq=True)
         except:
             state['loudness_ref'] = state_old['loudness_ref']
             warnings.append('Something went wrong when changing loudness_ref state')
@@ -407,7 +407,7 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
         try:
             state['treble'] = (float(treble)
                                     + state['treble'] * add)
-            state = change_gain(gain, True)
+            state = change_gain(gain, do_change_eq=True)
         except:
             state['treble'] = state_old['treble']
             warnings.append('Something went wrong when changing treble state')
@@ -419,7 +419,7 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
         try:
             state['bass'] = (float(bass)
                                     + state['bass'] * add)
-            state = change_gain(gain, True)
+            state = change_gain(gain, do_change_eq=True)
         except:
             state['bass'] = state_old['bass']
             warnings.append('Something went wrong when changing bass state')
@@ -431,7 +431,7 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
         try:
             state['balance'] = (float(balance)
                                     + state['balance'] * add)
-            state = change_gain(gain, True)
+            state = change_gain(gain, do_change_eq=True)
         except:
             state['balance'] = state_old['balance']
             warnings.append('Something went wrong when changing balance state')
@@ -444,7 +444,7 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
             state['level'] = (float(level)
                                     + state['level'] * add)
             gain = pd.calc_gain(state['level'], state['input'])
-            state = change_gain(gain, True)
+            state = change_gain(gain, do_change_eq=True)
         except:
             state['level'] = state_old['level']
             warnings.append('Something went wrong when changing %s state'
