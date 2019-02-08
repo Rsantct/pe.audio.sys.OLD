@@ -81,7 +81,7 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
         td#treble           { border: 1px solid grey; border-radius: 10px/10px; }
         td#balance          { border: 1px solid grey; border-radius: 10px/10px; }
         td#bass             { border: 1px solid grey; border-radius: 10px/10px; }
-        td#syseq        { border: 1px solid grey; border-radius: 10px/10px; }
+        td#target           { border: 1px solid grey; border-radius: 10px/10px; }
         
         table#eq_table      { border: 1px solid grey; border-radius: 10px/10px; }
         td#xo               { border: none; width: 33%; }
@@ -202,7 +202,7 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
                     <span id="bassInfo">bass</span>
                     <button type="button"                 onmousedown="predic_cmd('bass   +1 add')"  >+</button>
                 </td>
-                <td id="syseq">·&nbsp;sysEQ&nbsp;·
+                <td id="target">·&nbsp;target&nbsp;·
                 </td>
             </tr>
         </table>
@@ -274,8 +274,8 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
         </div>
 
         <!-- uncomment to test javascript functions with this button 
-        <div align="right">
-            <button type="button"                 onclick="filling_macro_buttons()" >PBA</button>
+        <div align="left">
+            <button type="button"                 onclick="pba()" >PBA</button>
         </div>
         -->
 
