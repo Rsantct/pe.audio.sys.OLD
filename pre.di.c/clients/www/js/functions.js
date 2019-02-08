@@ -344,6 +344,9 @@ function page_update(status) {
         document.getElementById( "url_button").style.display = "none";
     }
 
+    // Displays the target curve
+    displays_target_curve();
+
     // Displays or hides the advanced controls section
     if ( advanced_controls == true ) {
         document.getElementById( "advanced_controls").style.display = "block";
@@ -480,7 +483,7 @@ function get_loudspeaker_name() {
     return (myREQ.responseText);
 }
 
-// Gets the sets defined into XO or DRC inside speaker.yml
+// Gets the 'sets' defined into XO or DRC inside speaker.yml
 function get_speaker_prop_sets(prop) {
     var prop_sets = [];
     var yaml = get_file('speaker');
@@ -512,7 +515,7 @@ function get_speaker_prop_sets(prop) {
     return (prop_sets);
 }
 
-// Gets the options from some speaker property, e.g. from PEQ.
+// Gets the options of some speaker property when not 'set' kind of, e.g. PEQ or target_xxs_curve
 function get_speaker_prop(prop) {
     var opcs = [];
     var yaml = get_file('speaker');
@@ -563,4 +566,11 @@ function play_url() {
         myREQ.open("GET", "php/functions.php?command=" + url, async=true);
         myREQ.send();
     }
+}
+
+// Reads the meaningful chunk of the target_mag_curve name of the running loudspeaker
+function displays_target_curve() {
+    var tmp = get_speaker_prop('target_mag_curve');
+    tmp = tmp[0].replace('.dat', '').replace('target_mag_', '');
+    document.getElementById("target").innerText = 'targEQ: ' + tmp
 }
