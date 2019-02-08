@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
   Calculates target curves for a loudspeaker system,
-  and shows graphs of them.
+  and plots graphs of them.
 
   Usage:
   
@@ -64,7 +64,7 @@ if __name__ == '__main__':
         with open( lspk_def , 'r' ) as f:
             lspk_config = yaml.load( f.read() )
 
-        # precedence if command line
+        # Command line has precedence
         if room_gain     == -1:
             room_gain    = lspk_config['room_gain']   
         if house_corner  == -1:
