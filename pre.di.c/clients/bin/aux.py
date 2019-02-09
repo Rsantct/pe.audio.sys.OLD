@@ -94,3 +94,16 @@ def do(task):
             return b'done'
         except:
             return b'error'
+
+    ### CHANGE TARGET
+    elif task[:10] == 'set_target':
+        try:
+            pattern = task[11:]
+            sp.Popen( [ '/home/predic/bin/predic_change_target.sh', pattern ] )
+            print( f'(aux.py) changing target to {pattern}' )
+            pattern = pattern.replace('_mag', '_pha')
+            sp.Popen( [ '/home/predic/bin/predic_change_target.sh', pattern ] )
+            print( f'(aux.py) changing target to {pattern}' )
+            return b'done'
+        except:
+            return b'error'
