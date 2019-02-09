@@ -1,12 +1,14 @@
 #!/bin/bash
 
-# BETA #
+# User script to reconfigure speaker.yml with one of the 
+# available target curves under the speaker folder, 
+# then order pre.di.c to refresh the target EQ on runtime.
 
-########### SET HERE YOUR LOUDSPEAKER: ##########
-lspk=DynA42
-lspks_folder=/home/predic/pre.di.c/loudspeakers/
-#################################################
+lspks_folder=$HOME/pre.di.c/loudspeakers/
+tmp=$(grep ^loudspeaker: $HOME/pre.di.c/config/config.yml)
+lspk=$(echo $tmp | cut -d' ' -f2)
 
+# Somo help
 if [[ ! $1 ]]; then
     echo
     echo User script to reconfigure speaker.yml with one of the 
