@@ -77,7 +77,7 @@ function advanced_toggle() {
     page_update(status);
 }
 
-//////// AMPLIFIER CONTROL ////////
+//////// AUX SERVER FUNCTIONS ////////
 
 // Switch the amplifier
 function ampli(mode) {
@@ -94,6 +94,17 @@ function update_ampli_switch() {
     myREQ.send();
     amp_state = myREQ.responseText.replace('\n','')
     document.getElementById("onoffSelector").value = amp_state;
+}
+
+// Changes a target
+function set_target(value) {
+
+    // avoids http socket lossing some symbols
+    value = http_prepare( value );
+
+    var myREQ = new XMLHttpRequest();
+    myREQ.open("GET", "php/functions.php?command=set_target_" + value, async=true);
+    myREQ.send();
 }
 
 //////// USER MACROS ////////
@@ -232,6 +243,7 @@ function page_initiate() {
 
     // Filling the selectors: inputs, XO, DRC and PEQ
     fills_inputs_selector();
+    fills_target_selector();
     fills_xo_selector();
     fills_drc_selector();
     if ( ecasound_is_used == true){
@@ -281,6 +293,7 @@ function page_update(status) {
     document.getElementById("trebleInfo").innerText = 'TREB: ' + status_decode(status, 'treble');
 
     // The selected item on INPUTS, XO, DRC and PEQ
+    document.getElementById("targetSelector").value =            get_speaker_prop('target_mag_curve');
     document.getElementById("inputsSelector").value =            status_decode(status, 'input');
     document.getElementById("xoSelector").value     =            status_decode(status, 'XO_set');
     document.getElementById("drcSelector").value    =            status_decode(status, 'DRC_set');
@@ -344,8 +357,8 @@ function page_update(status) {
         document.getElementById( "url_button").style.display = "none";
     }
 
-    // Displays the target curve
-    displays_target_curve();
+    // Displays the target curve CURRENTLY USING A SELECTOR
+    // displays_target_curve();
 
     // Displays or hides the advanced controls section
     if ( advanced_controls == true ) {
@@ -568,9 +581,61 @@ function play_url() {
     }
 }
 
-// Reads the meaningful chunk of the target_mag_curve name of the running loudspeaker
+function dir_lspk_folder() {
+    var myREQ = new XMLHttpRequest();
+    myREQ.open("GET", "php/functions.php?command=dir_lspk_folder", async=false);
+    myREQ.send();
+    return JSON.parse( myREQ.responseText );
+}
+
+// TARGETS: Reads the meaningful chunk of the target_mag_curve name of the running loudspeaker
+//          (i) Function CURRENTLY NOT USED
 function displays_target_curve() {
     var tmp = get_speaker_prop('target_mag_curve');
     tmp = tmp[0].replace('.dat', '').replace('target_mag_', '');
     document.getElementById("target").innerText = 'targEQ: ' + tmp
+}
+
+// TARGETS selector
+function fills_target_selector() {
+    var target_files = []
+    var files = dir_lspk_folder();
+    var file = ''
+    for ( i in  files ) {
+        file = files[i];
+        if ( file.includes('_mag') ) {
+            target_files.push( file );
+        }
+    }
+    var x = document.getElementById("targetSelector");
+    for ( i in target_files ) {
+        var option = document.createElement("option");
+        option.text = target_files[i];
+        x.add(option);
+    }
+}
+
+// Auxiliary function to avoid http socket lossing some symbols
+function http_prepare(x) {
+    x = x.replace(' ', '%20')
+    x = x.replace('!', '%21')
+    x = x.replace('"', '%22')
+    x = x.replace('#', '%23')
+    x = x.replace('$', '%24')
+    x = x.replace('%', '%25')
+    x = x.replace('&', '%26')
+    x = x.replace("'", '%27')
+    x = x.replace('(', '%28')
+    x = x.replace(')', '%29')
+    x = x.replace('*', '%2A')
+    x = x.replace('+', '%2B')
+    x = x.replace(',', '%2C')
+    x = x.replace('-', '%2D')
+    x = x.replace('.', '%2E')
+    x = x.replace('/', '%2F')
+    return x;
+}
+
+function pba() {
+    fills_target_selector();
 }
