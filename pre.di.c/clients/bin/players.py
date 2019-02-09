@@ -138,7 +138,7 @@ def mpd_client(query):
 
     def next():
         if mpd_online:
-            try:    client.next()   # avoid error when some playlist have wrong items
+            try:    client.next() # avoids error if some playlist has wrong items
             except: pass
             return client.status()['state']
 
