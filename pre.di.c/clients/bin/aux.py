@@ -98,11 +98,13 @@ def do(task):
     ### CHANGE TARGET
     elif task[:10] == 'set_target':
         try:
+            # it comes only the magnitude filename
             pattern = task[11:]
-            sp.Popen( [ '/home/predic/bin/predic_change_target.sh', pattern ] )
+            sp.Popen( [ f'{HOME}/bin/predic_change_target.sh', pattern ] )
             print( f'(aux.py) changing target to {pattern}' )
+            # change also the phase
             pattern = pattern.replace('_mag', '_pha')
-            sp.Popen( [ '/home/predic/bin/predic_change_target.sh', pattern ] )
+            sp.Popen( [ f'{HOME}/bin/predic_change_target.sh', pattern ] )
             print( f'(aux.py) changing target to {pattern}' )
             return b'done'
         except:
