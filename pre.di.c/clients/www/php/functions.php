@@ -28,16 +28,43 @@
             readfile("some_file_path");
     */
 
-    ///////////////////////////////////////////////////////////////////////
-    // PLEASE CONFIGURE HERE THE PROPER $HOME PATH WHERE pre.di.c IS HOSTED
-    $home = "/home/rafax";
-    ///////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////    
+    // GLOBAL VARIABLES:
+    $HOME = get_home();
+    $CFG_FOLDER = $HOME.'/pre.di.c/config';
+    $MACROS_FOLDER = $HOME.'/pre.di.c/clients/macros';
+    $LSPKNAME = get_config('loudspeaker');
+    $LSPK_FOLDER = $HOME.'/pre.di.c/loudspeakers/'.$LSPKNAME;
+    /////////////////////////////////////////////////////////////////////
+
+    // use only to cmdline debugging
+    //echo '---'.$HOME.'---';
+    //echo '---'.$CFG_FOLDER.'---';
+    //echo '---'.$LSPKNAME.'---';
+    //echo '---'.$LSPK_FOLDER.'---';
+
+    // Gets the base folder where php code and pre.di.c are located
+    function get_home() {
+        $phpdir = getcwd();
+        $pos = strpos($phpdir, 'pre.di.c');
+        return substr($phpdir, 0, $pos-1 );
+    }
+
+    // Gets the directory list of files inside the loudspeker folder
+    function dir_lspk_folder() {
+        // to have access to variables outside
+        global $LSPK_FOLDER;
+        return json_encode( scandir( $LSPK_FOLDER ) );
+    }
 
     // Gets single line configured items from pre.di.c 'config.yml' file
     function get_config($item) {
-        global $home;
+        // to have access to variables outside
+        global $CFG_FOLDER;
+
+        //$filepath = $CFG_FOLDER."/config.yml";
         $tmp = "";
-        $cfile = fopen($home."/pre.di.c/config/config.yml", "r")
+        $cfile = fopen( $CFG_FOLDER."/config.yml", "r" )
                   or die("Unable to open file!");
         while( !feof($cfile) ) {
             $linea = fgets($cfile);
@@ -53,20 +80,6 @@
         }
         fclose($cfile);
         return $tmp;
-    }
-
-    // Gets de base folder where php code and pre.di.c are located
-    function get_base_dir() {
-        $phpdir = getcwd();
-        $pos = strpos($phpdir, 'pre.di.c');
-        $home = substr($phpdir, 0, $pos-1);
-        $lspkName = get_config('loudspeaker');
-        return $home.'/pre.di.c/loudspeakers/'.$lspkName;
-    }
-
-    // Gets the directory list of files inside the loudspeker folder
-    function dir_lspk_folder() {
-        return json_encode( scandir( get_base_dir() ) );
     }
 
     // Communicates to the pre.di.c TCP/IP servers.
@@ -125,13 +138,13 @@
     // UPLOADING SOME FILES: inputs.yml, config.yml, speaker.yml
     // Notice: readfile() does an 'echo', so it returns the contents to the standard php output
     elseif ( $command == "read_inputs_file" ) {
-        readfile($home."/pre.di.c/config/inputs.yml");
+        readfile($CFG_FOLDER."/inputs.yml");
     }
     elseif ( $command == "read_config_file" ) {
-        readfile($home."/pre.di.c/config/config.yml");
+        readfile($CFG_FOLDER."/config.yml");
     }
     elseif ( $command == "read_speaker_file" ) {
-        $fpath = $home."/pre.di.c/loudspeakers/".get_config("loudspeaker")."/speaker.yml";
+        $fpath = $LSPK_FOLDER."/speaker.yml";
         readfile($fpath);
     }
     
@@ -146,7 +159,7 @@
         predic_socket( 'aux', 'amp_off');
     }
     elseif ( $command == "amp_state" ) {
-        readfile($home."/.amplifier"); // php cannot acces inside /tmp for securety reasons.
+        readfile($HOME."/.amplifier"); // php cannot acces inside /tmp for securety reasons.
     }
     // Aux: TARGET change
     elseif ( substr( $command, 0, 10 ) === "set_target" ) {
@@ -158,7 +171,7 @@
         echo predic_socket( 'aux', $command );
     }
     elseif ( $command === "list_macros" ) {
-        $macros_array = scandir($home."/pre.di.c/clients/macros/");
+        $macros_array = scandir($MACROS_FOLDER."/");
         echo json_encode( $macros_array );
     }
 
