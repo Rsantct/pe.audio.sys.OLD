@@ -202,10 +202,7 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
                     <span id="bassInfo">bass</span>
                     <button type="button"                 onmousedown="predic_cmd('bass   +1 add')"  >+</button>
                 </td>
-                <td id="target">
-                    <span>
-                    <select id="targetSelector"  onchange="set_target(this.value)" ></select>
-                    </span>
+                <td id="target">·&nbsp;target&nbsp;·
                 </td>
             </tr>
         </table>
@@ -218,7 +215,7 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
                 </td>
                 <td id="drc">
                     <span >DRC:
-                    <select id="drcSelector"    onchange="predic_cmd('drc ' + this.value, update=false)" ></select>
+                    <select id="drcSelector"     onchange="predic_cmd('drc ' + this.value, update=false)" ></select>
                     </span>
                 </td>
                 <td id="peq">
@@ -276,9 +273,9 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
             </tr></table>
         </div>
 
-        <!-- UNCOMMENT TO TEST JAVASCRIPT FUNCTIONS WITH THIS BUTTON 
+        <!-- uncomment to test javascript functions with this button 
         <div align="left">
-            <button type="button"                 onclick="TESTING()" >TEST</button>
+            <button type="button"                 onclick="pba()" >PBA</button>
         </div>
         -->
 
