@@ -447,11 +447,8 @@ def predic_source():
 # Gets the dictionary of pre.di.c status
 def predic_state():
     """ returns the YAML pre.di.c's status info """
-
-    f = open( bp.main_folder + 'config/state.yml', 'r')
-    tmp = f.read()
-    f.close()
-    return yaml.load(tmp)
+    with open( bp.main_folder + 'config/state.yml', 'r') as f:
+        return yaml.load( f.read() )
 
 # Auxiliary function to format hh:mm:ss
 def timeFmt(x):
