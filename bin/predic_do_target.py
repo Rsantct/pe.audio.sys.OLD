@@ -7,9 +7,9 @@
   
     predic_do_target.py /path/to/yourLspkFolder [-rXX] [-cXX] [-hXX]
 
-        -rXX    romm_gain    +XX dB
-        -cXX    house_corner  XX Hz
-        -hXX    house_curve  -XX dB
+        -rXX    romm_gain      XX dB
+        -cXX    house_corner   XX Hz
+        -hXX    house_atten    XX dB
 
   (i) If any option is omitted, you need to define them 
       inside 'yourLoudspeaker.yml' file accordingly.
