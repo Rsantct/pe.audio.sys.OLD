@@ -30,10 +30,10 @@
 
     ///////////////////////////////////////////////////////////////////////
     // PLEASE CONFIGURE HERE THE PROPER $HOME PATH WHERE pre.di.c IS HOSTED
-    $home = "/home/predic";
+    $home = "/home/rafax";
     ///////////////////////////////////////////////////////////////////////
 
-    // Retrieves single line configured items from pre.di.c 'config.yml' file
+    // Gets single line configured items from pre.di.c 'config.yml' file
     function get_config($item) {
         global $home;
         $tmp = "";
@@ -55,10 +55,18 @@
         return $tmp;
     }
 
-    // Retrieves the directory list of files inside the loudspeker folder
-    function dir_lspk_folder() {
+    // Gets de base folder where php code and pre.di.c are located
+    function get_base_dir() {
+        $phpdir = getcwd();
+        $pos = strpos($phpdir, 'pre.di.c');
+        $home = substr($phpdir, 0, $pos-1);
         $lspkName = get_config('loudspeaker');
-        return json_encode( scandir("/home/predic/pre.di.c/loudspeakers/".$lspkName) );
+        return $home.'/pre.di.c/loudspeakers/'.$lspkName;
+    }
+
+    // Gets the directory list of files inside the loudspeker folder
+    function dir_lspk_folder() {
+        return json_encode( scandir( get_base_dir() ) );
     }
 
     // Communicates to the pre.di.c TCP/IP servers.
@@ -130,7 +138,7 @@
     // AUX commands are handled by the 'aux' server
     // Notice: It is expected that the remote script will store the amplifier state
     //         into the file '~/.amplifier' so that the web can update it.
-    // AMPLIFIER
+    // Aux: AMPLIFIER
     elseif ( $command == "amp_on" ) {
         predic_socket( 'aux', 'amp_on');
     }
@@ -140,12 +148,12 @@
     elseif ( $command == "amp_state" ) {
         readfile($home."/.amplifier"); // php cannot acces inside /tmp for securety reasons.
     }
-    // TARGET
+    // Aux: TARGET change
     elseif ( substr( $command, 0, 10 ) === "set_target" ) {
         predic_socket( 'aux', $command );
     }
 
-    // USER MACROS are handled by the 'aux' server
+    // Aux: USER MACROS
     elseif ( substr( $command, 0, 6 ) === "macro_" ) {
         echo predic_socket( 'aux', $command );
     }
@@ -164,7 +172,7 @@
         echo predic_socket( 'players', $command );
     }
 
-    // Any else will be an STANDARD pre.di.c CONTROL command, handled by the 'control' server
+    // PRE.DI.C: any else will be an STANDARD pre.di.c CONTROL command, handled by the 'control' server
     else {
         echo predic_socket( 'control', $command );
     }
