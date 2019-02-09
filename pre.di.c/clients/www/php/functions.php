@@ -55,12 +55,18 @@
         return $tmp;
     }
 
+    // Retrieves the directory list of files inside the loudspeker folder
+    function dir_lspk_folder() {
+        $lspkName = get_config('loudspeaker');
+        return json_encode( scandir("/home/predic/pre.di.c/loudspeakers/".$lspkName) );
+    }
+
     // Communicates to the pre.di.c TCP/IP servers.
     // Notice: server address and port are specified
     //         into 'config/config.yml' for each service,
     //         for instance 'control', 'players' or 'aux'.
     function predic_socket ($service, $cmd) {
-
+    
         $address = get_config( $service."_address" );
         $port    = intval( get_config( $service."_port" ) );
         
@@ -98,8 +104,13 @@
     */
     $command = $_REQUEST["command"];
 
+    // READING LOUDSPEAKER DIR FILES
+    if ( substr( $command, 0, 15 ) === "dir_lspk_folder" ) {
+        echo dir_lspk_folder();
+    }
+
     // READING THE LOUDSPEAKER NAME:
-    if ( $command == "get_loudspeaker_name" ) {
+    elseif ( $command == "get_loudspeaker_name" ) {
         echo get_config("loudspeaker");
     }
 
@@ -116,9 +127,10 @@
         readfile($fpath);
     }
     
-    // AMPLIFIER switching commands are handled by the 'aux' server
+    // AUX commands are handled by the 'aux' server
     // Notice: It is expected that the remote script will store the amplifier state
     //         into the file '~/.amplifier' so that the web can update it.
+    // AMPLIFIER
     elseif ( $command == "amp_on" ) {
         predic_socket( 'aux', 'amp_on');
     }
@@ -127,6 +139,10 @@
     }
     elseif ( $command == "amp_state" ) {
         readfile($home."/.amplifier"); // php cannot acces inside /tmp for securety reasons.
+    }
+    // TARGET
+    elseif ( substr( $command, 0, 10 ) === "set_target" ) {
+        predic_socket( 'aux', $command );
     }
 
     // USER MACROS are handled by the 'aux' server
