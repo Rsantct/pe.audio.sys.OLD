@@ -1,12 +1,12 @@
-(Download and install scripts from AudioHumLab/FIRtro, adapted to pre.di.c)
+(Download and install scripts from AudioHumLab/FIRtro, adapted to pe.audio.sys)
 
 ## Required
 
 You need **Python>=3.6** and all python stuff as indicated in **[/README.md](https://github.com/Rsantct/pre.di.c/blob/master/README.md)**. Relogin when done.
 
-## First pre.di.c install:
+## First install:
 
-1- Under your home folder, download manually a copy of `download_predic.sh`, an run it:
+1- Under your home folder, download manually a copy of `download_peaudiosys.sh`, an run it:
 
 ```
 wget https://raw.githubusercontent.com/Rsantct/pre.di.c/master/.install/download_peaudiosys.sh
