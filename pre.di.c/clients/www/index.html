@@ -117,7 +117,14 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
         td#player_controls_2    { border-style: none; }
 
         .level_buttons          { font-size: 1.0em; }
-        td#level_buttons        { border-style: none; }
+
+        td#unusedcell11         { width: 5%; text-align: center; border: none; font-size:1.0em; }
+        td#level_buttons1       { border-style: none; }
+        td#macros_switch        { width: 5%; text-align: center; border: none; font-size:1.0em; }
+
+        td#unusedcell21         { width: 5%; text-align: center; border: none; font-size:1.0em; }
+        td#level_buttons2       { border-style: none; }
+        td#unusedcell23         { width: 5%; text-align: center; border: none; font-size:1.0em; }
 
     </style>
 
@@ -263,17 +270,32 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
             </table>
         </div>
 
-        <!-- Level butttons -->
+        <!-- LEVEL butttons and MACROS buttons toggle-->
         <div class="level_buttons" id="level_buttons" align="center" >
-            <table><tr>
-                <td id="level_buttons">
-                    <button type="button" onmousedown="predic_cmd('level -3 add')"                >-3</button>
+            <table>
+            <tr>
+                <td id="unusedcell11">
+                </td>
+                <td id="level_buttons1">
                     <button type="button" onmousedown="predic_cmd('level -1 add')"                >-1</button>
                     <button type="button" onmousedown="predic_cmd('mute toggle')" id="buttonMute" > 0</button>            
                     <button type="button" onmousedown="predic_cmd('level +1 add')"                >+1</button>
+                </td>
+                <td id="macros_switch"> <!--the MACROS toggle-->
+                    <button id="macros_toggle_button" style="display:none" title="macro buttons" onclick="macros_toggle()">&#9783;</button>
+                </td>
+            <tr>
+            </tr>    
+                <td id="unusedcell21">
+                </td>
+                <td id="level_buttons2">
+                    <button type="button" onmousedown="predic_cmd('level -3 add')"                >-3</button>
                     <button type="button" onmousedown="predic_cmd('level +3 add')"                >+3</button>
                 </td>
-            </tr></table>
+                <td id="unusedcell23">
+                </td>
+            </tr>
+            </table>
         </div>
 
         <!-- UNCOMMENT TO TEST JAVASCRIPT FUNCTIONS WITH THIS BUTTON 
@@ -284,6 +306,8 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
 
     </div><!--main-->
 
+
+    <!-- MACRO BUTTONS can be toggled -->
     <!-- 9 buttons keypad for customizable user macros (if any found) -->
     <div id="macro_buttons" style="display:none">
         <table class="buttons_table">
