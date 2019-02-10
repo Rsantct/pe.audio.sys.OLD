@@ -7,21 +7,21 @@
 
 if [ -z $1 ] ; then
     echo usage by indicating a previously downloaded branch in tmp/
-    echo "    download_predic.sh master|testing|xxx"
+    echo "    download_peaudiosys.sh master|testing|xxx"
     echo
     exit 0
 fi
 
 destination=$HOME
 branch=$1
-origin=$destination/tmp/pre.di.c-$branch
+origin=$destination/tmp/pe.audio.sys-$branch
 
 # If not found the requested branch
 if [ ! -d $origin ]; then
     echo
     echo ERROR: not found $origin
-    echo must indicated a branch name available at ~/tmp/pre.di.c-xxx:
-    echo "    download_predic.sh master|testing|xxx"
+    echo must indicated a branch name available at ~/tmp/pe.audio.sys-xxx:
+    echo "    update_peaudiosys.sh master|testing|xxx"
     echo
     exit 0
 fi
@@ -219,14 +219,15 @@ echo ""
 
 #########################################################
 # Updates server side php to work under the user $HOME
+# 2019-02 not needed anymore since php knows his location.
 #########################################################
-sed -i -e '/\$home\ =/c\'"    "'\$home\ =\ \"'"$HOME"'\";' \
-          pre.di.c/clients/www/php/functions.php
+#sed -i -e '/\$home\ =/c\'"    "'\$home\ =\ \"'"$HOME"'\";' \
+#          pre.di.c/clients/www/php/functions.php
 
 #########################################################
 # And updates the updater script
 #########################################################
-cp "$origin"/.install/update_predic.sh "$destination"/tmp/
+cp "$origin"/.install/update_pesoundsys.sh "$destination"/tmp/
 
 #########################################################
 # END
