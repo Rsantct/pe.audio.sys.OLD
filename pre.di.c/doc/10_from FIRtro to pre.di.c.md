@@ -1,4 +1,4 @@
-# From FIRtro to pre.di.c
+# From FIRtro to pe.audio.sys
 
 **NOTICE** that a predic loudspeaker folder is dedicated to some FS configuration, instead of FIRtro's subfolders filter structure for each running FS.
 
