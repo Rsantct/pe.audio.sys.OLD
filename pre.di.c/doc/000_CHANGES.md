@@ -1,4 +1,4 @@
-## This fork main changes versus the official repository
+## This fork main changes versus pre.di.c
 
 ### 2019 works in progress
 
