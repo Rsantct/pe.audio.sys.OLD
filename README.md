@@ -6,7 +6,7 @@ Some end user and user friendly features has been added:
 
 - Install scripts to update your machine from github
 
-- A lightweitght single page control web. With metadata information and players control, including Spotify Desktop or an Spotify Connect embeded client integration. 
+- A lightweitght single page control web. With metadata information and players control, including Spotify Desktop or Spotify Connect embeded client integration. 
 
 - A stream url can be entered into the web control page to start playing it.
 
