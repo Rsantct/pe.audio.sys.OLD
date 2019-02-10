@@ -9,15 +9,15 @@ You need **Python>=3.6** and all python stuff as indicated in **[/README.md](htt
 1- Under your home folder, download manually a copy of `download_predic.sh`, an run it:
 
 ```
-wget https://raw.githubusercontent.com/Rsantct/pre.di.c/master/.install/download_predic.sh
-sh download_predic.sh master
+wget https://raw.githubusercontent.com/Rsantct/pre.di.c/master/.install/download_peaudiosys.sh
+sh download_peaudiosys.sh master
 ```
 
 At this point, the install scripts and the whole 'master' repo will be located under `~/tmp` (and also deleted the above downloaded)
 
 2- Install pre.di.c
 
-`sh tmp/update_predic.sh master`
+`sh tmp/update_peaudiosys.sh master`
 
 Say **'N'** to keep your current config.
 
@@ -25,13 +25,13 @@ Say **'N'** to keep your current config.
  
 1- Download the last repo from github:
 
-`sh tmp/download_predic.sh <my_brach>`
+`sh tmp/download_peaudiosys.sh <my_brach>`
 
 where `my_branch` can be 'master' or whatever branch name you want to test
 
 2- Update your system:
 
-`sh tmp/update_predic.sh <my_brach>`
+`sh tmp/update_peaudiosys.sh <my_brach>`
 
 Say **'Y'** to keep your current config.
 
@@ -42,7 +42,7 @@ Last step in installing/updating script will update your Apache web server: you'
 
 Once done you can check the control web from some LAN computer or smartphone.
 
-    http://yourPredicHostname.local
+    http://yourMachineHostname.local
 
 If the control web page seems not to work, please be sure you have:
 
