@@ -363,12 +363,21 @@ def librespot_meta():
         # Returns the current track title played by librespot.
         # 'scripts/librespot.py' handles the libresport print outs to be 
         #                        redirected to 'tmp/.librespotEvents'
-        tmp = sp.check_output( f'tail -n1 {bp.main_folder}/.librespot_events'.split() )
-        md['title'] = tmp.decode().split('"')[-2]
-        # JSON for JavaScript on control web page, NOTICE json requires double quotes:
+        # example:
+        # INFO:librespot_playback::player: Track "Better Days" loaded
+        #
+        tmp = sp.check_output( f'tail {bp.main_folder}/.librespot_events'.split() ).decode()
+        tmp = tmp.split('\n')
+        # Recently librespot uses to print out some 'AddrNotAvailable, message' mixed with
+        # playback info messages, so we will search for the 'Track ... loaded' message, 
+        # backwards from the end of the events file:
+        for line in tmp[::-1]:
+            if "Track" in line and "loaded" in line:
+                md['title'] = line.split('"')[1]
     except:
         pass
 
+    # JSON for JavaScript on control web page
     return json.dumps( md )
 
 # Generic function to get meta from any player: MPD, Mplayer or Spotify
