@@ -366,7 +366,7 @@ def librespot_meta():
         # example:
         # INFO:librespot_playback::player: Track "Better Days" loaded
         #
-        tmp = sp.check_output( f'tail {bp.main_folder}/.librespot_events'.split() ).decode()
+        tmp = sp.check_output( f'tail -n20 {bp.main_folder}/.librespot_events'.split() ).decode()
         tmp = tmp.split('\n')
         # Recently librespot uses to print out some 'AddrNotAvailable, message' mixed with
         # playback info messages, so we will search for the 'Track ... loaded' message, 
