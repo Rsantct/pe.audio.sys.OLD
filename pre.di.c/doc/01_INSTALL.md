@@ -2,20 +2,20 @@
 
 ## Required
 
-You need **Python>=3.6** and all python stuff as indicated in **[/pre.di.c/README.md](https://github.com/Rsantct/pre.di.c/blob/master/README.md)**. Relogin when done.
+You need **Python>=3.6** and all python stuff as indicated in **[README.md](https://github.com/Rsantct/pe.audio.sys/blob/master/pre.di.c/README.md)**. Relogin when done.
 
 ## First install:
 
 1- Under your home folder, download manually a copy of `download_peaudiosys.sh`, an run it:
 
 ```
-wget https://raw.githubusercontent.com/Rsantct/pre.di.c/master/.install/download_peaudiosys.sh
+wget https://raw.githubusercontent.com/Rsantct/pe.audio.sys/master/.install/download_peaudiosys.sh
 sh download_peaudiosys.sh master
 ```
 
 At this point, the install scripts and the whole 'master' repo will be located under `~/tmp` (and also deleted the above downloaded)
 
-2- Install pre.di.c
+2- Install all stuff:
 
 `sh tmp/update_peaudiosys.sh master`
 
