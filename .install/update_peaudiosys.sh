@@ -227,7 +227,7 @@ echo ""
 #########################################################
 # And updates the updater script
 #########################################################
-cp "$origin"/.install/update_pesoundsys.sh "$destination"/tmp/
+cp "$origin"/.install/update_peaudiosys.sh "$destination"/tmp/
 
 #########################################################
 # END
