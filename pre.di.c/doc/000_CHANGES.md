@@ -1,4 +1,4 @@
-## This fork main changes versus pre.di.c
+## This fork main changes and features
 
 ### 2019 works in progress
 
@@ -106,3 +106,6 @@ Now `DVB` uses a unique `config/DVB-T.yml` file for user presets configuration a
 
 The YAML parser now is `ruamer.yaml` that preserves comments and the order of yaml items when dumping.
 
+## INSTALL scripts
+
+Install and update scripts are provided to easy local machine maintenance and updating.
