@@ -11,13 +11,13 @@ drc_sets:
     nearfield:          drc.L_lp_DynA42.pcm         drc.R_lp_DynA42.pcm
 
 xo_sets:
-    none:
+    delta:
         fr: &way_fr
             fir:        none                        none
             gain:       0.0                         0.0                     
             delay_ms:   0.0                         0.0                   
             polarity:   +1                          +1
-    normal:
+    DynA42:
         fr:
             <<:         *way_fr
             fir:        xo.mp_DynA42_left.pcm       xo.mp_DynA42_right.pcm    
