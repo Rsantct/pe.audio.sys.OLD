@@ -22,13 +22,11 @@
 # You should have received a copy of the GNU General Public License
 # along with pre.di.c.  If not, see <https://www.gnu.org/licenses/>.
 
-import os
-HOME = os.path.expanduser("~")
 
 ## customizable initial values
 
 # folders
-main_folder =         HOME + '/pre.di.c/'
+main_folder =         __file__.split('pre.di.c')[0] + '/pre.di.c/'
 bin_folder =          main_folder + 'bin/'
 config_folder =       main_folder + 'config/'
 init_scripts_folder = main_folder + 'init/'
