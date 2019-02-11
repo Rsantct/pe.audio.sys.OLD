@@ -14,7 +14,7 @@ Some *end user* and *user friendly* features has been added here.
 
     - A stream url can be entered into the web control page to start playing it.
     
-    - Loudness visualizer for loudness tracking *work in progress*
+    - Loudness visualizer for loudness tracking *(work in progress)*
 
 - A mouse can be used to control volume and mute easily.
 
