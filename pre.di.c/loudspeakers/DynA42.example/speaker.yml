@@ -7,8 +7,8 @@ PEQ: {defeat: none, none}
 XO:
   filters: [f.fr.L, f.fr.R]
   sets:
-    none: [none, none]
-    normal: [mp_DynA42_left, mp_DynA42_right]
+    delta: [none, none]
+    DynA42: [mp_DynA42_left, mp_DynA42_right]
 fs: 44100
 ref_level_gain: 0.0
 target_mag_curve: R20_ext-target_mag.dat
