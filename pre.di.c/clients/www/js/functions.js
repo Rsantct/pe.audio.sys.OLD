@@ -135,10 +135,11 @@ function list_macros() {
 // Filling the user's macros buttons
 function filling_macro_buttons() {
     var macros = list_macros();
-    // If no macros on the list, do nothing, so leaving "display:none" on the macros_toggle_button
+    // If no macros on the list, do nothing, so leaving "display:none" on the buttons keypad div
     if ( macros.length < 1 ) { return; }
     // If any macro found, lets show the macros toggle switch
-    document.getElementById( "macros_toggle_button").style.display = 'block';
+    document.getElementById( "macros_toggle_23").style.display = 'block';
+    document.getElementById( "dummy_cell_21").style.display    = 'block'; // just for symmetry reasons
     var macro = ''
     for (i in macros) {
         macro = macros[i];
@@ -151,12 +152,12 @@ function filling_macro_buttons() {
 
 // Toggles displaying macro buttons
 function macros_toggle() {
-    var currMode = document.getElementById( "macro_buttons").style.display;
-    if (currMode == 'block') {
-        document.getElementById( "macro_buttons").style.display = 'none'
+    var curMode = document.getElementById( "macro_buttons").style.display;
+    if (curMode == 'none') {
+        document.getElementById( "macro_buttons").style.display = 'inline-table'
     }
     else {
-        document.getElementById( "macro_buttons").style.display = 'block'
+        document.getElementById( "macro_buttons").style.display = 'none'
     }
 }
 
