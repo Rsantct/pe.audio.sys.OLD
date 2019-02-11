@@ -5,7 +5,6 @@ Must locate here any code to be intended as a **client** or **auxiliary** featur
 - a module to interface with players
 - a module to interface with local functions
 - user macros
-- helper scripts
 - etc
 
 
