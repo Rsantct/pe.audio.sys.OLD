@@ -202,16 +202,18 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
     </div>
 
 
-    <!-- ADVANCED CONTROLS CAN BE DISABLED-->
-    <!-- treble        balance    -->
-    <!-- bass          target     -->
-    <!--  XO      DRC     PEQ     -->
+    <!-- ADVANCED CONTROLS CAN BE DISABLED
+             loudness adjusting
+            treble        balance
+            bass          target
+            XO      DRC     PEQ
+    -->
     <div id="advanced_controls" align="center" style="display:none; font-size:0.75em;">
 
     <!-- A LOUDNESS METER AND REFERENCE ADJUST ***** WORK IN PROGRESS ****** -->
     <div>
-        <meter class="loud_meter" value="0.88" min="0" optimum="0.05" low="0.7" high="0.85" max="1.0" ></meter>
-        <input class="loud_meter" type="range" step=".05" min="0" max="1.0">
+        <meter class="loud_meter" value="-20"  min="-60" optimum="-40" low="-20" high="-3" max="0" ></meter>
+        <input class="loud_meter" type="range" min="-60"          step="5"                 max="0">
     </div>
 
     <table>
