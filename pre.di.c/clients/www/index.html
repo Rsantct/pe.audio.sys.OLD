@@ -138,6 +138,13 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
                             display: inline; 
                         }
         td#mCell        {   border-style: none; }
+        
+        .loud_meter {
+                    text-align: left;
+                    width: 50%;
+                    border: 1px solid;
+                    display: table;
+                    }
 
     </style>
 
@@ -194,11 +201,19 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
     </table>
     </div>
 
+
     <!-- ADVANCED CONTROLS CAN BE DISABLED-->
     <!-- treble        balance    -->
     <!-- bass          target     -->
     <!--  XO      DRC     PEQ     -->
     <div id="advanced_controls" align="center" style="display:none; font-size:0.75em;">
+
+    <!-- A LOUDNESS METER AND REFERENCE ADJUST ***** WORK IN PROGRESS ****** -->
+    <div>
+        <meter class="loud_meter" value="0.88" min="0" optimum="0.05" low="0.7" high="0.85" max="1.0" ></meter>
+        <input class="loud_meter" type="range" step=".05" min="0" max="1.0">
+    </div>
+
     <table>
         <tr>
             <td id="treble">
