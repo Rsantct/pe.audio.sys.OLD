@@ -57,7 +57,8 @@ import basepaths as bp
 import getconfigs as gc
 import predic as pd
 
-## User settings under config/DVB-T.yml
+## User settings, see inside:
+##      config/DVB-T.yml
 
 ## Script settings:
 # DVB CONFIG file storing presets and recent stations:
