@@ -139,12 +139,47 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
                         }
         td#mCell        {   border-style: none; }
         
-        .loud_meter {
+        .loud_meter { 
                     text-align: left;
                     width: 50%;
                     border: 1px solid;
                     display: table;
                     }
+
+        /* LOUDNESS SLIDER */
+        .loud_slider_container {
+          width: 100%;
+        }
+
+        /* The SLIDER itself */
+        .loud_slider {
+          -webkit-appearance:   none;
+          width:                50%;
+          height:               1.0em;
+          border-radius:        5px;   
+          background:           rgb(120,120,120);
+          outline:              none;
+          opacity:              0.7;
+          -webkit-transition:   .2s;
+          transition:           opacity .2s;
+        }
+        /* The SLIDER HANDLER */
+        .loud_slider::-webkit-slider-thumb {
+          -webkit-appearance:   none;
+          appearance:           none;
+          width:                1.5em;
+          height:               1.5em;
+          border-radius:        50%; 
+          background:           rgb(240,240,240);
+          cursor:               pointer;
+        }
+        .loud_slider::-moz-range-thumb {
+          width:                25px;
+          height:               25px;
+          border-radius:        50%;
+          background:           rgb(240,240,240);
+          cursor:               pointer;
+        }
 
     </style>
 
@@ -211,9 +246,11 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
     <div id="advanced_controls" align="center" style="display:none; font-size:0.75em;">
 
     <!-- A LOUDNESS METER AND REFERENCE ADJUST ***** WORK IN PROGRESS ****** -->
-    <div>
-        <meter class="loud_meter" value="-20"  min="-60" optimum="-40" low="-20" high="-3" max="0" ></meter>
-        <input class="loud_meter" type="range" min="-60"          step="5"                 max="0">
+    <div class="loud_meter_container">
+        <meter id="loud_meter"  class="loud_meter" value="-20"  min="-60" optimum="-40" low="-20" high="-3" max="0" ></meter>
+    </div>
+    <div class="loud_slider_container">
+        <input id="loud_slider" class="loud_slider" type="range" min="-60"          step="5"                 max="0">
     </div>
 
     <table>
