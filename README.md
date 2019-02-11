@@ -1,8 +1,8 @@
-This is a fork from **pre.di.c**  https://github.com/rripio/pre.di.c
+This is a fork from **pre.di.c**  https://github.com/rripio/pre.di.c, a PC based digital preamplifier and crossover project.
 
 ## Features
 
-Some end user and user friendly features has been added:
+Some end user and user friendly features has been added here:
 
 - Install scripts to update your machine from github
 
