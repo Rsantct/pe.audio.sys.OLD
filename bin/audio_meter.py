@@ -2,7 +2,8 @@
 
 """ Metering from an audio device
 """
-# Stolen from https://python-sounddevice.readthedocs.io :-)
+
+# Stolen idea from https://python-sounddevice.readthedocs.io :-)
 # Thanks to https://github.com/spatialaudio
 
 import argparse
@@ -20,15 +21,20 @@ def int_or_str(text):
 def parse_cmdline():
 
     parser = argparse.ArgumentParser(description=__doc__)
+
     parser.add_argument('-l', '--list-devices', action='store_true',
                         help='list audio devices and exit')
+
     parser.add_argument('-b', '--block-duration', type=float,
                         metavar='DURATION', default=50,
                         help='block size (default %(default)s milliseconds)')
+
     parser.add_argument('-d', '--device', type=int_or_str,
                         help='input device (numeric ID or substring)')
+
     parser.add_argument('-p', '--print', action="store_true", default=False,
                         help='rough level meter print out for testing purposes')
+
     args = parser.parse_args()
 
     if args.list_devices:
@@ -72,13 +78,13 @@ if __name__ == '__main__':
     q = queue.Queue()
 
     samplerate = sd.query_devices(args.device, 'input')['default_samplerate']
-    channels = sd.query_devices(args.device, 'input')['max_input_channels']
+    channels   = sd.query_devices(args.device, 'input')['max_input_channels']
 
 
     with sd.InputStream(device=args.device, callback=callback,
-                        blocksize=int(samplerate * args.block_duration / 1000),
-                        samplerate=samplerate,
-                        channels=channels,
+                        blocksize  = int(samplerate * args.block_duration / 1000),
+                        samplerate = samplerate,
+                        channels   = channels,
                         dither_off = True):
 
         while True:
@@ -86,11 +92,11 @@ if __name__ == '__main__':
             # Reading from the FIFO
             audiodata = q.get()
             
-            # prints out a rough level bar (ONLY FOR TESTING)
+            # prints out a rough level bar (only for testing purposes)
             if args.print:
                 print_bars( audiodata )
 
-            # Here we find the max sample looking at all of audiodata channels
+            # Here we find the max sample looking at all audiodata channels
             dBs = 20*np.log( np.max( abs(audiodata) ) )
 
             # writes a file (TESTING WORK IN PROGRESS)
