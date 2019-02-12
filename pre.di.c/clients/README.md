@@ -1,4 +1,6 @@
 
+## pre.di.c/clients/
+
 Must locate here any code to be intended as a **client** or **auxiliary** feature from the point of view of **pre.di.c**, for instance:
 
 - **www/** the control web page and related web **macros** scripts
