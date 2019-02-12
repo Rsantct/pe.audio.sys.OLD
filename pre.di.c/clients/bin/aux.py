@@ -80,7 +80,7 @@ def do(task):
     # that is prefixed with the reserved word 'macro_'
     elif task[:6] == 'macro_':
         try:
-            cmd = f'{macros_folder}/{task[6:]}'
+            cmd = f'{MACROS_FOLDER}/{task[6:]}'
             sp.run( "'" + cmd + "'", shell=True ) # needs shell to user bash scripts to work
             return b'done'
         except:
