@@ -1,7 +1,7 @@
 
 Must locate here any code to be intended as a **client** or **auxiliary** feature from the point of view of **pre.di.c**, for instance:
 
-- **www/** the control web page and related web macros scripts
+- **www/** the control web page and related web **macros** scripts
 - **players.py** a module to interface with players
 - **aux.py** a module to interface with local functions
 - the global idea: anything wich is designed to be plugged to work with the pre.di.c kernel
