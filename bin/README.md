@@ -1,5 +1,10 @@
 
--( This folder is intended to hold user custom scripts )-
+---( This folder is intended to hold user custom scripts )---
+
+The scripts here are designed to help you with pre.di.c and will be updated when you update your installation from github.
+
+Any existing scripts holded under an existing `~/bin` installation will be keep untouched, so don't worry about your ~/bin stuff.
+
 
 ### predic_do_target.py example
 
