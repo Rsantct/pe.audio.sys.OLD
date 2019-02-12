@@ -32,7 +32,7 @@
     // GLOBAL VARIABLES:
     $HOME = get_home();
     $CFG_FOLDER = $HOME.'/pre.di.c/config';
-    $MACROS_FOLDER = $HOME.'/pre.di.c/clients/macros';
+    $MACROS_FOLDER = $HOME.'/pre.di.c/clients/www/macros';
     $LSPKNAME = get_config('loudspeaker');
     $LSPK_FOLDER = $HOME.'/pre.di.c/loudspeakers/'.$LSPKNAME;
     /////////////////////////////////////////////////////////////////////
