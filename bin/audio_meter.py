@@ -35,6 +35,9 @@ def parse_cmdline():
     parser.add_argument('-p', '--print', action="store_true", default=False,
                         help='rough level meter print out for testing purposes')
 
+    parser.add_argument('-w', '--writefile', action="store_true", default=False,
+                        help='write dB level to "audio_meter" file, only for testing purposes')
+
     args = parser.parse_args()
 
     if args.list_devices:
@@ -100,6 +103,6 @@ if __name__ == '__main__':
             dBs = 20*np.log( np.max( abs(audiodata) ) )
 
             # writes a file (TESTING WORK IN PROGRESS)
-            with open('dBs', 'w') as f:
-                f.write( str( round(dBs,2) ) )
-            
+            if args.writefile:
+                with open('audio_meter', 'w') as f:
+                    f.write( str( round(dBs,2) ) )
