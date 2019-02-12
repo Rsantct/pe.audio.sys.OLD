@@ -8,6 +8,9 @@ Any existing scripts holded under an existing `~/bin` installation will be keep 
 
 ### predic_do_target.py example
 
-`$ predic_do_target.py -r+3 -h-1.5`
+    $ predic_do_target.py -r+3 -h-1.5
+
+    pre.di.c/loudspeakers/DynA42/target_mag_+3.0-1.5.dat
+    pre.di.c/loudspeakers/DynA42/target_pha_+3.0-1.5.dat
 
 <a href="url"><img src="https://github.com/Rsantct/pre.di.c/blob/master/bin/do_target.png" align="center" width="480" ></a>
