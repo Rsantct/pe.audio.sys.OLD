@@ -1,8 +1,12 @@
 ## Configuration
 
-If you install pre.di.c on your own home other than `/home/predic` please configure it inside **`php/functions.php`**, for instance:
+Not needed.
 
-    $home = "/home/predic";
+Just be aware about if you install pre.di.c folder under a user home different than `/home/predic` you'll need to update the Apache's pre.di.c web site file accordingly:
+
+    /etc/apache2/sites-available/pre.di.c.conf
+
+This detail is advertised when you run the updating script.
 
 ## Screenshots
 First screenshot shows advanced controls (hidden by default, toggled by the gear button)
