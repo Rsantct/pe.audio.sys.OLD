@@ -6,7 +6,7 @@ Must locate here any code to be intended as a **client** or **auxiliary** featur
 - **aux.py** a module to interface with local functions
 - the global idea: anything wich is designed to be plugged to work with the pre.di.c kernel
 
-End user scripts and similar stuff must go inside `~/bin`
+End user scripts and similar stuff must go inside your `~/bin`
 
 
 As per **pre.di.c** wants to run this clients, you must update your `PYTHONPATH` env variable for instance by editing your **`.profile`** home file:
