@@ -3,8 +3,7 @@
 """ Metering from an audio device
 """
 
-# Stolen idea from https://python-sounddevice.readthedocs.io :-)
-# Thanks to https://github.com/spatialaudio
+# Thanks to https://python-sounddevice.readthedocs.io
 
 import argparse
 import numpy as np
@@ -92,7 +91,7 @@ if __name__ == '__main__':
 
         while True:
 
-            # Reading from the FIFO
+            # Reading from the FIFO (a numpy array for both channels)
             audiodata = q.get()
             
             # prints out a rough level bar (only for testing purposes)
@@ -100,7 +99,7 @@ if __name__ == '__main__':
                 print_bars( audiodata )
 
             # Here we find the max sample looking at all audiodata channels
-            dBs = 20*np.log( np.max( abs(audiodata) ) )
+            dBs = 20 * np.log( np.max( abs(audiodata) ) )
 
             # writes a file (TESTING WORK IN PROGRESS)
             if args.writefile:
