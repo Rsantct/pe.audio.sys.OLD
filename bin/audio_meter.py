@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-""" Metering from an audio device
+""" metering from an audio device
 """
 
 # Thanks to https://python-sounddevice.readthedocs.io
