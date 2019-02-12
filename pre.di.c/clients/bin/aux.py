@@ -33,7 +33,9 @@ import os
 HOME = os.path.expanduser("~")
 
 import basepaths as bp
-macros_folder = bp.main_folder + 'clients/macros'
+
+#######  CONFIG HERE THE FOLDER OF WEB MACROS #######
+MACROS_FOLDER = bp.main_folder + 'clients/www/macros'
 
 # Reading some user configs for auxilary tasks
 try:
