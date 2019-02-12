@@ -117,8 +117,11 @@ rm -f README*                   >/dev/null 2>&1
 rm -f WIP*                      >/dev/null 2>&1
 rm -rf pre.di.c/bin/            # use -f because maybe protected *.pyc
 rm -r  pre.di.c/doc/            >/dev/null 2>&1
-rm -r  pre.di.c/clients/www/    >/dev/null 2>&1
 rm .brutefir_c*                 >/dev/null 2>&1
+# all www stuff except macros:
+rm      pre.di.c/clients/www/index.html >/dev/null 2>&1
+rm -rf  pre.di.c/clients/www/php        >/dev/null 2>&1
+rm -rf  pre.di.c/clients/www/js         >/dev/null 2>&1
 
 #########################################################
 # Copying the new stuff
@@ -202,11 +205,11 @@ mkfifo pre.di.c/istreams_fifo    # internet streams
 # restoring exec permissions
 #########################################################
 
-chmod +x bin/*                          >/dev/null 2>&1
-chmod +x pre.di.c/bin/*                 >/dev/null 2>&1
-chmod +x pre.di.c/clients/bin/*         >/dev/null 2>&1
-chmod +x pre.di.c/init/*                >/dev/null 2>&1
-chmod +x pre.di.c/clients/macros/[1-9]* >/dev/null 2>&1
+chmod +x bin/*                              >/dev/null 2>&1
+chmod +x pre.di.c/bin/*                     >/dev/null 2>&1
+chmod +x pre.di.c/clients/bin/*             >/dev/null 2>&1
+chmod +x pre.di.c/init/*                    >/dev/null 2>&1
+chmod +x pre.di.c/clients/www/macros/[1-9]* >/dev/null 2>&1
 
 #########################################################
 # A helping file to identify the current branch under pre.di.c/bin/
