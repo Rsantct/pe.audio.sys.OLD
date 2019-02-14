@@ -54,7 +54,11 @@ def print_bars(audiodata):
     RANGE = 50
     line = ''
     for ch in range( channels ):
-        dBs = 20*np.log( np.max( abs( audiodata[:,ch] ) ) )
+        maxsample = np.max( abs( audiodata[:,ch] ) )
+        if maxsample:
+            dBs = 20 * np.log( maxsample )
+        else:
+            dBs = -RANGE    # limiting to our range or -inf
         # The bar itself
         bar = int(dBs) + RANGE
         # The blank bar chunk
@@ -99,7 +103,11 @@ if __name__ == '__main__':
                 print_bars( audiodata )
 
             # Here we find the max sample looking at all audiodata channels
-            dBs = 20 * np.log( np.max( abs(audiodata) ) )
+            maxsample = np.max( abs(audiodata) )
+            if maxsample:
+                dBs = 20 * np.log( maxsample )
+            else:
+                dBs = -200  # avoid -inf when all zeros
 
             # writes a file (TESTING WORK IN PROGRESS)
             if args.writefile:
