@@ -140,9 +140,9 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
         
         /* LOUDNESS METER CONTAINER (type CELL) */
         .loud_meter_container {
-            border-style:   none;
-            width:          50%;
-            text-align:     right;
+            border-style: none;
+            width: 50%;
+            text-align: right;
             vertical-align: top;
         }
         /* The LOUDNESS METER itself (type METER) */
@@ -154,12 +154,12 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
 
         /* LOUDNESS SLIDER CONTAINER (type CELL) */
         .loud_slider_container {
-            border-style:   none;
-            width:          50%;
-            text-align:     right;
+            border-style: none;
+            width: 50%;
+            text-align: right;
         }
 
-        /* The SLIDER itself (type INPUT) */
+        /* The SLIDER itself (type INPUT RANGE) */
         .loud_slider {
           -webkit-appearance:   none;
           width:                100%;
@@ -257,15 +257,20 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
     <div>
     <table>
         <tr>
-            <td class="loud_meter_container">LOUD:</td>
+            <td class="loud_meter_container">Loud. monitor:</td>
             <td class="loud_meter_container">
-            <meter id="loud_meter"  class="loud_meter" value="-20"  min="-60" optimum="-40" low="-20" high="-3" max="0" ></meter>
+            <!-- JS will set this stuff: -->
+            <meter  id="loud_meter"  class="loud_meter" value="-20"
+                    min="-40" optimum="-30" low="-20" high="-3" max="0" ></meter>
             </td>
         </tr>
         <tr>
-            <td class="loud_slider_container">REF:</td>
+            <!-- JS will update the Loud. Ref-->
+            <td id="loud_slider_container" class="loud_slider_container">Loud. Ref: ??</td>
             <td class="loud_slider_container">
-            <input id="loud_slider" class="loud_slider" type="range" min="-60"          step="5"                 max="0">
+            <input  id="loud_slider" class="loud_slider" type="range"
+                    min="-40" step="1" max="0"
+                    oninput="loudness_ref_change(this.value)">
             </td>
         </tr>
     </table>
