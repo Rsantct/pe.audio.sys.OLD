@@ -31,6 +31,9 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
 
 /////////////   GLOBALS //////////////
 
+loud_measure    = -20.0; // It is planned to be updated from a server side loudness monitor
+dBFS_REF        = -20.0;
+
 ecasound_is_used = check_if_ecasound();     // Boolean indicates if pre.di.c uses Ecasound
 auto_update_interval = 1500;                // Auto-update interval millisec
 advanced_controls = false;                  // Default for showing advanced controls
@@ -109,7 +112,7 @@ function set_target(value) {
 
 //////// USER MACROS ////////
 
-// Gets a list of user macros availables under pre.di.c/clients/macros/
+// Gets a list of user macros availables
 function list_macros() {
     var list  = [];
     var list2 = []; // a clean list version
@@ -303,6 +306,12 @@ function page_update(status) {
     document.getElementById("balInfo").innerHTML    = 'BAL: '  + status_decode(status, 'balance');
     document.getElementById("bassInfo").innerText   = 'BASS: ' + status_decode(status, 'bass');
     document.getElementById("trebleInfo").innerText = 'TREB: ' + status_decode(status, 'treble');
+    document.getElementById("loud_slider_container").innerText =
+                                                                'Loud. Ref: '
+                                                                + status_decode(status, 'loudness_ref');
+    document.getElementById("loud_slider").value    = parseInt(status_decode(status, 'loudness_ref')) 
+                                                      + dBFS_REF;
+    document.getElementById("loud_meter").value    = loud_measure;
 
     // The selected item on INPUTS, XO, DRC and PEQ
     document.getElementById("targetSelector").value =            get_speaker_prop('target_mag_curve');
@@ -593,6 +602,7 @@ function play_url() {
     }
 }
 
+// Gets the files under the loudspeaker directory
 function dir_lspk_folder() {
     var myREQ = new XMLHttpRequest();
     myREQ.open("GET", "php/functions.php?command=dir_lspk_folder", async=false);
@@ -648,6 +658,13 @@ function http_prepare(x) {
     return x;
 }
 
+// Processing the LOUDNESS_REF slider
+function loudness_ref_change(slider_value) {
+    loudness_ref = parseInt(slider_value) - dBFS_REF;
+    predic_cmd('loudness_ref ' + loudness_ref, update=false);
+}
+
+// JUST TO TEST
 function TESTING() {
-    fills_target_selector();
+    document.getElementById("loud_slider").value = 0;
 }
