@@ -68,6 +68,16 @@ def print_bars(audiodata):
     print(line, end='\r')
     line = ''
 
+def print_to_file(audiodata, filename):
+    # Here we find the max sample looking at all audiodata channels
+    maxsample = np.max( abs(audiodata) )
+    if maxsample:
+        dBs = 20 * np.log( maxsample )
+    else:
+        dBs = -200
+    with open(filename, 'w') as f:
+        f.write( str( round(dBs,2) ) )
+
 def callback(indata, frames, time, status):
     """ Handler when InputStream has captured audio chunks """
     # If any incident is reported back
@@ -102,14 +112,8 @@ if __name__ == '__main__':
             if args.print:
                 print_bars( audiodata )
 
-            # Here we find the max sample looking at all audiodata channels
-            maxsample = np.max( abs(audiodata) )
-            if maxsample:
-                dBs = 20 * np.log( maxsample )
-            else:
-                dBs = -200
-
             # writes a file (TESTING WORK IN PROGRESS)
             if args.filename:
-                with open(args.filename, 'w') as f:
-                    f.write( str( round(dBs,2) ) )
+                print_to_file(audiodata, args.filename)
+                
+            # WORK IN PROGRESS: measures EBU R-128 or simplified equivalent ;-)
