@@ -113,9 +113,9 @@ treble_mag_curves: R20_ext-treble_mag.dat
 treble_pha_curves: R20_ext-treble_pha.dat
 bass_mag_curves: R20_ext-bass_mag.dat
 bass_pha_curves: R20_ext-bass_pha.dat
-loudness_SPLref: 83
-loudness_SPLmax: 90
-loudness_SPLmin: 70
+
+# Index of the flat curve inside 'loudness_mag_curves'
+loudness_index_flat: 7
 
 # Max dB deviation from 0
 tone_variation: 6
