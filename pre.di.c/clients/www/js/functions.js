@@ -31,8 +31,8 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
 
 /////////////   GLOBALS //////////////
 
-loud_measure    = -20.0; // It is planned to be updated from a server side loudness monitor
-dBFS_REF        = -20.0;
+loud_measure    = -20.0; // Will be updated reading the loudness monitor file from the server.
+dBFS_REF        = -20.0; // The reference level for measuring loudness
 
 ecasound_is_used = check_if_ecasound();     // Boolean indicates if pre.di.c uses Ecasound
 auto_update_interval = 1500;                // Auto-update interval millisec
@@ -252,7 +252,7 @@ function update_player_info() {
 
 // Initializaes the page, then starts the auto-update
 function page_initiate() {
-    
+
     // Showing and filling the macro buttons
     filling_macro_buttons();
 
@@ -274,7 +274,7 @@ function page_initiate() {
 
     // Queries the pre.di.c status and updates the page
     refresh_predic_status();
-
+        
     // Waits 1 sec, then schedules the auto-update itself:
     // Notice: the function call inside setInterval uses NO brackets)
     setTimeout( setInterval( refresh_predic_status, auto_update_interval ), 1000);
@@ -306,12 +306,15 @@ function page_update(status) {
     document.getElementById("balInfo").innerHTML    = 'BAL: '  + status_decode(status, 'balance');
     document.getElementById("bassInfo").innerText   = 'BASS: ' + status_decode(status, 'bass');
     document.getElementById("trebleInfo").innerText = 'TREB: ' + status_decode(status, 'treble');
+
+    // the loudness reference to the slider and the loudness monitor to the meter 
     document.getElementById("loud_slider_container").innerText =
-                                                                'Loud. Ref: '
-                                                                + status_decode(status, 'loudness_ref');
+                                                     'Loud. Ref: '
+                                                      + status_decode(status, 'loudness_ref');
     document.getElementById("loud_slider").value    = parseInt(status_decode(status, 'loudness_ref')) 
                                                       + dBFS_REF;
-    document.getElementById("loud_meter").value    = loud_measure;
+    loud_measure = get_file('loudness_monitor').trim();
+    document.getElementById("loud_meter").value    =  loud_measure;
 
     // The selected item on INPUTS, XO, DRC and PEQ
     document.getElementById("targetSelector").value =            get_speaker_prop('target_mag_curve');
@@ -403,6 +406,9 @@ function get_file(fid) {
     else if ( fid == 'speaker' ) {
         phpCmd = 'read_speaker_file';
     }
+    else if ( fid == 'loudness_monitor' ) {
+        phpCmd = 'read_loudness_monitor_file';
+    }
     else {
         return null;
     }
@@ -432,7 +438,7 @@ function UpLow(prop, truefalse) {
     return label;
 }
 
-// Fills out the inputs selector
+// INPUTS selector
 function fills_inputs_selector() {
     var inputs = [];
 
