@@ -135,7 +135,7 @@
         echo get_config("loudspeaker");
     }
 
-    // UPLOADING SOME FILES: inputs.yml, config.yml, speaker.yml
+    // UPLOADING SOME FILES: inputs.yml, config.yml, speaker.yml, .loudness_monitor
     // Notice: readfile() does an 'echo', so it returns the contents to the standard php output
     elseif ( $command == "read_inputs_file" ) {
         readfile($CFG_FOLDER."/inputs.yml");
@@ -145,6 +145,10 @@
     }
     elseif ( $command == "read_speaker_file" ) {
         $fpath = $LSPK_FOLDER."/speaker.yml";
+        readfile($fpath);
+    }
+    elseif ( $command == "read_loudness_monitor_file" ) {
+        $fpath = $HOME."/pre.di.c/.loudness_monitor";
         readfile($fpath);
     }
     
