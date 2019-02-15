@@ -32,10 +32,10 @@ def parse_cmdline():
                         help='input device (numeric ID or substring)')
 
     parser.add_argument('-p', '--print', action="store_true", default=False,
-                        help='rough level meter print out for testing purposes')
+                        help='rough peak meter print out for testing purposes')
 
-    parser.add_argument('-w', '--writefile', action="store_true", default=False,
-                        help='write dB level to "audio_meter" file, only for testing purposes')
+    parser.add_argument('-f', '--filename', type=str,
+                        help=f'write dB level to filename')
 
     args = parser.parse_args()
 
@@ -46,7 +46,7 @@ def parse_cmdline():
     return args
 
 def print_bars(audiodata):
-    """ A funny rough level meter w/o curses ...
+    """ A funny rough peak meter w/o curses ...
         Please wide enough your terminal
     """
     channels = audiodata.shape[1]
@@ -58,7 +58,7 @@ def print_bars(audiodata):
         if maxsample:
             dBs = 20 * np.log( maxsample )
         else:
-            dBs = -RANGE    # limiting to our range or -inf
+            dBs = -RANGE
         # The bar itself
         bar = int(dBs) + RANGE
         # The blank bar chunk
@@ -98,7 +98,7 @@ if __name__ == '__main__':
             # Reading from the FIFO (a numpy array for both channels)
             audiodata = q.get()
             
-            # prints out a rough level bar (only for testing purposes)
+            # prints out a rough peak meter bar (only for testing purposes)
             if args.print:
                 print_bars( audiodata )
 
@@ -107,9 +107,9 @@ if __name__ == '__main__':
             if maxsample:
                 dBs = 20 * np.log( maxsample )
             else:
-                dBs = -200  # avoid -inf when all zeros
+                dBs = -200
 
             # writes a file (TESTING WORK IN PROGRESS)
-            if args.writefile:
-                with open('audio_meter', 'w') as f:
+            if args.filename:
+                with open(args.filename, 'w') as f:
                     f.write( str( round(dBs,2) ) )
