@@ -70,37 +70,42 @@ else:
 warnings = []
 
 
-def unplug_sources_of(jack_client, predic_ports):
-    """ Disconnect clients from predic inputs and monitor inputs """
+def unplug_sources_of(jack_client, ports):
+    """ Disconnect clients from predic inputs and monitor inputs
+    """
+    monitor_ports = gc.config['jack_monitors']
 
-    def disconnect(pb_ports):
+    def disconnect(ports):
         try:
-            sources_0 = jack_client.get_all_connections(pb_ports[0])
-            sources_1 = jack_client.get_all_connections(pb_ports[1])
+            sources_0 = jack_client.get_all_connections( ports[0] )
+            sources_1 = jack_client.get_all_connections( ports[1] )
             for source in sources_0:
-                jack_client.disconnect(source.name, pb_ports[0])
+                jack_client.disconnect( source.name, ports[0] )
             for source in sources_1:
-                jack_client.disconnect(source.name, pb_ports[1])
+                jack_client.disconnect( source.name, ports[1] )
         except:
-            print(f'error disconnecting [{pb_ports}]')
+            print( f'error disconnecting {ports}' )
 
-    disconnect(predic_ports)
-    monitor_ports = gc.config['jack_monitors'].split()
+    # Unpluggin pre.di.c playback ports from any sources
+    disconnect( ports=ports )
+
+    # Unpluggin monitor playback ports from any sources
     if monitor_ports:
-        disconnect(monitor_ports)
+        for fakepair in monitor_ports:
+            disconnect( ports=fakepair.split() )
 
 
 def do_change_input(input_name, in_ports, out_ports, resampled=False):
     """ 'in_ports':   list [L,R] of jack capture ports of chosen source
-    'out_ports':  list of ports in 'audio_ports' variable
-                  depends on use of brutefir/ecasound """
+        'out_ports':  list of ports in 'audio_ports' variable
+                        depends on use of brutefir/ecasound
+    """
+    monitor_ports = gc.config['jack_monitors']
 
-    monitor_ports = gc.config['jack_monitors'].split()
     # switch
     try:
-        # jack.attach('tmp')
         tmp = jack.Client('tmp')
-        unplug_sources_of(tmp, out_ports)
+        unplug_sources_of(jack_client=tmp, ports=out_ports)
         for i in range(len(in_ports)):
             # audio inputs
             try:
@@ -110,7 +115,8 @@ def do_change_input(input_name, in_ports, out_ports, resampled=False):
            # monitor inputs
             try:
                 if monitor_ports:
-                    tmp.connect(in_ports[i], monitor_ports[i])
+                    for fakepair in monitor_ports:
+                        tmp.connect(in_ports[i], fakepair.split()[i])
             except:
                 print('error connecting monitors')
         tmp.close()
