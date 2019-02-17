@@ -48,9 +48,13 @@ level_on_startup: null
 # precedes level_on_startup.
 max_level_on_startup: 0
 
-# Sound monitors (jack ports). Assign '' to not set.
-# Input selector will connect sources to this ports
-jack_monitors: ''
+# Sound monitors (jack ports).
+# Input selector will connect sources also to these ports.
+# Please use space separated ports pairs, or assign [] to not set.
+jack_monitors:
+    []
+    #- DEQ2496:playback_1    DEQ2496:playback_2
+    #- ebumeter:in.L         ebumeter:in.R
 
 ## Paths & options
 
