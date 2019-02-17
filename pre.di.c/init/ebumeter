@@ -1,0 +1,48 @@
+#!/usr/bin/env python3
+"""
+    Starts / stops ebumeter GUI interface as a source monitor under pre.di.c
+    use:   ebumeter    start | stop
+"""
+
+import sys
+from subprocess import Popen
+from ruamel.yaml import YAML
+
+import basepaths as bp
+
+def start():
+    
+    def set_config():
+        """ Sets ebumeter in jack_monitors under config.yml
+        """
+        # NOTICE:
+        # jack_monitors at config.yml seems to work
+        # only for a pair of ports. This is under revision.
+        
+        yaml = YAML()
+        with open(f'{bp.config_folder}/config.yml', 'r') as f:
+            config = yaml.load( f.read() )
+        if not 'ebumeter' in config['jack_monitors']:
+            print('(init/ebumeter) setting jack_monitors: ebumeter under config.yml')
+            config['jack_monitors'] = 'ebumeter:in.L ebumeter:in.R'
+            with open(f'{bp.config_folder}/config.yml', 'w') as f:
+                yaml.dump( config, f )
+
+    set_config()
+    
+    Popen( 'ebumeter'.split() )
+
+def stop():
+    Popen( 'pkill ebumeter'.split() )
+
+    
+if sys.argv[1:]:
+    try:
+        option = {
+            'start' : start,
+            'stop'  : stop
+            }[ sys.argv[1] ]()
+    except:
+        print( '(init/ebumeter) bad option' )
+else:
+    print(__doc__)
