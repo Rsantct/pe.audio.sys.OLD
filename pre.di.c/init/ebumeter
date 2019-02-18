@@ -12,23 +12,19 @@ import basepaths as bp
 
 def start():
     
-    def set_config():
-        """ Sets ebumeter in jack_monitors under config.yml
+    def check_config():
+        """ Appends ebumeter in jack_monitors under config.yml, if necessary.
         """
-        # NOTICE:
-        # jack_monitors at config.yml seems to work
-        # only for a pair of ports. This is under revision.
-        
         yaml = YAML()
         with open(f'{bp.config_folder}/config.yml', 'r') as f:
             config = yaml.load( f.read() )
-        if not 'ebumeter' in config['jack_monitors']:
-            print('(init/ebumeter) setting jack_monitors: ebumeter under config.yml')
-            config['jack_monitors'] = 'ebumeter:in.L ebumeter:in.R'
+        if not any( [ 'ebumeter' in x for x in config['jack_monitors'] ] ):
+            print('(init/ebumeter) adding ebumeter for jack_monitors under config.yml')
+            config['jack_monitors'].append( 'ebumeter:in.L ebumeter:in.R' )
             with open(f'{bp.config_folder}/config.yml', 'w') as f:
                 yaml.dump( config, f )
 
-    set_config()
+    check_config()
     
     Popen( 'ebumeter'.split() )
 
