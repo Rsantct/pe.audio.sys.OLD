@@ -102,17 +102,17 @@ def do_change_input(input_name, in_ports, out_ports, resampled=False):
     """
     monitor_ports = gc.config['jack_monitors']
 
-    # switch
+    # switch...
     try:
         tmp = jack.Client('tmp')
         unplug_sources_of(jack_client=tmp, ports=out_ports)
         for i in range(len(in_ports)):
-            # audio inputs
+            # ...audio inputs
             try:
                 tmp.connect(in_ports[i], out_ports[i])
             except:
                 print(f'error connecting {in_ports[i]} <--> {out_ports[i]}')
-           # monitor inputs
+           # ...monitor inputs
             try:
                 if monitor_ports:
                     for fakepair in monitor_ports:
@@ -125,6 +125,7 @@ def do_change_input(input_name, in_ports, out_ports, resampled=False):
         print(f'error changing to input "{input_name}"')
         tmp.close()
         return False
+
     return True
 
 
@@ -486,31 +487,24 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
 
 
         def change_loudness():
-
-            loudness_max_i = (gc.config['loudness_SPLmax']
-                                        - gc.config['loudness_SPLmin'])
-            loudness_variation = (gc.config['loudness_SPLmax']
-                                        - gc.config['loudness_SPLref'])
+            
+            # Curves available:
+            loud_i_min  = 0
+            loud_i_max  = curves['loudness_mag_curves'].shape[1] - 1
+            # and the flat one:
+            loud_i_flat = gc.config['loudness_index_flat']
+            
             if state['loudness_track']:
-                if (m.fabs(state['loudness_ref']) > loudness_variation):
-                    state['loudness_ref'] = m.copysign(
-                            loudness_variation, state['loudness_ref'])
-                loudness_i = (gc.config['loudness_SPLmax']
-                    - (state['level'] + gc.config['loudness_SPLref']
-                                            + state['loudness_ref']))
+                loud_i = loud_i_flat - state['level'] - state['loudness_ref']
             else:
-                # index of all zeros curve
-                loudness_i = loudness_variation
-            if loudness_i < 0:
-                loudness_i = 0
-            if loudness_i > loudness_max_i:
-                loudness_i = loudness_max_i
-            # loudness_i must be integer as it will be used as
-            # index of loudness curves array
-            loudness_i = int(round(loudness_i))
-            loudeq_mag = curves['loudness_mag_curves'][:,loudness_i]
-            eq_mag = loudeq_mag
-            eq_pha = curves['loudness_pha_curves'][:,loudness_i]
+                loud_i = loud_i_flat
+            
+            # clamp index and convert to integer
+            loud_i = max( min(loud_i, loud_i_max), loud_i_min )
+            loud_i = int(round(loud_i))
+
+            eq_mag = curves['loudness_mag_curves'][:,loud_i]
+            eq_pha = curves['loudness_pha_curves'][:,loud_i]
             return eq_mag, eq_pha
 
 
