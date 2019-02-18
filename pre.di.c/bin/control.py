@@ -102,17 +102,17 @@ def do_change_input(input_name, in_ports, out_ports, resampled=False):
     """
     monitor_ports = gc.config['jack_monitors']
 
-    # switch
+    # switch...
     try:
         tmp = jack.Client('tmp')
         unplug_sources_of(jack_client=tmp, ports=out_ports)
         for i in range(len(in_ports)):
-            # audio inputs
+            # ...audio inputs
             try:
                 tmp.connect(in_ports[i], out_ports[i])
             except:
                 print(f'error connecting {in_ports[i]} <--> {out_ports[i]}')
-           # monitor inputs
+           # ...monitor inputs
             try:
                 if monitor_ports:
                     for fakepair in monitor_ports:
@@ -125,6 +125,7 @@ def do_change_input(input_name, in_ports, out_ports, resampled=False):
         print(f'error changing to input "{input_name}"')
         tmp.close()
         return False
+
     return True
 
 
