@@ -3,7 +3,7 @@ DRC:
   sets:
     midfield: [L_midfield_mp, R_midfield_mp]
     nearfield: [L_nearfield_mp, R_nearfield_mp]
-    none: [none, none]
+    defeat: [none, none]
 PEQ: {defeat: none}
 XO:
   filters: [f.lo.L, f.lo.R, f.hi.L, f.hi.R, f.sw]
