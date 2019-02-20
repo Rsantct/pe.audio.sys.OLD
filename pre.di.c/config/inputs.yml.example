@@ -4,7 +4,7 @@ analog:
         - system:capture_1
         - system:capture_2
     resampled: False
-    xo: none
+    xo: mp
 
 spotify:
     gain: 0
@@ -12,7 +12,7 @@ spotify:
         - alsa_loop:output_1
         - alsa_loop:output_2
     resampled: False
-    xo: none
+    xo: mp
 
 mpd:
     gain: 0
@@ -20,7 +20,7 @@ mpd:
         - mpd_loop:output_1
         - mpd_loop:output_2
     resampled: False
-    xo: none
+    xo: mp
 
 net:
     gain: 0
@@ -28,7 +28,7 @@ net:
         - net:from_slave_1
         - net:from_slave_2
     resampled: False
-    xo: none
+    xo: mp
 
 tdt:
     gain: 0
@@ -36,7 +36,7 @@ tdt:
         - dvb_loop:output_1
         - dvb_loop:output_2
     resampled: False
-    xo: none
+    xo: mp
 
 istreams:
     gain: 0
@@ -44,13 +44,5 @@ istreams:
         - istreams_loop:output_1
         - istreams_loop:output_2
     resampled: False
-    xo: none
-
-minimixer:
-    gain: 0
-    in_ports:
-        - minimixer:out_left
-        - minimixer:out_right
-    resampled: False
-    xo: none
+    xo: mp
 
