@@ -51,7 +51,7 @@ STEPdB      = 2.0
 alertdB     = -6.0
 beep        = False
 beepPath    = f'{hostDir}/3beeps.wav'
-alsaplugin  = 'jackbrutefir'
+alsaplugin  = 'brutefir'
 # NOTE: the above needs to you to configure your .asondrc
 #       to have a jack plugin that connects to brutefir
 ##########################################################
