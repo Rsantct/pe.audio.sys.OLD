@@ -17,7 +17,7 @@ def start():
     # read from a player control daemon.
 
     cmd =  f'/usr/bin/librespot --name {gethostname()} --bitrate 320 --backend alsa' + \
-           ' --device jack --disable-audio-cache --initial-volume=99'
+           ' --device aloop --disable-audio-cache --initial-volume=99'
 
     logFileName = f'{basepaths.main_folder}/.librespot_events'
 
