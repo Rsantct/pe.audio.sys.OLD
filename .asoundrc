@@ -2,46 +2,55 @@
 
 # This PLUGIN is intended to be used from alsa players,
 # it is associated to pre.di.c alsa_loop jack ports
-pcm.jack {
+pcm.aloop {
     type plug
-    slave { pcm "Raloop" }
+    slave { pcm "Rjaloop" }
     hint {
-    description "JACK plugin -> alsa_loop"
+        description "Plugin to jack-alsa_loop"
     }
 }
 
 # This PLUGIN is intended to be used from alsa players
 # that directly want to play to pre.di.c bypassing the inputs selector,
 # e.g. the high volume beep alert from the mouse_volume_daemon.py
-pcm.jackbrutefir {
+pcm.brutefir {
     type plug
-    slave { pcm "Rbfir" }
+    slave { pcm "Rjbfir" }
     hint {
-    description "JACK plugin -> brutefir"
+        description "Plugin to jack-brutefir"
     }
 }
 
-# a RAW pcm (name it shortly, e.g Raloop)
-pcm.Raloop {
+# a RAW pcm (PLEASE name it shortly, e.g Rjaloop)
+pcm.Rjaloop {
     type jack
     playback_ports {
         0 alsa_loop:input_1
         1 alsa_loop:input_2
     }
+    hint {
+        description "Raw to jack-alsa_lopp"
+    }
 }
 
-# a RAW pcm
-pcm.Rbfir {
+# a RAW pcm (PLEASE name it shortly)
+pcm.Rjbfir {
     type jack
     playback_ports {
         0 brutefir:in.L
         1 brutefir:in.R
     }
+    hint {
+        description "Raw to jack-brutefir"
+    }
 }
 
 pcm.!default {
     type plug
-    slave { pcm "rawjack2alsaloop" }
+    slave { pcm "Rjaloop" }
+    hint {
+        description "Plugin to jack-alsa_loop"
+    }
 }
 
 pcm.alsafile {
@@ -49,26 +58,8 @@ pcm.alsafile {
     slave { pcm "null" }
     file "alsafile.wav"
     format "wav"
-}
-
-
-pcm.UDJ6routed {
-    type        route;
-    slave {
-            pcm        "hw:UDJ6";
-            channels    6;
+    hint {
+        description "To file alsafile.wav"
     }
-    # ttable.canalSoft.canalReal Ganancia;    
-    ttable.0.0 1;
-    ttable.1.1 1;
-    ttable.2.2 1;
-    ttable.3.3 1;
-    ttable.4.4 1;
-    ttable.5.5 1;
-}
-
-ctl.UDJ6routed {
-        type hw;
-        card "UDJ6";
 }
 
