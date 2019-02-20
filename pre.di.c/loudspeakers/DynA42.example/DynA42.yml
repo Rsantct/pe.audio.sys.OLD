@@ -7,7 +7,7 @@ house_corner:   500
 house_atten:    1.5
 
 drc_sets:
-    none:               none                        none
+    defeat:             none                        none
     nearfield:          drc.L_lp_DynA42.pcm         drc.R_lp_DynA42.pcm
 
 xo_sets:
