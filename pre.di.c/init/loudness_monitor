@@ -33,7 +33,7 @@ def start():
     Popen( f'{bp.main_folder}/clients/bin/loudness_monitor.py \
              --input_device {sounddevice} \
              --control_file {bp.main_folder}/.loudness_control \
-             --output_file {bp.main_folder}/.loudness_events'.split() )
+             --output_file {bp.main_folder}/.loudness_monitor'.split() )
 
 
 def stop():
