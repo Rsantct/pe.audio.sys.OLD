@@ -25,4 +25,4 @@ Some *end user* and *user friendly* features has been added here.
 
 Regarding your room correction EQ, you can use both IIR (parametric correction) or FIR (impulse correction). I prefer the last one, and I propose multipoint based correction, for example you can try my [multipoint DRC](https://github.com/Rsantct/DRC).
 
-<a href="url"><img src="https://github.com/Rsantct/pre.di.c/blob/master/pre.di.c/clients/www/images/control%20web%20v2.0a.png" align="center" width="340" ></a>
+<a href="url"><img src="https://github.com/Rsantct/pre.di.c/blob/master/pre.di.c/clients/www/images/control%20web%20v2.0b.png" align="center" width="340" ></a>
