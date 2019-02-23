@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-    Starts / stops loudness_meter
-    use:   loudness_meter    start | stop
+    Starts / stops the loudness_monitor.py daemon client
+    use:   loudness_monitor    start | stop
 """
 
 import sys
@@ -30,7 +30,7 @@ def start():
     input_name = gc.state['input']
     sounddevice = gc.inputs[input_name]['in_ports'][0].split(':')[0]
     
-    Popen( f'{bp.main_folder}/clients/bin/loudness_meter.py \
+    Popen( f'{bp.main_folder}/clients/bin/loudness_monitor.py \
              --input_device {sounddevice} \
              --control_file {bp.main_folder}/.loudness_control \
              --output_file {bp.main_folder}/.loudness_events'.split() )
@@ -38,7 +38,7 @@ def start():
 
 def stop():
 
-    Popen( 'pkill -f loudness_meter.py'.split() )
+    Popen( 'pkill -f loudness_monitor.py'.split() )
 
     
 if sys.argv[1:]:
@@ -48,6 +48,6 @@ if sys.argv[1:]:
             'stop'  : stop
             }[ sys.argv[1] ]()
     except:
-        print( '(init/loudness_meter) bad option' )
+        print( '(init/loudness_monitor) bad option' )
 else:
     print(__doc__)
