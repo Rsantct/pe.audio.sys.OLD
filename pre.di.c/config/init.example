@@ -13,4 +13,5 @@ players                  # Loads a server to interfacing with players
 #mouse_volume            # mouse controls the pre.di.c volume
 #jackminimix             # Loads a Mixer
 #lcd                     # Loads the LCDd server and lcd_service.py 
-#loudness_meter          # Runs the loudness_meter.py daemon client
+#loudness_monitor        # Runs the loudness_monitor.py daemon client
+#ebueter                 # Runs ebumeter
