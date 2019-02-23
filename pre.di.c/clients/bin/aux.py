@@ -34,8 +34,9 @@ HOME = os.path.expanduser("~")
 
 import basepaths as bp
 
-#######  CONFIG HERE THE FOLDER OF WEB MACROS #######
+#######  CONFIG HERE SOME GLOBALS #######
 MACROS_FOLDER = bp.main_folder + 'clients/www/macros'
+LOUDNESS_CTRL = bp.main_folder + '.loudness_control'
 
 # Reading some user configs for auxilary tasks
 try:
@@ -46,6 +47,7 @@ try:
 except:
     AMP_ON_CMDLINE =  'echo For amp switching please configure config/aux.yml'
     AMP_OFF_CMDLINE = 'echo For amp switching please configure config/aux.yml'
+
 
 def do(task):
     """
@@ -86,13 +88,11 @@ def do(task):
         except:
             return b'error'
 
-    ### JACKMINIMIX
-    # If you run jackminimix, you can control the mixer input's gain
-    # https://www.aelius.com/njh/jackminimix/
-    elif task[:6] == 'mixer ':
+    ### LOUDNESS MONITOR RESET
+    elif task == 'loudness_monitor_reset':
         try:
-            cmd = f'{bp.main_folder}/clients/bin/jackminimix_ctrl.py { task[6:] }'
-            sp.run( cmd.split() )
+            with open(LOUDNESS_CTRL, 'w') as f:
+                f.write('reset')
             return b'done'
         except:
             return b'error'
@@ -111,3 +111,15 @@ def do(task):
             return b'done'
         except:
             return b'error'
+
+    ### JACKMINIMIX
+    # If you run jackminimix, you can control the mixer input's gain
+    # https://www.aelius.com/njh/jackminimix/
+    elif task[:6] == 'mixer ':
+        try:
+            cmd = f'{bp.main_folder}/clients/bin/jackminimix_ctrl.py { task[6:] }'
+            sp.run( cmd.split() )
+            return b'done'
+        except:
+            return b'error'
+
