@@ -153,9 +153,10 @@
     }
     
     // AUX commands are handled by the 'aux' server
+
+    // Aux: AMPLIFIER
     // Notice: It is expected that the remote script will store the amplifier state
     //         into the file '~/.amplifier' so that the web can update it.
-    // Aux: AMPLIFIER
     elseif ( $command == "amp_on" ) {
         predic_socket( 'aux', 'amp_on');
     }
@@ -165,6 +166,12 @@
     elseif ( $command == "amp_state" ) {
         readfile($HOME."/.amplifier"); // php cannot acces inside /tmp for securety reasons.
     }
+
+    // Aux: LOUDNESS MONITOR RESET
+    elseif ( $command == "loudness_monitor_reset" ) {
+        predic_socket( 'aux', $command );
+    }
+
     // Aux: TARGET change
     elseif ( substr( $command, 0, 10 ) === "set_target" ) {
         predic_socket( 'aux', $command );
