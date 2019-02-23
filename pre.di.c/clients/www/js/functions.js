@@ -30,10 +30,7 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
 */
 
 /////////////   GLOBALS //////////////
-
-loud_measure    = -20.0; // Will be updated reading the loudness monitor file from the server.
-dBFS_REF        = -20.0; // The reference level for measuring loudness
-
+loud_measure    = 0.0;                      // Initialize, will be updated reading the loudness monitor file.
 ecasound_is_used = check_if_ecasound();     // Boolean indicates if pre.di.c uses Ecasound
 auto_update_interval = 1500;                // Auto-update interval millisec
 advanced_controls = false;                  // Default for showing advanced controls
@@ -107,6 +104,13 @@ function set_target(value) {
 
     var myREQ = new XMLHttpRequest();
     myREQ.open("GET", "php/functions.php?command=set_target_" + value, async=true);
+    myREQ.send();
+}
+
+// Resets the loudness monitor daemon
+function loudness_monitor_reset() {
+    var myREQ = new XMLHttpRequest();
+    myREQ.open("GET", "php/functions.php?command=loudness_monitor_reset", async=true);
     myREQ.send();
 }
 
@@ -311,8 +315,7 @@ function page_update(status) {
     document.getElementById("loud_slider_container").innerText =
                                                      'Loud. Ref: '
                                                       + status_decode(status, 'loudness_ref');
-    document.getElementById("loud_slider").value    = parseInt(status_decode(status, 'loudness_ref')) 
-                                                      + dBFS_REF;
+    document.getElementById("loud_slider").value    = parseInt(status_decode(status, 'loudness_ref'));
     loud_measure = get_file('loudness_monitor').trim();
     document.getElementById("loud_meter").value    =  loud_measure;
 
@@ -666,7 +669,7 @@ function http_prepare(x) {
 
 // Processing the LOUDNESS_REF slider
 function loudness_ref_change(slider_value) {
-    loudness_ref = parseInt(slider_value) - dBFS_REF;
+    loudness_ref = parseInt(slider_value);
     predic_cmd('loudness_ref ' + loudness_ref, update=false);
 }
 
