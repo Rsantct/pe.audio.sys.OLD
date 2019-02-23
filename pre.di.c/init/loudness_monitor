@@ -11,6 +11,8 @@ from ruamel.yaml import YAML
 import basepaths as bp
 import getconfigs as gc
 
+CTRLfname = f'{bp.main_folder}/.loudness_control'
+
 def start():
 
     def check_config():
@@ -26,13 +28,17 @@ def start():
                 yaml.dump( config, f )
 
     check_config()
-
+    
+    # do create the auxiliary loudness monitor control file
+    with open(CTRLfname, 'w') as f:
+        f.write('')
+        
     input_name = gc.state['input']
     sounddevice = gc.inputs[input_name]['in_ports'][0].split(':')[0]
     
     Popen( f'{bp.main_folder}/clients/bin/loudness_monitor.py \
              --input_device {sounddevice} \
-             --control_file {bp.main_folder}/.loudness_control \
+             --control_file  {CTRLfname}\
              --output_file {bp.main_folder}/.loudness_monitor'.split() )
 
 
