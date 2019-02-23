@@ -148,7 +148,7 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
         /* The LOUDNESS METER itself (type METER) */
         .loud_meter { 
                     width:      100%;
-                    height:     0.5em;
+                    height:     0.8em;
                     border:     1px solid;
                     }
 
@@ -258,10 +258,11 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
     <table>
         <tr>
             <td class="loud_meter_container">Loud. monitor:</td>
+                <button type="button" id="buttonLoudMonReset" onmousedown="loudness_monitor_reset()" >reset</button>
             <td class="loud_meter_container">
             <!-- JS will set this stuff: -->
-            <meter  id="loud_meter"  class="loud_meter" value="-20"
-                    min="-40" optimum="-30" low="-20" high="-3" max="0" ></meter>
+            <meter  id="loud_meter"  class="loud_meter" value="0"
+                    min="-15" optimum="0" low="9" high="12" max="15" ></meter>
             </td>
         </tr>
         <tr>
@@ -269,7 +270,7 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
             <td id="loud_slider_container" class="loud_slider_container">Loud. Ref: ??</td>
             <td class="loud_slider_container">
             <input  id="loud_slider" class="loud_slider" type="range"
-                    min="-40" step="1" max="0"
+                    min="-15.0" step="1" max="15.0"
                     oninput="loudness_ref_change(this.value)">
             </td>
         </tr>
