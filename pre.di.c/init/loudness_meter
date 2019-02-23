@@ -6,11 +6,26 @@
 
 import sys
 from subprocess import Popen
+from ruamel.yaml import YAML
 
 import basepaths as bp
 import getconfigs as gc
 
 def start():
+
+    def check_config():
+        """ Appends PorAudio in jack_monitors under config.yml, if necessary.
+        """
+        yaml = YAML()
+        with open(f'{bp.config_folder}/config.yml', 'r') as f:
+            config = yaml.load( f.read() )
+        if not any( [ 'PortAudio' in x for x in config['jack_monitors'] ] ):
+            print('(init/ebumeter) adding PortAudio for jack_monitors under config.yml')
+            config['jack_monitors'].append( 'PortAudio:in_0 PortAudio:in_1' )
+            with open(f'{bp.config_folder}/config.yml', 'w') as f:
+                yaml.dump( config, f )
+
+    check_config()
 
     input_name = gc.state['input']
     sounddevice = gc.inputs[input_name]['in_ports'][0].split(':')[0]
