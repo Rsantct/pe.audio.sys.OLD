@@ -10,13 +10,19 @@ https://github.com/AudioHumLab/FIRtro/wiki/855-Display-LCD
 
 # The software
 
-    apt list lcdproc
+`lcdproc` versions 0.5.6 and 0.5.7 works with the *usb4all* driver, but newer Debian packaged versions does not.
 
-If version >= 0.5.6, then
+So it is necessary to download **0.5.7** from sourceforge and manually compile.
 
-    apt install lcdproc
+https://sourceforge.net/projects/lcdproc/files/
 
-If not: see how to compile in the link above.
+    ./configure --prefix=/usr/local --enable-drivers=hd44780
+    make
+    sudo make install
+
+Above will install lcdproc under `/usr/local` then you need to point to that location under `pre.di.c/clients/lcd/LCD.conf`:
+
+    DriverPath=/usr/local/lib/lcdproc/
 
 ## usb4all needs USB permissions
 
