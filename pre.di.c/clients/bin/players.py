@@ -369,11 +369,12 @@ def librespot_meta():
         tmp = sp.check_output( f'tail -n20 {bp.main_folder}/.librespot_events'.split() ).decode()
         tmp = tmp.split('\n')
         # Recently librespot uses to print out some 'AddrNotAvailable, message' mixed with
-        # playback info messages, so we will search for the 'Track ... loaded' message, 
+        # playback info messages, so we will search for the latest 'Track ... loaded' message, 
         # backwards from the end of the events file:
         for line in tmp[::-1]:
             if "Track" in line and "loaded" in line:
                 md['title'] = line.split('"')[1]
+                break
     except:
         pass
 
