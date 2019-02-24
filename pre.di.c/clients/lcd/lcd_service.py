@@ -112,7 +112,7 @@ def define_widgets():
     #
     # 1     v:-15.0  bl:-1  MONO
     # 2     b:+1 t:-2 LOUDref 12
-    # 3     inputname    lmon 12
+    # 3     inputname     mon 12
     # 4     a_metadata_marquee_
 
     # The widget collection definition (as global variables)
@@ -198,6 +198,7 @@ def update_status():
                     loudness_track = value
                     
             # Special case: loudness_ref will be rounded to integer
+            #               or void if no loudness_track
             elif key == 'loudness_ref':
                 if data['loudness_track']:
                     lab += str( int(round(value,0)) ).rjust(3)
