@@ -49,8 +49,6 @@ LEVEL_OLD = None
 # 'loudness_track' as global because loudness_monitor value does not
 # belong to the pre.di.c status dict and the updater needs to kwow about it.
 loudness_track = False
-# An auxiliary counter to divide the high refresh rate of LOUDNESSMON_file
-lmc = 0
 
 # Will watch for files changed on this folder and subfolders:
 WATCHED_DIR      = f'{HOME}/pre.di.c/'
@@ -322,13 +320,9 @@ class changed_files_handler(FileSystemEventHandler):
 
         # The loudness monitor file has changed
         # loudness monitor changes counter
-        global lmc
         if path in (LOUDNESSMON_file):
-            lmc += 1        # the auxiliary loudness monitor refresh counter
-            if lmc > 10:    # waits for 10 because file update period is 100 ms
-                update_loudness_monitor()
-                lmc = 0
-
+            update_loudness_monitor()
+            
 if __name__ == "__main__":
 
     # Registers a client under the LCDd server
