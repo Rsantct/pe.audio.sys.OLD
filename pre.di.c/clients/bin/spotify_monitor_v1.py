@@ -28,6 +28,11 @@
     then writes down the metadata into a file for others to read it.
 """
 
+#################### NOTICE #######################
+For playerctl v1.x please use spotify_monitor_v1.py
+For playerctl v2.x please use spotify_monitor_v2.py
+###################################################
+
 # CREDITS:
 # Based on 'example.py' from https://github.com/acrisci/playerctl
 # More info about interfacing with Spotify in Linux:
