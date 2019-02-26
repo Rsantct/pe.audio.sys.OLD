@@ -3,12 +3,12 @@
 # EDIT BELOW TO SUIT YOUR RELAIS CONTROL SCRIPT"
 
 if [[ $1 == "on" ]]; then
-    ~/bin/regleta.py 2 4 on
+    ~/bin/relay.sh on
     echo "on" > ~/.amplifier
 elif [[ $1 == "off" ]]; then
-    ~/bin/regleta.py 2 4 off
+    ~/bin/relay.sh off
     echo "off" > ~/.amplifier
+else
+    ~/bin/relay.sh
 fi
-
-~/bin/regleta.py
 
