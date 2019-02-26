@@ -107,6 +107,7 @@ if __name__ == '__main__':
     # Intialize (I)ntegrated Loudness and gates to -23.0 dBFS => 0 LU
     M = -23.0
     I = -23.0
+    Iprev = -23.0   # previous in order to save writing to disk
     G1mean = -23.0
     G1 = 0          # gate counters to calculate the accu mean
     G2 = 0
@@ -157,12 +158,15 @@ if __name__ == '__main__':
             M_LU = M - -23.0
             I_LU = I - -23.0
 
-            # Updating the output file with the accumulated
-            # (I)ntegrated loudness in LU units.
-            with open( args.output_file, 'w') as fout:
-                fout.write( str( round(I_LU,1) ) )
-                fout.close()
-
+            # Writing the output file with the accumulated
+            # (I)ntegrated loudness program in LU units
+            # >>> ROUNDED TO 1 dB to save disk writing <<<
+            if abs(Iprev - I) > 1.0:
+                with open( args.output_file, 'w') as fout:
+                    fout.write( str( round(I_LU,0) ) )
+                    fout.close()
+                Iprev = I
+                
             # Reading the control file waiting for a 'reset' command
             with open( args.control_file, 'r') as fin:
                 cmd = fin.read()
@@ -173,7 +177,7 @@ if __name__ == '__main__':
                         reset = True
             if reset:
                 # RESET the accumulated
-                I = -23.0
+                I = Iprev = -23.0
                 G1mean = -23.0
                 G1 = 0
                 G2 = 0
