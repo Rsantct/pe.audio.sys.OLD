@@ -1,32 +1,41 @@
 #!/usr/bin/env python3
-
 """
     Launch the spotify_monitor.py daemon that will:
-    
-    - listen for events from Spotify Desktop
+
+    - listen for GLib events from Spotify Desktop
 
     - and writes down the metadata into a file for others to read it.
 
     usage:   spotify_monitor   start | stop
 """
+# For playerctl <  v2.x will run spotify_monitor_v1.py
+# For playerctl >= v2.x will run spotify_monitor_v2.py
 
 import sys
-from subprocess import Popen
+from subprocess import Popen, check_output
 import basepaths as bp
 
+def get_playerctl_version():
+    try:
+        tmp = check_output('playerctl --version'.split()).decode()
+        tmp = tmp.lower().replace('v','')
+        return tmp[0]
+    except:
+        return -1
 
 def start():
-    ###################### NOTICE #######################
-    # For playerctl v1.x please use spotify_monitor_v1.py
-    # For playerctl v2.x please use spotify_monitor_v2.py
-    #####################################################
-    Popen( f'{bp.main_folder}/clients/bin/spotify_monitor_v1.py' )
+    v = get_playerctl_version()
+    if v != '-1':
+        if v in ('0','1'):
+            v = 1
+        Popen( f'{bp.main_folder}/clients/bin/spotify_monitor_v{v}.py' )
+    else:
+        print( '(init/spotify_monitor) Unable to find playerctl --version)' )
 
 def stop():
     Popen( ['pkill', '-f',  'spotify_monitor'] )
 
 if sys.argv[1:]:
-
     try:
         option = {
             'start' : start,
