@@ -2,14 +2,14 @@
 """
     Launch the spotify_monitor.py daemon that will:
 
-    - listen for GLib events from Spotify Desktop
+    - listen for events from Spotify Desktop
 
     - and writes down the metadata into a file for others to read it.
 
     usage:   spotify_monitor   start | stop
 """
-# For playerctl <  v2.x will run spotify_monitor_v1.py
-# For playerctl >= v2.x will run spotify_monitor_v2.py
+# For playerctl v0.x will run spotify_monitor_v1.py
+# For playerctl v2.x will run spotify_monitor_v2.py
 
 import sys
 from subprocess import Popen, check_output
