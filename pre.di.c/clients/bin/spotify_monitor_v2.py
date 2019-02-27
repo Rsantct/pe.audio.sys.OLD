@@ -28,6 +28,10 @@
     then writes down the metadata into a file for others to read it.
 """
 
+#################### NOTICE #####################
+# spotify_monitor_v2.py works with playerctl v2.x
+#################################################
+
 import sys
 import subprocess as sp
 import json
