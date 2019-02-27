@@ -355,6 +355,7 @@ if __name__ == "__main__":
     #   https://stackoverflow.com/questions/18599339/
     #   python-watchdog-monitoring-file-for-changes
     observer = Observer()
+    # recursive=True because will observe changes also under WATCHED_DIR/config/ subdirectory
     observer.schedule(event_handler=changed_files_handler(), path=WATCHED_DIR, recursive=True)
     observer.start()
     obsloop = threading.Thread( target = observer.join() )
