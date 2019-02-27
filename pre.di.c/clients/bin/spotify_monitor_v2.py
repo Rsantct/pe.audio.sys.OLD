@@ -65,8 +65,8 @@ def run_playerctl():
         sp.Popen( cmd.split(), shell=False, stdout=redir_file, stderr=redir_file )
 
 def metadata2file(metalines):
-    """ Convert the metadala lines from playerclt output to
-        a json dict then writes down to a file for players.py to read from
+    """ Convert the metadata lines from playerclt output to a json dict
+        then writes down to a file for players.py to read from.
     """
     # spotify mpris:trackid             spotify:track:0M99ZDKDfGxcH7hBmZx6oa
     # spotify mpris:length              455000000
