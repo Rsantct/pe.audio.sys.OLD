@@ -28,11 +28,6 @@
     then writes down the metadata into a file for others to read it.
 """
 
-###################### NOTICE #######################
-# For playerctl v1.x please use spotify_monitor_v1.py
-# For playerctl v2.x please use spotify_monitor_v2.py
-#####################################################
-
 import sys
 import subprocess as sp
 import json
@@ -53,20 +48,18 @@ PLAYERCTLfile = f'{bp.main_folder}/.playerctl_spotify_events'
 SPOTIFYfile   = f'{bp.main_folder}/.spotify_events'
 
 def run_playerctl():
-    """ Runs playerctl in --follow mode
-        See playerctl -h
-    """
+    """ Runs playerctl in --follow mode """
     # Kills previous
     sp.Popen( ['pkill', '-f', 'playerctl -p spotify'] )
-    time.sleep(.5)
+    time.sleep(.25)
     # Launch a new one
     cmd = 'playerctl -p spotify metadata --follow'
     with open( PLAYERCTLfile, 'w' ) as redir_file:
         sp.Popen( cmd.split(), shell=False, stdout=redir_file, stderr=redir_file )
 
 def metadata2file(metalines):
-    """ Convert the metadata lines from playerclt output to a json dict
-        then writes down to a file for players.py to read from.
+    """ Convert the metadalalines from playerclt output to
+        a json dict then writes to a file for players.py to read from
     """
     # spotify mpris:trackid             spotify:track:0M99ZDKDfGxcH7hBmZx6oa
     # spotify mpris:length              455000000
@@ -85,6 +78,9 @@ def metadata2file(metalines):
         if not line.strip():
             break
         key, value = line[8:34].strip(), line[34:].strip()
+        # mpris:length to integer
+        if key == 'mpris:length':
+            value = int(value)
         dict[key] =  value
 
     # Writes down the metadata dictionary to a file
