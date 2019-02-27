@@ -55,7 +55,7 @@ WATCHED_DIR      = f'{HOME}/pre.di.c/'
 # The files we are going to pay attention to:
 STATUS_file      = f'{HOME}/pre.di.c/config/state.yml'
 LIBRESPOT_file   = f'{HOME}/pre.di.c/.librespot_events'
-SPOTIFY_file     = f'{HOME}/pre.di.c/.librespot_events'
+SPOTIFY_file     = f'{HOME}/pre.di.c/.spotify_events'
 ISTREAMS_file    = f'{HOME}/pre.di.c/.istreams_events'
 DVB_file         = f'{HOME}/pre.di.c/.dvb_events'
 MPD_file         = f'{HOME}/pre.di.c/.mpd_events'
