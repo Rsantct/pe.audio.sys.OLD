@@ -11,10 +11,10 @@ More info under `doc/` folder
 First check if packages are available `apt-list python3-xxxx`. If so, simpli do:
 
 ```
-sudo apt install python3-numpy 
-sudo apt install python3-yaml python3-mpd python3-jack-client
-# recommended:
-sudo apt install python3-scipy python3-matplotlib python3-ruamel.yaml
+    sudo apt install python3-numpy 
+    sudo apt install python3-yaml python3-mpd python3-jack-client
+    # recommended:
+    sudo apt install python3-scipy python3-matplotlib python3-ruamel.yaml
 ```
 
 - PIP standard installation:
