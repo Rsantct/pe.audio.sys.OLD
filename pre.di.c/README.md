@@ -1,16 +1,35 @@
 ## Requirements
 
-- **Python** >= 3.6
+### Python >= 3.6
+
+More info under `doc/` folder
+
+### Python3 packages
+
+- Distro installation
+
+First check if packages are available `apt-list python3-xxxx`. If so, simpli do:
 
 ```
-python3 -m pip install numpy
-python3 -m pip install pyaml
-python3 -m pip install python-mpd2
+sudo apt install python3-numpy 
+sudo apt install python3-yaml python3-mpd python3-jack-client
+# recommended:
+sudo apt install python3-scipy python3-matplotlib python3-ruamel.yaml
 ```
 
-- **https://jackclient-python.readthedocs.io**
+- PIP standard installation:
 
-```
+    ```
+    python3 -m pip install numpy
+    python3 -m pip install pyaml
+    python3 -m pip install ruamel.pyaml
+    python3 -m pip install python-mpd2
+    ```
+
+And Jack-Client
+https://jackclient-python.readthedocs.io
+
+    ```
     sudo python3 -m pip install --upgrade setuptools
     
     # maybe necessary:
@@ -18,11 +37,13 @@ python3 -m pip install python-mpd2
     
     sudo python3 -m pip install cffi
     sudo python3 -m pip install JACK-Client
-```
+    ```
 
-- Update your environment for instance by editing your **`.profile`** home file:
+### Update your environment
 
-```
+for instance by editing your **`.profile`** home file:
+
+    ```
     export PYTHONPATH="$PYTHONPATH:$HOME/pre.di.c/bin:$HOME/pre.di.c/clients/bin"
     export PATH="$PATH:$HOME/pre.di.c/bin"
-```
+    ```
