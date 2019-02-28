@@ -29,7 +29,7 @@ sudo apt install python3-scipy python3-matplotlib python3-ruamel.yaml
 And Jack-Client
 https://jackclient-python.readthedocs.io
 
-    ```
+```
     sudo python3 -m pip install --upgrade setuptools
     
     # maybe necessary:
@@ -37,13 +37,13 @@ https://jackclient-python.readthedocs.io
     
     sudo python3 -m pip install cffi
     sudo python3 -m pip install JACK-Client
-    ```
+```
 
 ### Update your environment
 
 for instance by editing your **`.profile`** home file:
 
-    ```
+```
     export PYTHONPATH="$PYTHONPATH:$HOME/pre.di.c/bin:$HOME/pre.di.c/clients/bin"
     export PATH="$PATH:$HOME/pre.di.c/bin"
-    ```
+```
