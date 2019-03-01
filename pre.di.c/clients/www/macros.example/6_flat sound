@@ -1,6 +1,14 @@
 #!/bin/bash
 
+echo "balance 0"          | nc -N localhost 9999
 echo "bass 0"             | nc -N localhost 9999
 echo "treble 0"           | nc -N localhost 9999
 echo "loudness_track off" | nc -N localhost 9999
-echo "drc none"           | nc -N localhost 9999
+echo "mono off"           | nc -N localhost 9999
+#echo "drc none"           | nc -N localhost 9999
+
+# level_on_startup
+tmp=($(grep ^level_on_startup $HOME/pre.di.c/config/config.yml))
+tmp=${tmp[1]}
+echo "level $tmp"         | nc -N localhost 9999
+
