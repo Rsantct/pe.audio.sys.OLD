@@ -207,7 +207,7 @@ def mplayer_cmd(cmd, service):
     sp.Popen( f'echo "{cmd}" > {bp.main_folder}/{service}_fifo', shell=True)
 
 # Mplayer metadata
-def mplayer_meta(service):
+def mplayer_meta(service, readonly=False):
     """ gets metadata from Mplayer as per
         http://www.mplayerhq.hu/DOCS/tech/slave.txt """
 
@@ -219,13 +219,13 @@ def mplayer_meta(service):
     mplayer_redirection_path = f'{bp.main_folder}/.{service}_events'
 
     # Communicates to Mplayer trough by its input fifo to get the current media filename and bitrate:
-    mplayer_cmd(cmd='get_audio_bitrate', service=service)
-    mplayer_cmd(cmd='get_file_name',     service=service)
-    mplayer_cmd(cmd='get_time_pos',      service=service)
-    mplayer_cmd(cmd='get_time_length',   service=service)
-
-    # Waiting Mplayer ANS_xxxx to be writen to output file
-    time.sleep(.25)
+    if not readonly:
+        mplayer_cmd(cmd='get_audio_bitrate', service=service)
+        mplayer_cmd(cmd='get_file_name',     service=service)
+        mplayer_cmd(cmd='get_time_pos',      service=service)
+        mplayer_cmd(cmd='get_time_length',   service=service)
+        # Waiting Mplayer ANS_xxxx to be writen to output file
+        time.sleep(.25)
 
     # Trying to read the ANS_xxxx from the Mplayer output file
     with open(mplayer_redirection_path, 'r') as file:
@@ -237,8 +237,9 @@ def mplayer_meta(service):
     #print('DEBUG\n', tmp)
 
     # Flushing the Mplayer output file to avoid continue growing:
-    with open(mplayer_redirection_path, 'w') as file:
-        file.write('')
+    if not readonly:
+        with open(mplayer_redirection_path, 'w') as file:
+            file.write('')
 
     # Reading the intended metadata chunks
     if len(tmp) >= 4: # to avoid indexes issues while no relevant metadata are available
@@ -382,11 +383,16 @@ def librespot_meta():
     return json.dumps( md )
 
 # Generic function to get meta from any player: MPD, Mplayer or Spotify
-def player_get_meta():
+def player_get_meta(readonly=False):
     """ Makes a dictionary-like string with the current track metadata
         '{player: xxxx, artist: xxxx, album:xxxx, title:xxxx, etc... }'
         Then will return a bytes-like object from the referred string.
     """
+    # 'readonly=True':
+    #   Only useful for mplayer_meta(). It avoids to query Mplayer
+    #   and flushing its metadata file.
+    #   It is used from the 'change files handler' on lcd_service.py.
+    
     metadata = METATEMPLATE.copy()
     source = predic_source()
 
@@ -400,10 +406,10 @@ def player_get_meta():
         metadata = mpd_client('get_meta')
 
     elif source == 'istreams':
-        metadata = mplayer_meta(service=source)
+        metadata = mplayer_meta(service=source, readonly=readonly)
 
     elif source == 'tdt' or 'dvb' in source:
-        metadata = mplayer_meta(service='dvb')
+        metadata = mplayer_meta(service='dvb', readonly=readonly)
 
     else:
         metadata = json.dumps( metadata )
