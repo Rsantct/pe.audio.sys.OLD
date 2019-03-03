@@ -304,21 +304,34 @@ class changed_files_handler(FileSystemEventHandler):
 
         path = event.src_path
 
-        # The pre.di.c state has changed
+        # The pre.di.c STATE has changed
         if STATUS_file in path:
             update_status()
 
-        # A player event file has changed
-        if path in (MPD_file,
-                    SPOTIFY_file,
-                    LIBRESPOT_file,
-                    DVB_file,
+        # A MPLAYER event file has changed
+        # (i) The MPLAYER metadata file will be alive only for a 1/4 sec
+        #     because players.py will flush each second when the control
+        #     web page inquires.
+        #     Also we only want <title> field, so it is enough to get
+        #     metadata in 'readonly' mode and ignoring it if empty.
+        if path in (DVB_file,
                     ISTREAMS_file):
             sleep(1) # avoids bouncing
             # needs decode() because players gives bytes-like
-            update_metadata( players.player_get_meta().decode() , mode='composed_marquee')
+            meta = players.player_get_meta(readonly=True).decode()
+            if json.loads(meta)['title'] != '-':
+                update_metadata( meta , mode='composed_marquee')
 
-        # The loudness monitor file has changed
+        # ANOTHER PLAYER event file has changed
+        if path in (MPD_file,
+                    SPOTIFY_file,
+                    LIBRESPOT_file):
+            sleep(1) # avoids bouncing
+            # needs decode() because players gives bytes-like
+            meta = players.player_get_meta(readonly=False).decode()
+            update_metadata( meta, mode='composed_marquee')
+
+        # The LOUDNESS MONITOR file has changed
         # loudness monitor changes counter
         if path in (LOUDNESSMON_file):
             update_loudness_monitor()
