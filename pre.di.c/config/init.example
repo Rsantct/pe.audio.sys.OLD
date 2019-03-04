@@ -5,6 +5,7 @@ alsa_loop                # Sets up alsa_loop ports in jack to be used from ALSA 
 #mpd                     # Loads MPD
 istreams                 # Mplayer based internet streams player script
 #DVB                     # Mplayer based DVB-T player script
+#shairport-sync          # Airplay audio player
 #netjack
 #librespot               # Loads librespot (a Spotify Connect player)
 #spotify_monitor         # Loads a Spotify Desktop monitor
@@ -14,4 +15,4 @@ players                  # Loads a server to interfacing with players
 #jackminimix             # Loads a Mixer
 #lcd                     # Loads the LCDd server and lcd_service.py 
 #loudness_monitor        # Runs the loudness_monitor.py daemon client
-#ebueter                 # Runs ebumeter
+#ebumeter                # Runs ebumeter
