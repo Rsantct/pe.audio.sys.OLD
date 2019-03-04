@@ -357,10 +357,13 @@ function page_update(status) {
         document.getElementById("buttonLoud").style.background = "rgb(0, 90, 0)";
         document.getElementById("buttonLoud").style.color = "white";
         document.getElementById("buttonLoud").innerText = 'LD';
+        document.getElementById( "loudness_metering_and_slider").style.display = "block";
     } else {
         document.getElementById("buttonLoud").style.background = "rgb(100, 100, 100)";
         document.getElementById("buttonLoud").style.color = "rgb(150, 150, 150)";
         document.getElementById("buttonLoud").innerText = 'LD';
+        // Hides loudness_metering_and_slider if loudness_track=False
+        document.getElementById( "loudness_metering_and_slider").style.display = "none";
     }
 
     // Loudspeaker name (can change in some systems)
