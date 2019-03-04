@@ -8,12 +8,18 @@
     You can reset the current (I) by writing 'reset' into --control-file
 """
 # Thanks to https://python-sounddevice.readthedocs.io
-
 import argparse
 import numpy as np
 from scipy import signal
 import sounddevice as sd
 import queue
+
+# Will reset the (I) measurement when input changes
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
+import threading
+import yaml
+import basepaths as bp
 
 # https://github.com/AudioHumLab/audiotools
 import pydsd
@@ -83,8 +89,54 @@ def lfilter( x, coeffs):
     y[:,1], _ = signal.lfilter( b, a, x[:,1], zi=zi*x[:,1][0] )
     return y
 
+class Changed_files_handler(FileSystemEventHandler):
+    """
+        This is a handler when files have changed will analize them
+        to restart (I) measuring if necessary.
+    """
+    def on_modified(self, event):
+        global reset, last_input
+        path = event.src_path
+
+        # If the pre.di.c STATE file has changed
+        if bp.state_path in path:
+            with open( bp.state_path, 'r' ) as status_file:
+                state = yaml.load(status_file)
+                current_input = state['input']
+                if last_input != current_input:
+                    last_input = current_input
+                    reset = True
+
+        # If control file has changed
+        if '.loudness_control' in path:
+            with open( args.control_file, 'r') as fin:
+                cmd = fin.read()
+                if cmd:
+                    # if any command will flush the file:
+                    with open( args.control_file, 'w') as fin:
+                        fin.write('')
+                    if cmd.startswith('reset'):
+                        reset = True
+
     
 if __name__ == '__main__':
+
+    # The accumulated (I) can be RESET on the fly:
+    # - by writing 'reset' to the control_file,
+    # - or if pre.di.c input changes.
+    reset = False
+    with open( bp.state_path, 'r' ) as status_file:
+        last_input = yaml.load(status_file)['input']
+
+    # Starts a WATCHDOG to see if pre.di.c/* files changes
+    # in order to reset (I) if <input> has changed.
+    #   https://stackoverflow.com/questions/18599339/
+    #   python-watchdog-monitoring-file-for-changes
+    observer = Observer()
+    observer.schedule( event_handler=Changed_files_handler(),
+                       path=bp.main_folder, recursive=True )
+    obsthread = threading.Thread( target = observer.start() )
+    obsthread.start()
 
     # FIFO queue
     qIn    = queue.Queue()
@@ -112,10 +164,10 @@ if __name__ == '__main__':
     G1 = 0          # gate counters to calculate the accu mean
     G2 = 0
 
-    # Reset the accumulated (I) on the fly by reading the control_file
-    reset = False
-    
-    # Main loop: open a capturing stream processing 100ms audio blocks
+    ##################################################################
+    # Main loop: open a capture stream that process 100ms audio blocks
+    ##################################################################
+    print('(loudness_monitor) Start monitoring')
     with sd.InputStream( device=args.input_device, 
                           callback=callback,
                           blocksize  = BS,
@@ -166,16 +218,11 @@ if __name__ == '__main__':
                     fout.write( str( round(I_LU,0) ) )
                     fout.close()
                 Iprev = I
-                
-            # Reading the control file waiting for a 'reset' command
-            with open( args.control_file, 'r') as fin:
-                cmd = fin.read()
-                if cmd:
-                    with open( args.control_file, 'w') as fin:
-                        fin.write('')
-                    if cmd.startswith('reset'):
-                        reset = True
+            
+            # Reseting the (I) measurement. <reset> is a global that can
+            # be modified on the fly.
             if reset:
+                print('(loudness_monitor) restarting (I)ntegrated Loudness measurement')
                 # RESET the accumulated
                 I = Iprev = -23.0
                 G1mean = -23.0
@@ -191,4 +238,3 @@ if __name__ == '__main__':
             if args.print:
                 print( f'LUFS: {round(M,1):6.1f}(M) {round(I,1):6.1f}(I)       ' +
                         f'LU: {round(M_LU,1):6.1f}(M) {round(I_LU,1):6.1f}(I)   ')
-                    
