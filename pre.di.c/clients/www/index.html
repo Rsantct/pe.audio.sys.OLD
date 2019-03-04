@@ -245,16 +245,16 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
     </div>
 
 
-    <!-- ADVANCED CONTROLS CAN BE DISABLED
-             loudness adjusting
+    <!-- ADVANCED CONTROLS (will be displayed through by a button)
+            loudness adjusting
             treble        balance
             bass          target
             XO      DRC     PEQ
     -->
     <div id="advanced_controls" align="center" style="display:none; font-size:0.75em;">
 
-    <!-- A LOUDNESS METER AND REFERENCE ADJUST ***** WORK IN PROGRESS ****** -->
-    <div>
+    <!-- A LOUDNESS METER AND REFERENCE ADJUST (will be hidden if loudness_track=False) -->
+    <div id="loudness_metering_and_slider" style="display:block" >
     <table>
         <tr>
             <td class="loud_meter_container">
