@@ -34,8 +34,14 @@ def start():
         f.write('')
         
     input_name = gc.state['input']
-    sounddevice = gc.inputs[input_name]['in_ports'][0].split(':')[0]
-    
+    # This is to avoid an error when getting portnames if 'none' is the
+    # current input, anyway it depens on 'system' to exist on jack inputs
+    # so it still can occur a runtime error under loudness_monitor.py :-/
+    try:
+        sounddevice = gc.inputs[input_name]['in_ports'][0].split(':')[0]
+    except:
+        sounddevice = 'system'
+
     Popen( f'{bp.main_folder}/clients/bin/loudness_monitor.py \
              --input_device {sounddevice} \
              --control_file  {CTRLfname}\
