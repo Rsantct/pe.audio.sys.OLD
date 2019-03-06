@@ -1,8 +1,9 @@
-# Python3 packages
+# Python 3 packages
 
 Install the needed Python 3 packages:
 
     sudo apt install python3-pip python3-yaml python3-ruamel.yaml python3-numpy python3-jack-client python3-mpd
+    python3 -m pip install sounddevice
 
 
 # Python 3 on Raspberry Pi Raspbian
@@ -108,6 +109,7 @@ This provides Python 3.7 :-)
 - (re)Install the needed Python3.7 packages:
     ```
     sudo apt install python3-pip python3-yaml python3-ruamel.yaml python3-numpy python3-jack-client python3-mpd
+    python3 -m pip install sounddevice
     ```
 - Have a look if some audio service is using your sound card:
     ```
