@@ -1,10 +1,17 @@
-## Python 3 on Raspberry Pi Raspbian
+# Python3 packages
+
+Install the needed Python 3 packages:
+
+    sudo apt install python3-pip python3-yaml python3-ruamel.yaml python3-numpy python3-jack-client python3-mpd
+
+
+# Python 3 on Raspberry Pi Raspbian
 
 We need Pyton >=3.6, but currently Raspbian is based on Debian *stretch* that comes with Python 3.5. Hope Raspbian updates to Debian *buster* soon.
 
 Update 2019-feb: please go to **option 3** below.
 
-### option 1: Python 3.6.x from sources
+## option 1: Python 3.6.x from sources
 
 https://realpython.com/installing-python/#compiling-python-from-source
 
@@ -59,7 +66,7 @@ Finally remove your `tmp/` stuff.
 
 Removing above packages used for building does not worth it, immo.
 
-### option 2: Berryconda (easy)
+## option 2: Berryconda (easy)
 I've found Berryconda, a Python3.6 distro for Raspbian based in the well known Python distribution Anaconda that works well.
 
 https://github.com/jjhelmus/berryconda
@@ -74,7 +81,7 @@ I've found that it is needed to move the following `~/.bashrc` added lines to yo
     # added by Berryconda3 installer
     export PATH="/home/predic/berryconda3/bin:$PATH"
     
-### option 3: uptade to Raspbian Testing (preferred)
+## option 3: uptade to Raspbian Testing (preferred)
 
 2019-feb. I ve recently succesfully upgraded my RPI3 from the standard stable distribution (*stretch*) to testing (*buster*).
 
