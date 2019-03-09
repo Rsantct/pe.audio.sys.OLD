@@ -117,8 +117,8 @@ This provides Python 3.7 :-)
     ```
     - If any found disable it, e.g.:
     ```
-    systemctl stop timidity
-    systemctl disable timidity
+    sudo systemctl stop timidity
+    sudo systemctl disable timidity
     ```
 - If the web page seems not to work, please enable PHP on Apache2:
     ```
