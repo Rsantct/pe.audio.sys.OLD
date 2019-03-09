@@ -122,7 +122,7 @@ This provides Python 3.7 :-)
     ```
 - If the web page seems not to work, please enable PHP on Apache2:
     ```
-    sudo a2enmod php3.7
+    sudo a2enmod php7.3
     ```
 - If brutefir shows a not up to date version, [compile](https://github.com/AudioHumLab/FIRtro/wiki/911-Brutefir---versiones#compilar-brutefir) Brutefir to newest version.
    
