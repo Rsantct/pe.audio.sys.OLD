@@ -25,7 +25,7 @@
 """
     Starts and stops Mplayer for CDDA playback.
 
-    Also used to play control and disk eject.
+    Also used to CD play control and disk eject.
 
     Usage:      CDDA  start   [track] - Loads Mplayer for CDDA
                       stop            - KILLS this script
