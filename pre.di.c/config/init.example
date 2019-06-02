@@ -4,6 +4,7 @@ alsa_loop                # Sets up alsa_loop ports in jack to be used from ALSA 
 #pulseaudio-jack-sink    # Pulseadio sink on jack to be used from Pulseaudio backended players
 #mpd                     # Loads MPD
 istreams                 # Mplayer based internet streams player script
+#CDDA                    # Mplayer based CD player script
 #DVB                     # Mplayer based DVB-T player script
 #shairport-sync          # Airplay audio player
 #netjack
