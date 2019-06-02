@@ -114,7 +114,7 @@ def mpd_client(query):
         # to be monitored by any event changes service as for example lcd_service.py
         with open( f'{bp.main_folder}/.mpd_events', 'w' ) as file:
             file.write( json.dumps( md ) )
-        
+
         return json.dumps( md )
 
     def state():
@@ -189,7 +189,17 @@ def mplayer_cmd(cmd, service):
     # 'seek xxx 0' -> seeks relative xxx seconds (http://www.mplayerhq.hu/DOCS/tech/slave.txt)
     # 'seek xxx 1' -> seeks to xxx %
     # 'seek xxx 2' -> seeks to absolute xxx seconds
-    
+
+    # aux function to retrieve the last cd track played from the mplayer events file
+    def get_last_track():
+        track = '1'
+        with open( f'{bp.main_folder}/.{service}_events', 'r') as f:
+            tmp = f.read().split('\n')
+            for line in tmp:
+                if 'Track' == line[0:5]:
+                    track = str( line.replace('Track','').strip() )
+        return track
+
     if service == 'istreams':
         # useful when playing a mp3 stream e.g. some long playing time podcast url
         if cmd == 'previous':   cmd = 'seek -300 0'
@@ -204,9 +214,25 @@ def mplayer_cmd(cmd, service):
         if cmd == 'ff':         cmd = 'seek_chapter +1 0'
         if cmd == 'next':       cmd = 'tv_step_channel next'
 
-    sp.Popen( f'echo "{cmd}" > {bp.main_folder}/{service}_fifo', shell=True)
+    if service == 'cdda':
+        if cmd == 'previous':   cmd = 'seek_chapter -1 0'
+        if cmd == 'rew':        cmd = 'seek -30 0'
+        if cmd == 'ff':         cmd = 'seek +30 0'
+        if cmd == 'next':       cmd = 'seek_chapter +1 0'
+        if cmd == 'pause':      cmd = 'pause'
+        if cmd == 'stop':       cmd = 'stop'
+        if cmd == 'play':
+            # Notice that 'play' is not an available Mplayer command,
+            # instead we need to use loadfile
+            t = get_last_track()
+            cmd = f'loadfile cdda://{t}-100:1'
 
-# Mplayer metadata
+    # sending the command to the corresponding fifo
+    tmp = f'echo "{cmd}" > {bp.main_folder}/{service}_fifo'
+    # print(tmp) # debug
+    sp.Popen( tmp, shell=True)
+
+# Mplayer metadata (DVB or istreams, but not usable for CDDA)
 def mplayer_meta(service, readonly=False):
     """ gets metadata from Mplayer as per
         http://www.mplayerhq.hu/DOCS/tech/slave.txt """
@@ -264,6 +290,47 @@ def mplayer_meta(service, readonly=False):
 
     return json.dumps( md )
 
+# CDDA metadata. It is based on external shell program 'cdcd'
+def cdda_meta():
+
+    # Example using cdcd
+    #   $ cdcd tracks
+    #   Album name:     All For You
+    #   Album artist:   DIANA KRALL
+    #   Total tracks:   13      Disc length:    59:19
+    #   
+    #   Track   Length      Title
+    #   ----------------------------------------------------------------------------------------------------------
+    #    1:     [ 2:56.13]  I'm An Errand Girl For Rhythm 
+    #    2:     [ 4:07.20]  Gee Baby, Ain't I Good To You 
+    #    3:     [ 4:37.10]  You Call It Madness 
+    #    4:     [ 5:00.52]  Frim Fram Sauce 
+    #    5:     [ 6:27.15]  Boulevard Of Broken Dreams 
+    #    6:     [ 3:36.10]  Baby Baby All The Time 
+    #    7:     [ 4:16.55]  Hit That Jive Jack 
+    #    8:     [ 5:33.10]  You're Looking At Me 
+    #    9:     [ 4:25.73]  I'm Thru With Love 
+    #   10:     [ 3:31.52]  Deed I Do 
+    #   11:     [ 5:12.58]  A Blossom Fell 
+    #   12:   > [ 4:56.67]  If I Had You 
+    #   13:     [ 4:35.00]  When I Grow Too Old To Dream     
+    
+    md = METATEMPLATE.copy()
+
+    try:
+        tmp = sp.check_output('/usr/bin/cdcd tracks', shell=True).decode().split('\n')
+    except:
+        print( 'players.py needs the program \'cdcd\' for CDDA metadata reading' )
+        return md
+
+    for line in tmp:
+        if '>' in line[3:7]:
+            md['track_num'] = line[:2].strip()
+            md['time_tot']  = line[9:14].strip()
+            md['title']     = line[20:].strip()
+
+    return json.dumps( md )
+
 # Spotify Desktop metadata
 def spotify_meta():
     """ Gets the metadata info retrieved by the daemon init/spotify_monitor
@@ -282,16 +349,16 @@ def spotify_meta():
         tmp = json.loads( tmp )
         # Example:
         # {
-        # "mpris:trackid": "spotify:track:5UmNPIwZitB26cYXQiEzdP", 
-        # "mpris:length": 376386000, 
-        # "mpris:artUrl": "https://open.spotify.com/image/798d9b9cf2b63624c8c6cc191a3db75dd82dbcb9", 
-        # "xesam:album": "Doble Vivo (+ Solo Que la Una/Con Cordes del Mon)", 
-        # "xesam:albumArtist": ["Kiko Veneno"], 
-        # "xesam:artist": ["Kiko Veneno"], 
-        # "xesam:autoRating": 0.1, 
-        # "xesam:discNumber": 1, 
-        # "xesam:title": "Ser\u00e9 Mec\u00e1nico por Ti - En Directo", 
-        # "xesam:trackNumber": 3, 
+        # "mpris:trackid": "spotify:track:5UmNPIwZitB26cYXQiEzdP",
+        # "mpris:length": 376386000,
+        # "mpris:artUrl": "https://open.spotify.com/image/798d9b9cf2b63624c8c6cc191a3db75dd82dbcb9",
+        # "xesam:album": "Doble Vivo (+ Solo Que la Una/Con Cordes del Mon)",
+        # "xesam:albumArtist": ["Kiko Veneno"],
+        # "xesam:artist": ["Kiko Veneno"],
+        # "xesam:autoRating": 0.1,
+        # "xesam:discNumber": 1,
+        # "xesam:title": "Ser\u00e9 Mec\u00e1nico por Ti - En Directo",
+        # "xesam:trackNumber": 3,
         # "xesam:url": "https://open.spotify.com/track/5UmNPIwZitB26cYXQiEzdP"
         # }
 
@@ -331,7 +398,7 @@ def spotify_control(cmd):
     #   volume [LEVEL][+/-]     Print or set the volume to LEVEL from 0.0 to 1.0
     #   status                  Get the play status of the player
     #   metadata [KEY]          Print metadata information for the current track. Print only value of KEY if passed
-    
+
     # (!) Unfortunately, 'position' does not work, so we cannot rewind neither fast forward
     if cmd in ('play', 'pause', 'next', 'previous' ):
         sp.Popen( f'playerctl --player=spotify {cmd}'.split() )
@@ -362,7 +429,7 @@ def librespot_meta():
 
     try:
         # Returns the current track title played by librespot.
-        # 'scripts/librespot.py' handles the libresport print outs to be 
+        # 'scripts/librespot.py' handles the libresport print outs to be
         #                        redirected to 'tmp/.librespotEvents'
         # example:
         # INFO:librespot_playback::player: Track "Better Days" loaded
@@ -370,7 +437,7 @@ def librespot_meta():
         tmp = sp.check_output( f'tail -n20 {bp.main_folder}/.librespot_events'.split() ).decode()
         tmp = tmp.split('\n')
         # Recently librespot uses to print out some 'AddrNotAvailable, message' mixed with
-        # playback info messages, so we will search for the latest 'Track ... loaded' message, 
+        # playback info messages, so we will search for the latest 'Track ... loaded' message,
         # backwards from the end of the events file:
         for line in tmp[::-1]:
             if "Track" in line and "loaded" in line:
@@ -382,6 +449,7 @@ def librespot_meta():
     # JSON for JavaScript on control web page
     return json.dumps( md )
 
+
 # Generic function to get meta from any player: MPD, Mplayer or Spotify
 def player_get_meta(readonly=False):
     """ Makes a dictionary-like string with the current track metadata
@@ -392,7 +460,7 @@ def player_get_meta(readonly=False):
     #   Only useful for mplayer_meta(). It avoids to query Mplayer
     #   and flushing its metadata file.
     #   It is used from the 'change files handler' on lcd_service.py.
-    
+
     metadata = METATEMPLATE.copy()
     source = predic_source()
 
@@ -401,7 +469,7 @@ def player_get_meta(readonly=False):
             metadata = spotify_meta()
         elif SPOTIFY_CLIENT == 'librespot':
             metadata = librespot_meta()
-        
+
     elif source == 'mpd':
         metadata = mpd_client('get_meta')
 
@@ -410,6 +478,9 @@ def player_get_meta(readonly=False):
 
     elif source == 'tdt' or 'dvb' in source:
         metadata = mplayer_meta(service='dvb', readonly=readonly)
+
+    elif source == 'cd':
+        metadata = cdda_meta()
 
     else:
         metadata = json.dumps( metadata )
@@ -434,9 +505,12 @@ def player_control(action):
     elif 'tdt' in source or 'dvb' in source:
         result = mplayer_cmd(cmd=action, service='dvb')
 
-    elif predic_source() in ['istreams', 'iradio']:
+    elif source in ['istreams', 'iradio']:
         result = mplayer_cmd(cmd=action, service='istreams')
-    
+
+    elif source == 'cd':
+        result = mplayer_cmd(cmd=action, service='cdda')
+
     # Currently only MPD and Spotify Desktop provide 'state' info.
     # 'result' can be 'play', 'pause', stop' or ''.
     if not result:
