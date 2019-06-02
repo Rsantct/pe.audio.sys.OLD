@@ -200,6 +200,8 @@ def mplayer_cmd(cmd, service):
                     track = str( line.replace('Track','').strip() )
         return track
 
+    eject_disk = False
+
     if service == 'istreams':
         # useful when playing a mp3 stream e.g. some long playing time podcast url
         if cmd == 'previous':   cmd = 'seek -300 0'
@@ -226,11 +228,25 @@ def mplayer_cmd(cmd, service):
             # instead we need to use loadfile
             t = get_last_track()
             cmd = f'loadfile cdda://{t}-100:1'
+        if cmd == 'eject':
+            cmd = 'stop'
+            eject_disk = True
 
     # sending the command to the corresponding fifo
     tmp = f'echo "{cmd}" > {bp.main_folder}/{service}_fifo'
     # print(tmp) # debug
     sp.Popen( tmp, shell=True)
+
+    if cmd == 'stop' and service == 'cdda':
+        # clearing cdda_events in order to forget last track
+        try:
+            sp.Popen( f'echo "" > {bp.main_folder}/.cdda_events', shell=True)
+        except:
+            pass
+
+    if eject_disk:
+        sp.Popen( 'eject' )
+
 
 # Mplayer metadata (DVB or istreams, but not usable for CDDA)
 def mplayer_meta(service, readonly=False):
@@ -318,10 +334,13 @@ def cdda_meta():
     md = METATEMPLATE.copy()
 
     try:
-        tmp = sp.check_output('/usr/bin/cdcd tracks', shell=True).decode().split('\n')
+        tmp = sp.check_output('/usr/bin/cdcd tracks', shell=True).decode('utf-8').split('\n')
     except:
-        print( 'players.py needs the program \'cdcd\' for CDDA metadata reading' )
-        return md
+        try:
+            tmp = sp.check_output('/usr/bin/cdcd tracks', shell=True).decode('iso-8859-1').split('\n')
+        except:
+            print( 'players.py: problem running the program \'cdcd\' for CDDA metadata reading' )
+            return json.dumps( md )
 
     for line in tmp:
         if '>' in line[3:7]:
@@ -449,7 +468,6 @@ def librespot_meta():
     # JSON for JavaScript on control web page
     return json.dumps( md )
 
-
 # Generic function to get meta from any player: MPD, Mplayer or Spotify
 def player_get_meta(readonly=False):
     """ Makes a dictionary-like string with the current track metadata
@@ -566,7 +584,7 @@ def do(task):
 
     # Playback control. (i) Some commands need to be adequated later, depending on the player,
     # e.g. Mplayer does not understand 'previous', 'next' ...
-    elif task[7:] in ('state', 'stop', 'pause', 'play', 'next', 'previous', 'rew', 'ff'):
+    elif task[7:] in ('eject', 'state', 'stop', 'pause', 'play', 'next', 'previous', 'rew', 'ff'):
         return player_control( task[7:] )
 
     # A pseudo task, an url to be played back:
