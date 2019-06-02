@@ -258,7 +258,8 @@ if [ -f $fdest ]; then
     fi
 fi
 if [ "$updateWeb" ]; then
-    echo "Notice you need admin privilegies (sudo)"
+    echo "(!) You need admin privilegies (sudo)"
+    echo "(i) ... or maybe you don't want to update pre.di.c.conf because your home dir is not /home/predic"
     echo "( ^C to cancel the website update )\n"
     sudo cp $forig $fdest
     sudo a2ensite pre.di.c.conf
