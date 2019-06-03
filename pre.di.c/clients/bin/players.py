@@ -190,17 +190,66 @@ def mplayer_cmd(cmd, service):
     # 'seek xxx 1' -> seeks to xxx %
     # 'seek xxx 2' -> seeks to absolute xxx seconds
 
-    # aux function to retrieve the last cd track played from the mplayer events file
-    def get_last_track():
-        track = '1'
-        with open( f'{bp.main_folder}/.{service}_events', 'r') as f:
-            tmp = f.read().split('\n')
-            for line in tmp:
-                if 'Track' == line[0:5]:
-                    track = str( line.replace('Track','').strip() )
-        return track
-
     eject_disk = False
+
+    # aux function to save the CD info to a json file
+    def save_cd_info():        
+
+        # CDDA info is based on external shell program 'cdcd'
+        # Example using cdcd
+        #   $ cdcd tracks
+        #   Album name:     All For You
+        #   Album artist:   DIANA KRALL
+        #   Total tracks:   13      Disc length:    59:19
+        #   
+        #   Track   Length      Title
+        #   ----------------------------------------------------------------------------------------------------------
+        #    1:     [ 2:56.13]  I'm An Errand Girl For Rhythm 
+        #    2:     [ 4:07.20]  Gee Baby, Ain't I Good To You 
+        #    3:     [ 4:37.10]  You Call It Madness 
+        #    4:     [ 5:00.52]  Frim Fram Sauce 
+        #    5:     [ 6:27.15]  Boulevard Of Broken Dreams 
+        #    6:     [ 3:36.10]  Baby Baby All The Time 
+        #    7:     [ 4:16.55]  Hit That Jive Jack 
+        #    8:     [ 5:33.10]  You're Looking At Me 
+        #    9:     [ 4:25.73]  I'm Thru With Love 
+        #   10:     [ 3:31.52]  Deed I Do 
+        #   11:     [ 5:12.58]  A Blossom Fell 
+        #   12:   > [ 4:56.67]  If I Had You 
+        #   13:     [ 4:35.00]  When I Grow Too Old To Dream     
+
+        tmp = ''
+        cd_info = {}
+        try:
+            tmp = sp.check_output('/usr/bin/cdcd tracks', shell=True).decode('utf-8').split('\n')
+        except:
+            try:
+                tmp = sp.check_output('/usr/bin/cdcd tracks', shell=True).decode('iso-8859-1').split('\n')
+            except:
+                print( 'players.py: problem running the program \'cdcd\' for CDDA metadata reading' )
+
+
+        for line in tmp:
+
+
+            if line.startswith('Album name'):
+                cd_info['album'] = line[16:].strip()
+
+            if line.startswith('Album artist'):
+                cd_info['artist'] = line[16:].strip()
+                
+            if line and line[2] == ':' and line[8] == '[':
+                track_num       = line[:2].strip()
+                track_length    = line[9:14].strip()
+                track_title     = line[20:].strip()
+ 
+                cd_info[track_num] = {}
+                cd_info[track_num]['length'] = track_length
+                cd_info[track_num]['title']  = track_title
+
+        with open( f'{bp.main_folder}/.cdda_info', 'w') as f:
+            f.write( json.dumps( cd_info ) )
+
 
     if service == 'istreams':
         # useful when playing a mp3 stream e.g. some long playing time podcast url
@@ -224,10 +273,9 @@ def mplayer_cmd(cmd, service):
         if cmd == 'pause':      cmd = 'pause'
         if cmd == 'stop':       cmd = 'stop'
         if cmd == 'play':
-            # Notice that 'play' is not an available Mplayer command,
-            # instead we need to use loadfile
-            t = get_last_track()
-            cmd = f'loadfile cdda://{t}-100:1'
+            # save disk info into a json file
+            save_cd_info() 
+            cmd = f'loadfile \'cdda://1-100:1\''
         if cmd == 'eject':
             cmd = 'stop'
             eject_disk = True
@@ -306,47 +354,46 @@ def mplayer_meta(service, readonly=False):
 
     return json.dumps( md )
 
-# CDDA metadata. It is based on external shell program 'cdcd'
 def cdda_meta():
 
-    # Example using cdcd
-    #   $ cdcd tracks
-    #   Album name:     All For You
-    #   Album artist:   DIANA KRALL
-    #   Total tracks:   13      Disc length:    59:19
-    #   
-    #   Track   Length      Title
-    #   ----------------------------------------------------------------------------------------------------------
-    #    1:     [ 2:56.13]  I'm An Errand Girl For Rhythm 
-    #    2:     [ 4:07.20]  Gee Baby, Ain't I Good To You 
-    #    3:     [ 4:37.10]  You Call It Madness 
-    #    4:     [ 5:00.52]  Frim Fram Sauce 
-    #    5:     [ 6:27.15]  Boulevard Of Broken Dreams 
-    #    6:     [ 3:36.10]  Baby Baby All The Time 
-    #    7:     [ 4:16.55]  Hit That Jive Jack 
-    #    8:     [ 5:33.10]  You're Looking At Me 
-    #    9:     [ 4:25.73]  I'm Thru With Love 
-    #   10:     [ 3:31.52]  Deed I Do 
-    #   11:     [ 5:12.58]  A Blossom Fell 
-    #   12:   > [ 4:56.67]  If I Had You 
-    #   13:     [ 4:35.00]  When I Grow Too Old To Dream     
-    
     md = METATEMPLATE.copy()
 
-    try:
-        tmp = sp.check_output('/usr/bin/cdcd tracks', shell=True).decode('utf-8').split('\n')
-    except:
-        try:
-            tmp = sp.check_output('/usr/bin/cdcd tracks', shell=True).decode('iso-8859-1').split('\n')
-        except:
-            print( 'players.py: problem running the program \'cdcd\' for CDDA metadata reading' )
-            return json.dumps( md )
+    # Getting the current track by querying Mplayer
+    def get_current_track():
+        t = 0
+        # (!) Must use the prefix 'pausing_keep', if not pause is released
+        #     when querying 'get_property ...' or any else.
+        sp.Popen( f'echo "pausing_keep get_property chapter" > {bp.main_folder}/cdda_fifo', shell=True )
+        with open(f'{bp.main_folder}/.cdda_events', 'r') as f:
+            tmp = f.read().split('\n')
+        for line in tmp[-10:]:
+            if line.startswith('ANS_chapter='):
+                t = line.replace('ANS_chapter=', '').strip()
+        return str( int(t) + 1 )
 
-    for line in tmp:
-        if '>' in line[3:7]:
-            md['track_num'] = line[:2].strip()
-            md['time_tot']  = line[9:14].strip()
-            md['title']     = line[20:].strip()
+    # Reading the CD info from a json file previously dumped when play started.
+    try:
+        with open(f'{bp.main_folder}/.cdda_info', 'r') as f:
+            tmp = f.read()
+        cd_info = json.loads(tmp)
+    except:
+        cd_info = {}
+
+    md['track_num'] = get_current_track()
+
+    # Unfortunatelly, the current track time is not directly available because
+    # Mplayer provides current 'time_pos' refered to the whole "filename" time,
+    # ie. to the sum of all tracks "cdda://1-100" to be played :-/
+    # TODO: calculate the current track time from the total 'time_pos' 
+    #       and the individual track times ;-)
+    md['time_pos'] = '-:-'
+
+    # Skipping if not cd_info available
+    if cd_info:
+        md['title']      = cd_info[ md['track_num'] ]['title']
+        md['artist']     = cd_info['artist']
+        md['album']      = cd_info['album']
+        md['time_tot']   = cd_info[ md['track_num'] ]['length']
 
     return json.dumps( md )
 
