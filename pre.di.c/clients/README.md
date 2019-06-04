@@ -4,7 +4,7 @@
 Must locate here any code to be intended as a **client** or **auxiliary** feature from the point of view of **pre.di.c**, for instance:
 
 - **www/** the control web page and related web **macros** scripts
-- **players.py** a module to interface with players
+- **players.py** a module to interface with players (for CDs it is needed the 'cdcd' linux package)
 - **aux.py** a module to interface with local functions
 - the global idea: anything which is designed to be plugged to work with the pre.di.c kernel
 
