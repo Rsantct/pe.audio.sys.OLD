@@ -219,8 +219,8 @@ function update_player_controls() {
 function update_player_info() {
     var player      = "-";
     var bitrate     = "-";
-    var time_pos    = "-:-:-";
-    var time_tot    = "-:-:-";
+    var time_pos    = "-:-";
+    var time_tot    = "-:-";
     var artist      = "-";
     var album       = "-";
     var title       = "-";
