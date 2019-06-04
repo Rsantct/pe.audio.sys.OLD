@@ -37,6 +37,14 @@ import json
 
 import basepaths as bp
 
+# Save the timestamp of querying Mplayer, see reasons below.
+with open(f'{bp.main_folder}/.last_cdaudio_query', 'w') as f:
+    f.write( str( time.time() ) )
+
+# Initialize the current cd track number disk file
+with open(f'{bp.main_folder}/.last_cd_track', 'w') as f:
+    f.write( '1' )
+
 # MPD settings:
 MPD_HOST    = 'localhost'
 MPD_PORT    = 6600
@@ -274,7 +282,9 @@ def mplayer_cmd(cmd, service):
         if cmd == 'stop':       cmd = 'stop'
         if cmd == 'play':
             # save disk info into a json file
-            save_cd_info() 
+            save_cd_info()
+            # flushing the mplayer events file
+            sp.Popen( f'echo "" > {bp.main_folder}/.cdda_events', shell=True)
             cmd = f'loadfile \'cdda://1-100:1\''
         if cmd == 'eject':
             cmd = 'stop'
@@ -355,23 +365,55 @@ def mplayer_meta(service, readonly=False):
     return json.dumps( md )
 
 def cdda_meta():
-
-    md = METATEMPLATE.copy()
-
-    # Getting the current track by querying Mplayer
-    def get_current_track():
+    
+    # Aux to get the current track by querying Mplayer
+    # NOT USED because it is observed that querying Mplayer produces cd audio gaps :-/
+    def get_current_track_from_mplayer():
         t = 0
-        # (!) Must use the prefix 'pausing_keep', if not pause is released
-        #     when querying 'get_property ...' or any else.
+        # (!) Must use the prefix 'pausing_keep', otherwise pause will be released
+        #     when querying 'get_property ...' or anything else.
         sp.Popen( f'echo "pausing_keep get_property chapter" > {bp.main_folder}/cdda_fifo', shell=True )
         with open(f'{bp.main_folder}/.cdda_events', 'r') as f:
             tmp = f.read().split('\n')
         for line in tmp[-10:]:
             if line.startswith('ANS_chapter='):
                 t = line.replace('ANS_chapter=', '').strip()
+        # ANS_chapter counts from 0 for 1st track
         return str( int(t) + 1 )
 
-    # Reading the CD info from a json file previously dumped when play started.
+    # Aux to get the current track by using the external program 'cdcd tracks'
+    def get_current_track_from_cdcd():
+        t = "1"
+        try:
+            tmp = sp.check_output('/usr/bin/cdcd tracks', shell=True).decode('utf-8').split('\n')
+        except:
+            try:
+                tmp = sp.check_output('/usr/bin/cdcd tracks', shell=True).decode('iso-8859-1').split('\n')
+            except:
+                print( 'players.py: problem running the program \'cdcd\' for CDDA metadata reading' )
+        for line in tmp:
+            if line and line[6] == '>':
+                t = line[:2].strip()
+        return t
+    
+    # Aux to calculate if more than X sec since last query to Mplayer.
+    def last_query_gt(x=5.0):
+        result = False
+        try:
+            with open(f'{bp.main_folder}/.last_cdaudio_query', 'r') as f:
+                last = float( f.read().strip() )
+            if time.time() - last > x:
+                return True
+        except:
+            return False
+
+    # Initialize a metadata dictionary
+    md = METATEMPLATE.copy()
+    md['track_num'] = '1'
+    md['bitrate'] = '1411'
+    md['player']  = 'Mplayer'
+    
+    # Reading the CD info from a json file previously dumped when playing started.
     try:
         with open(f'{bp.main_folder}/.cdda_info', 'r') as f:
             tmp = f.read()
@@ -379,20 +421,49 @@ def cdda_meta():
     except:
         cd_info = {}
 
-    md['track_num'] = get_current_track()
+    # Getting the current track:
+    # The external program 'cdcd' is able to get the current disk track playing
+    # BUT this is a very slow query, we will query only if past > 5 s from last.
+    if last_query_gt(5):
+        md['track_num'] = get_current_track_from_cdcd()
+        # Save the timestamp of querying Mplayer
+        with open(f'{bp.main_folder}/.last_cdaudio_query', 'w') as f:
+            f.write( str( time.time() ) )
+        # Save the current track number
+        with open(f'{bp.main_folder}/.last_cd_track', 'w') as f:
+            f.write( md['track_num'] )
+    else:
+        # Reading the last track number from disk file
+        with open(f'{bp.main_folder}/.last_cd_track', 'r') as f:
+            md['track_num'] = f.read().strip()
 
+    # Getting the current track time position.
     # Unfortunatelly, the current track time is not directly available because
     # Mplayer provides current 'time_pos' refered to the whole "filename" time,
     # ie. to the sum of all tracks "cdda://1-100" to be played :-/
     # TODO: calculate the current track time from the total 'time_pos' 
     #       and the individual track times ;-)
+    # CAVEAT: Mplayer querying during playback does produce audio gaps :-/
     md['time_pos'] = '-:-'
 
-    # Skipping if not cd_info available
+    # Completing the metadata dict, skipping if not cd_info available:
     if cd_info:
-        md['title']      = cd_info[ md['track_num'] ]['title']
-        md['artist']     = cd_info['artist']
-        md['album']      = cd_info['album']
+
+        # if cdcd cannot retrieve cddb info, artist or album field will be not dumped.
+        if 'artist' in cd_info:
+            if cd_info['artist']:
+                md['artist']     = cd_info['artist']
+
+        if 'album' in cd_info:
+            if cd_info['album']:
+                md['album']      = cd_info['album']
+
+        title = cd_info[ md['track_num'] ]['title']
+        if title:
+            md['title'] = cd_info[ md['track_num'] ]['title']
+        else:
+            md['title'] = 'Track ' + md['track_num']
+
         md['time_tot']   = cd_info[ md['track_num'] ]['length']
 
     return json.dumps( md )
