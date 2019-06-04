@@ -143,7 +143,8 @@ def start():
     jloop.start()
 
     # 2. Launching Mplayer for CDDA service:
-    opts = f'{options} -idle -slave -profile cdda -input file={input_fifo} -cache 2048'
+    opts = f'{options} -idle -slave -profile cdda -input file={input_fifo} ' \
+            '-cache 4096 -cdda:skip'
     command = f'{mplayer_path} {opts}'
     with open(mplayer_redirection_path, 'w') as redir:
         pd.start_pid(command, program_alias, redir)
