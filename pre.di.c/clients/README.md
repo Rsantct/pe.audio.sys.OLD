@@ -4,7 +4,7 @@
 Must locate here any code to be intended as a **client** or **auxiliary** feature from the point of view of **pre.di.c**, for instance:
 
 - **www/** the control web page and related web **macros** scripts
-- **players.py** a module to interface with players (for CDs it is needed the 'cdcd' linux package)
+- **players.py** a module to interface with players
 - **aux.py** a module to interface with local functions
 - the global idea: anything which is designed to be plugged to work with the pre.di.c kernel
 
@@ -16,3 +16,8 @@ As per **pre.di.c** wants to run this clients, you must update your `PYTHONPATH`
 export PYTHONPATH="$PYTHONPATH:$HOME/pre.di.c/bin:$HOME/pre.di.c/clients/bin"
 ```
 
+### pre.di.c/clients/bin/players.py
+
+This module is used from a server to retrieve the played track metadata and also for controlling the available players (mplayer, mpd, spotify)
+
+If disk / tracks information is desired for CD audio, it is needed to install the 'cdcd' linux package.
