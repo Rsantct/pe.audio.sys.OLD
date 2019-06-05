@@ -427,7 +427,7 @@ def cdda_meta():
         sp.Popen( f'echo "pausing_keep get_time_pos" > {bp.main_folder}/cdda_fifo', shell=True )
         with open(f'{bp.main_folder}/.cdda_events', 'r') as f:
             tmp = f.read().split('\n')
-        for line in tmp[-2:]:
+        for line in tmp[-10:]:
             if line.startswith('ANS_TIME_POSITION='):
                 timePos = float( line.replace('ANS_TIME_POSITION=', '').strip() )
 
