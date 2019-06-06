@@ -387,6 +387,14 @@ function page_update(status) {
         document.getElementById( "url_button").style.display = "none";
     }
 
+    // Displays the track selector if input == 'cd'
+    if (status_decode(status, 'input') == "cd") {
+        document.getElementById( "track_selector").style.display = "inline";
+    }
+    else {
+        document.getElementById( "track_selector").style.display = "none";
+    }
+
     // Displays the target curve CURRENTLY USING A SELECTOR
     // displays_target_curve();
 
@@ -610,6 +618,16 @@ function play_url() {
     if ( url.slice(0,5) == 'http:' || url.slice(0,6) == 'https:' ) {
         var myREQ = new XMLHttpRequest();
         myREQ.open("GET", "php/functions.php?command=" + url, async=true);
+        myREQ.send();
+    }
+}
+
+// Select a disk track
+function select_track() {
+    var tracknum = prompt('Enter track number to play:');
+    if ( true ) {
+        var myREQ = new XMLHttpRequest();
+        myREQ.open("GET", "php/functions.php?command=player_play_track_" + tracknum, async=true);
         myREQ.send();
     }
 }
