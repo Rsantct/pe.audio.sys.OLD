@@ -184,19 +184,21 @@ def mpd_client(query):
 
     return result
 
-# Mplayer control
+# Mplayer control (used for DVB, iSTREAMS and CD)
 def mplayer_cmd(cmd, service):
     """ Sends a command to Mplayer trough by its input fifo """
     # Notice: Mplayer sends its responses to the terminal where Mplayer was launched,
     #         or to a redirected file.
 
-    # 'seek xxx 0' -> seeks relative xxx seconds (http://www.mplayerhq.hu/DOCS/tech/slave.txt)
-    # 'seek xxx 1' -> seeks to xxx %
-    # 'seek xxx 2' -> seeks to absolute xxx seconds
+    # See available commands at http://www.mplayerhq.hu/DOCS/tech/slave.txt
+
+    # Avoiding to send 'state' because is not a valid Mplayer command
+    if cmd == 'state':
+        return
 
     eject_disk = False
 
-    # aux function to save the CD info to a json file
+    # Aux function to save the CD info to a json file
     def save_cd_info():        
 
         global cd_info
@@ -255,42 +257,79 @@ def mplayer_cmd(cmd, service):
 
         with open( f'{bp.main_folder}/.cdda_info', 'w') as f:
             f.write( json.dumps( cd_info ) )
-
+    
+    # Aux function to check if Mplayer is playing the disk
+    def playlist_detected():
+        # Querying Mplayer to get the FILENAME (if it results void it means no playing)
+        sp.Popen( f'echo "get_file_name" > {bp.main_folder}/cdda_fifo', shell=True )
+        with open(f'{bp.main_folder}/.cdda_events', 'r') as f:
+            tmp = f.read().split('\n')
+        time.sleep(.5)
+        for line in tmp[-2::-1]:
+            if line.startswith('ANS_FILENAME='):
+                return True
+        return False
 
     if service == 'istreams':
-        # useful when playing a mp3 stream e.g. some long playing time podcast url
-        if cmd == 'previous':   cmd = 'seek -300 0'
-        if cmd == 'rew':        cmd = 'seek -60  0'
-        if cmd == 'ff':         cmd = 'seek +60  0'
-        if cmd == 'next':       cmd = 'seek +300 0'
 
-    if service == 'dvb':
+        # useful when playing a mp3 stream e.g. some long playing time podcast url
+        if   cmd == 'previous':   cmd = 'seek -300 0'
+        elif cmd == 'rew':        cmd = 'seek -60  0'
+        elif cmd == 'ff':         cmd = 'seek +60  0'
+        elif cmd == 'next':       cmd = 'seek +300 0'
+
+    elif service == 'dvb':
+
         # (i) all this stuff is testing and not much useful
-        if cmd == 'previous':   cmd = 'tv_step_channel previous'
+        if  cmd == 'previous':   cmd = 'tv_step_channel previous'
         if cmd == 'rew':        cmd = 'seek_chapter -1 0'
         if cmd == 'ff':         cmd = 'seek_chapter +1 0'
         if cmd == 'next':       cmd = 'tv_step_channel next'
 
-    if service == 'cdda':
-        if cmd == 'previous':   cmd = 'seek_chapter -1 0'
-        if cmd == 'rew':        cmd = 'seek -30 0'
-        if cmd == 'ff':         cmd = 'seek +30 0'
-        if cmd == 'next':       cmd = 'seek_chapter +1 0'
-        if cmd == 'pause':      cmd = 'pause'
-        if cmd == 'stop':       cmd = 'stop'
-        if cmd == 'play':
+    elif service == 'cdda':
+
+        if   cmd == 'previous':   cmd = 'seek_chapter -1 0'
+        elif cmd == 'rew':        cmd = 'seek -30 0'
+        elif cmd == 'ff':         cmd = 'seek +30 0'
+        elif cmd == 'next':       cmd = 'seek_chapter +1 0'
+        elif cmd == 'pause':      cmd = 'pause'
+        elif cmd == 'stop':       cmd = 'stop'
+
+        elif cmd == 'play':
             # save disk info into a json file
             save_cd_info()
             # flushing the mplayer events file
             sp.Popen( f'echo "" > {bp.main_folder}/.cdda_events', shell=True)
             cmd = f'loadfile \'cdda://1-100:1\''
-        if cmd == 'eject':
+
+        elif cmd.startswith('play_track_'):
+            trackNum = cmd[11:]
+            if trackNum.isdigit():
+                if not playlist_detected():
+                    sp.Popen( f'echo "" > {bp.main_folder}/.cdda_events', shell=True)
+                    tmp = f'pausing loadfile \'cdda://1-100:1\''
+                    tmp = f'echo "{tmp}" > {bp.main_folder}/{service}_fifo'
+                    sp.Popen( tmp, shell=True)
+                    # waiting for playing:
+                    n = 0
+                    while n < 10:
+                        if playlist_detected(): break
+                        time.sleep(1)
+                        n += 1
+                chapter = int(trackNum) -1 
+                cmd = f'seek_chapter {str(chapter)} 1'
+
+        elif cmd == 'eject':
             cmd = 'stop'
             eject_disk = True
 
+    else:
+        print( f'(players.py) unknown Mplayer service \'{service}\'' )
+        return
+    
     # sending the command to the corresponding fifo
     tmp = f'echo "{cmd}" > {bp.main_folder}/{service}_fifo'
-    # print(tmp) # debug
+    #print(tmp) # debug
     sp.Popen( tmp, shell=True)
 
     if cmd == 'stop' and service == 'cdda':
@@ -303,8 +342,7 @@ def mplayer_cmd(cmd, service):
     if eject_disk:
         sp.Popen( 'eject' )
 
-
-# Mplayer metadata (DVB or istreams, but not usable for CDDA)
+# Mplayer metadata (DVB or iSTREAMS, but not usable for CDDA)
 def mplayer_meta(service, readonly=False):
     """ gets metadata from Mplayer as per
         http://www.mplayerhq.hu/DOCS/tech/slave.txt """
@@ -433,7 +471,12 @@ def cdda_meta():
 
         # Find the track and track time position
         track, trackPos = get_track_and_pos(timePos)
-
+        
+        # Ceiling track to the last available
+        last_track = len( [ x for x in cd_info if x.isdigit() ] )
+        if track > last_track:
+            track = last_track
+        
         return str( track ), timeFmt( trackPos )
 
     # Initialize a metadata dictionary
@@ -459,19 +502,26 @@ def cdda_meta():
         # if cdcd cannot retrieve cddb info, artist or album field will be not dumped.
         if 'artist' in cd_info:
             if cd_info['artist']:
-                md['artist']     = cd_info['artist']
+                md['artist'] = cd_info['artist']
+        else:
+            md['artist'] = 'CD info not found'
 
         if 'album' in cd_info:
             if cd_info['album']:
-                md['album']      = cd_info['album']
+                md['album'] = cd_info['album']
 
         title = cd_info[ md['track_num'] ]['title']
+
         if title:
             md['title'] = cd_info[ md['track_num'] ]['title']
         else:
             md['title'] = 'Track ' + md['track_num']
 
         md['time_tot']   = cd_info[ md['track_num'] ]['length'][:-3] # omit decimals
+        
+        # adding last track to track_num metadata
+        last_track = len( [ x for x in cd_info if x.isdigit() ] )
+        md['track_num'] += f'\n{last_track}'
 
     return json.dumps( md )
 
@@ -711,7 +761,7 @@ def do(task):
         Only certain received 'tasks' will be validated and processed,
         then returns back some useful info to the asking client.
     """
-
+    
     # First clearing the new line
     task = task.replace('\n','')
 
@@ -722,6 +772,10 @@ def do(task):
     # Playback control. (i) Some commands need to be adequated later, depending on the player,
     # e.g. Mplayer does not understand 'previous', 'next' ...
     elif task[7:] in ('eject', 'state', 'stop', 'pause', 'play', 'next', 'previous', 'rew', 'ff'):
+        return player_control( task[7:] )
+
+    # Special command for disk playback control
+    elif task[7:18] == 'play_track_':
         return player_control( task[7:] )
 
     # A pseudo task, an url to be played back:
