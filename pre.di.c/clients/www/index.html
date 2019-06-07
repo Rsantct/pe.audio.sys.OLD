@@ -121,10 +121,12 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
         td#title            { border: 1px solid grey; border-radius: 10px/10px; }
         
         /* 7th SECTION */
-        td#playback_control_1   { border-style: none; width: 100%; }
-        td#dummy_cell_21        { border-style: none; width:  10%; }
-        td#playback_control_22  { border-style: none; width:  80%; text-align:center; }
-        td#macros_toggle_23     { border-style: none; width:  10%; text-align:right;  }
+        td#playback_control_11  { border-style: none; width:10%; }
+        td#playback_control_12  { border-style: none; width:75%; }
+        td#playback_control_13  { border-style: none; width:15%; text-align:left; }
+        td#playback_control_21  { border-style: none; width:10%; }
+        td#playback_control_22  { border-style: none; width:75%; }
+        td#playback_control_23  { border-style: none; width:15%; text-align:center;}
         
         /* 8th SECTION */
         .macro_buttons  {   width: 100%;
@@ -136,7 +138,7 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
                             font-size:0.80em;
                             display: inline; 
                         }
-        td#mCell        {   border-style: none; }
+        td#mCell        {   border-style: none; width:30%; }
         
         /* LOUDNESS METER CONTAINER (type CELL) */
         .loud_meter_container {
@@ -232,7 +234,7 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
             <!-- INPUTS selector, will be filled by javascript -->
             <td id="input"     rowspan="2">
                 <button id="url_button"     style="text-align:center;font-size:0.7em;display:none" onclick="play_url()">&#9901</button>
-                <button id="track_selector" style="display:none" onclick="select_track()" >#</button>
+                <button type="button" id="track_selector" onmousedown="select_track()" >#</button>
                 <select id="inputsSelector" onchange="predic_cmd('input ' + this.value, update=false)" ></select>
             </td>
         </tr>
@@ -373,24 +375,28 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
     <div>
     <table id="playback_control">
         <tr> <!-- row1 -->
-            <td id="playback_control_1"  colspan="3">
+            <td id="playback_control_11">
+            </td>
+            <td id="playback_control_12" >
                 <button type="button" id="buttonPrevious" onmousedown="playerCtrl('previous')" >&lt;|           </button>
                 <button type="button" id="buttonRew"      onmousedown="playerCtrl('rew')"      >&lt;&lt;        </button>
                 <button type="button" id="buttonFF"       onmousedown="playerCtrl('ff')"       >&gt;&gt;        </button>
                 <button type="button" id="buttonNext"     onmousedown="playerCtrl('next')"     >|&gt;           </button>
             </td>
-        </tr>
-        <tr> <!-- row2 -->
-            <td id="dummy_cell_21"    style="display:none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <td id="playback_control_13" >
             </td>
-            <td id="playback_control_22">
+       </tr>
+        <tr> <!-- row2 -->
+            <td id="playback_control_21" >
+            </td>
+            <td id="playback_control_22" >
                 <button type="button" id="buttonEject"    onmousedown="playerCtrl('eject')"    >&nbsp;^&nbsp;   </button>
                 <button type="button" id="buttonStop"     onmousedown="playerCtrl('stop')"     >&nbsp;[]&nbsp;  </button>
                 <button type="button" id="buttonPause"    onmousedown="playerCtrl('pause')"    >&nbsp;||&nbsp;  </button>
                 <button type="button" id="buttonPlay"     onmousedown="playerCtrl('play')"     >&nbsp;&gt;&nbsp;</button>
             </td>
             <!-- MACROS button toggle-->
-            <td id="macros_toggle_23" style="display:none">
+            <td id="playback_control_23" >
                 <button type="button" id="macros_toggle_button"  onmousedown="macros_toggle()">::</button>
             </td>
         </tr>
