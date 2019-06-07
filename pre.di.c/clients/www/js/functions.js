@@ -145,8 +145,8 @@ function filling_macro_buttons() {
     // If no macros on the list, do nothing, so leaving "display:none" on the buttons keypad div
     if ( macros.length < 1 ) { return; }
     // If any macro found, lets show the macros toggle switch
-    document.getElementById( "macros_toggle_23").style.display = 'block';
-    document.getElementById( "dummy_cell_21").style.display    = 'block'; // just for symmetry reasons
+    document.getElementById( "playback_control_23").style.display = 'block';
+    document.getElementById( "playback_control_21").style.display = 'block'; // just for symmetry reasons
     var macro = ''
     for (i in macros) {
         macro = macros[i];
