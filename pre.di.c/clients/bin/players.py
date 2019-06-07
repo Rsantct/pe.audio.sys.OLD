@@ -192,7 +192,7 @@ def mplayer_cmd(cmd, service):
 
     # See available commands at http://www.mplayerhq.hu/DOCS/tech/slave.txt
 
-    # Avoiding to process 'state' because Mplayer has not a such function
+    # Avoiding to process 'state' because Mplayer has not a such function. 
     if cmd == 'state':
         return
 
@@ -259,7 +259,7 @@ def mplayer_cmd(cmd, service):
             f.write( json.dumps( cd_info ) )
     
     # Aux function to check if Mplayer is playing the disk
-    def playlist_detected():
+    def a_file_is_loaded():
         # Querying Mplayer to get the FILENAME (if it results void it means no playing)
         sp.Popen( f'echo "get_file_name" > {bp.main_folder}/cdda_fifo', shell=True )
         with open(f'{bp.main_folder}/.cdda_events', 'r') as f:
@@ -305,15 +305,20 @@ def mplayer_cmd(cmd, service):
         elif cmd.startswith('play_track_'):
             trackNum = cmd[11:]
             if trackNum.isdigit():
-                if not playlist_detected():
+                # Checks is a filename is loaded (i.e. if a disk is loaded to be played)
+                if not a_file_is_loaded():
+                    # save disk info into a json file
+                    save_cd_info()
+                    # flushing the mplayer events file
                     sp.Popen( f'echo "" > {bp.main_folder}/.cdda_events', shell=True)
+                    # Loading the disk but pausing
                     tmp = f'pausing loadfile \'cdda://1-100:1\''
                     tmp = f'echo "{tmp}" > {bp.main_folder}/{service}_fifo'
                     sp.Popen( tmp, shell=True)
-                    # waiting for playing:
+                    # Waiting for disk loaded:
                     n = 0
                     while n < 10:
-                        if playlist_detected(): break
+                        if a_file_is_loaded(): break
                         time.sleep(1)
                         n += 1
                 chapter = int(trackNum) -1 
