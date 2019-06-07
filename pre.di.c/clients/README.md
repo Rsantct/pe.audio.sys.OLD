@@ -20,4 +20,4 @@ export PYTHONPATH="$PYTHONPATH:$HOME/pre.di.c/bin:$HOME/pre.di.c/clients/bin"
 
 This module is used from a server to retrieve the played track metadata and also for controlling the available players (mplayer, mpd, spotify)
 
-If disk / tracks information is desired for CD audio, it is needed to install the 'cdcd' linux package.
+If disk/tracks information is desired for CD audio, it is needed to install the **`cdcd`** linux package, and run it manually in order to autoconfigure it. Be sure the generated `~/.cdserverrc` have `ACCESS=SERVER` in order to query remote cddb databases.
