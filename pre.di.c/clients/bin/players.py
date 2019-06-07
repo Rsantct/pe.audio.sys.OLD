@@ -192,7 +192,7 @@ def mplayer_cmd(cmd, service):
 
     # See available commands at http://www.mplayerhq.hu/DOCS/tech/slave.txt
 
-    # Avoiding to send 'state' because is not a valid Mplayer command
+    # Avoiding to process 'state' because Mplayer has not a such function
     if cmd == 'state':
         return
 
