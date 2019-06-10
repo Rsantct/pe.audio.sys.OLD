@@ -22,3 +22,5 @@ This module is used from a server to retrieve the played track metadata and also
 
 #### CD AUDIO
 If disk/tracks information is desired for CD audio, it is needed to install the **`cdcd`** linux package, and run it manually in order to autoconfigure it. Be sure the generated `~/.cdserverrc` have `ACCESS=SERVER` in order to query remote cddb databases.
+
+<image alt="CD Audio" src="https://github.com/Rsantct/pe.audio.sys/blob/master/pre.di.c/clients/www/images/control%20web%202.1%20CDAudio_b.jpg" width="340"/>
