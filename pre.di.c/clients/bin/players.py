@@ -234,7 +234,7 @@ def mplayer_cmd(cmd, service):
             try:
                 tmp = sp.check_output('/usr/bin/cdcd tracks', shell=True).decode('iso-8859-1').split('\n')
             except:
-                print( 'players.py: problem running the program \'cdcd\' for CDDA metadata reading' )
+                print( '(players.py) Problem running the program \'cdcd\' for CDDA metadata reading' )
 
 
         for line in tmp:
@@ -281,10 +281,10 @@ def mplayer_cmd(cmd, service):
     elif service == 'dvb':
 
         # (i) all this stuff is testing and not much useful
-        if  cmd == 'previous':   cmd = 'tv_step_channel previous'
-        if cmd == 'rew':        cmd = 'seek_chapter -1 0'
-        if cmd == 'ff':         cmd = 'seek_chapter +1 0'
-        if cmd == 'next':       cmd = 'tv_step_channel next'
+        if   cmd == 'previous':   cmd = 'tv_step_channel previous'
+        elif cmd == 'rew':        cmd = 'seek_chapter -1 0'
+        elif cmd == 'ff':         cmd = 'seek_chapter +1 0'
+        elif cmd == 'next':       cmd = 'tv_step_channel next'
 
     elif service == 'cdda':
 
@@ -305,7 +305,7 @@ def mplayer_cmd(cmd, service):
         elif cmd.startswith('play_track_'):
             trackNum = cmd[11:]
             if trackNum.isdigit():
-                # Checks is a filename is loaded (i.e. if a disk is loaded to be played)
+                # Checks if a filename is loaded (i.e. if a disk is loaded to be played)
                 if not a_file_is_loaded():
                     # save disk info into a json file
                     save_cd_info()
@@ -315,7 +315,7 @@ def mplayer_cmd(cmd, service):
                     tmp = f'pausing loadfile \'cdda://1-100:1\''
                     tmp = f'echo "{tmp}" > {bp.main_folder}/{service}_fifo'
                     sp.Popen( tmp, shell=True)
-                    # Waiting for disk loaded:
+                    # Waiting for the disk to be loaded:
                     n = 0
                     while n < 10:
                         if a_file_is_loaded(): break
