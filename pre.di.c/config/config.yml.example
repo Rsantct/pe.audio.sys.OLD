@@ -40,7 +40,7 @@ alert_level: -15
 tone_reset_on_startup : False
 balance_reset_on_startup : False
 loudness_reset_on_startup : False
-mono_reset_on_startup: False
+mono_reset_on_startup: True
 
 # Volume settings on startup. assign null to not set
 level_on_startup: null
