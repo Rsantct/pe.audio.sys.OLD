@@ -277,12 +277,9 @@ def show( throw_it=None, state=gc.state ):
     tmp += "\n"
     tmp += ( f"Level          {gc.state['level']: 6.1f} " + muted + "\n")
     tmp += ( f"Balance        {gc.state['balance']: 6.1f}\n" )
-    tmp += ( f"Polarity            {gc.state['polarity']:6}\n" )
-    if gc.state['mono']:
-        tmp += ( f"Mono           {'on':>6s}\n" )
-    else:
-        tmp += ( f"Mono           {'off':>6s}\n" )
-
+    tmp += ( f"Polarity       {gc.state['polarity']:6}\n" )
+    tmp += ( f"Midside        {gc.state['midside']:>6s}\n" )
+    tmp += ( f"Solo           {gc.state['solo']:>6s}\n" )
     tmp += "\n"
     tmp += ( f"Bass           {gc.state['bass']: 6.1f}\n" )
     tmp += ( f"Treble         {gc.state['treble']: 6.1f}\n" )
