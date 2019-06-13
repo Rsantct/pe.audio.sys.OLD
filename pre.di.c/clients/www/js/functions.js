@@ -344,10 +344,14 @@ function page_update(status) {
         document.getElementById("buttonMute").style.fontWeight = "normal";
         document.getElementById("levelInfo").style.color = "white";
     }
-    if ( status_decode(status, 'mono') == 'true' ) {
+    if ( status_decode(status, 'midside') == 'mid' ) {
         document.getElementById("buttonMono").style.background = "rgb(100, 0, 0)";
         document.getElementById("buttonMono").style.color = "rgb(255, 200, 200)";
         document.getElementById("buttonMono").innerText = 'MO';
+    } else if ( status_decode(status, 'midside') == 'side' ) {
+        document.getElementById("buttonMono").style.background = "rgb(100, 0, 0)";
+        document.getElementById("buttonMono").style.color = "rgb(255, 200, 200)";
+        document.getElementById("buttonMono").innerText = 'L-R';
     } else {
         document.getElementById("buttonMono").style.background = "rgb(0, 90, 0)";
         document.getElementById("buttonMono").style.color = "white";
@@ -444,7 +448,7 @@ function status_decode(status, prop) {
     return String(result).trim();
 }
 
-// To upper-lower case button labels, e.g. mono:true/false ==> 'MONO' / 'mono'
+// To upper-lower case button labels (OBSOLETE)
 function UpLow(prop, truefalse) {
     var label = '';
     label = prop.toLowerCase()
