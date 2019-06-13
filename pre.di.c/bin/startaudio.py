@@ -160,19 +160,21 @@ def init_state_settings():
        and takes care of options to reset some of them
     """
 
-    # tone reset
+    # optional tone reset
     if gc.config['tone_reset_on_startup']:
         pd.client_socket('bass 0')
         pd.client_socket('treble 0')
     else:
         pd.client_socket('bass ' + str(gc.state['bass']))
         pd.client_socket('treble ' + str(gc.state['treble']))
-    # balance reset
+
+    # optional balance reset
     if gc.config['balance_reset_on_startup']:
         pd.client_socket('balance 0')
     else:
         pd.client_socket('balance ' + str(gc.state['balance']))
-    # loudness reset
+
+    # optional loudness reset
     if gc.config['loudness_reset_on_startup']:
         pd.client_socket('loudness_track off')
         pd.client_socket('loudness_ref 0')
@@ -180,12 +182,19 @@ def init_state_settings():
         pd.client_socket('loudness_track '
             + ('on' if gc.state['loudness_track'] else 'off'))
         pd.client_socket('loudness_ref ' + str(gc.state['loudness_ref']))
-    # mono reset
+
+    # optional mono reset
     if gc.config['mono_reset_on_startup']:
-        pd.client_socket('mono off')
+        pd.client_socket('midside off')
     else:
-        pd.client_socket('mono '
-            + ('on' if gc.state['mono'] else 'off'))
+        pd.client_socket('midside ' + gc.state['midside'])
+    
+    # optional 'solo' reset
+    if gc.config['mono_reset_on_startup']:
+        pd.client_socket('solo off')
+    else:
+        pd.client_socket('solo ' + gc.state['solo'])
+
     # optional limited volume on start
     limit_level(gc.config['level_on_startup']
                 , gc.config['max_level_on_startup'])
@@ -266,10 +275,12 @@ def main(run_levels):
 
     # restoring previous state
     init_state_settings()
+
     # restoring inputs
     init_inputs()
+
     # some info
-    pd.show()
+    pd.show(state=gc.state)
 
 if __name__ == '__main__':
 
