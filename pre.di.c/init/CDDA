@@ -52,7 +52,7 @@ import predic as pd
 
 # --- Script settings ---
 # Name used from pre.di.c. for info and pid saving
-program_alias = 'mplayer-dvb'
+program_alias = 'mplayer-cdda'
 
 # --- Mplayer options ---
 # -quiet: see channels change
