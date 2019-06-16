@@ -697,7 +697,9 @@ def do( cmdline ):
         (state, warnings) = proccess_commands( cmdline )
 
         try:
-            # Updates state file
+            ############################
+            # Here we update state.yml #
+            ############################
             with open( bp.state_path, 'w' ) as f:
                 yaml.dump( state, f, default_flow_style=False )
 
