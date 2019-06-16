@@ -43,6 +43,7 @@ import predic as pd
 import basepaths as bp
 import getconfigs as gc
 
+
 if gc.config['load_ecasound']:
     import peq_control
 
@@ -95,7 +96,8 @@ def init_brutefir():
     # folder in brutefir_config
     os.chdir(bp.loudspeakers_folder + gc.config['loudspeaker'])
     print(f'\n(startaudio) starting brutefir on {os.getcwd()}')
-    Popen( f"{gc.config['brutefir_path']} {gc.config['brutefir_options']} brutefir_config".split() )
+    Popen( f"{gc.config['brutefir_path']} {gc.config['brutefir_options']} \
+             brutefir_config".split() )
     # waiting for brutefir
     if  pd.wait4result('echo "quit" | nc localhost 3000', 'Welcome',
         tmax=5, quiet=True):
@@ -183,14 +185,14 @@ def init_state_settings():
             + ('on' if gc.state['loudness_track'] else 'off'))
         pd.client_socket('loudness_ref ' + str(gc.state['loudness_ref']))
 
-    # optional mono reset
-    if gc.config['mono_reset_on_startup']:
+    # optional midside reset ( formerly mono reset)
+    if gc.config['midside_reset_on_startup']:
         pd.client_socket('midside off')
     else:
         pd.client_socket('midside ' + gc.state['midside'])
     
-    # optional 'solo' reset
-    if gc.config['mono_reset_on_startup']:
+    # optional solo reset
+    if gc.config['solo_reset_on_startup']:
         pd.client_socket('solo off')
     else:
         pd.client_socket('solo ' + gc.state['solo'])
