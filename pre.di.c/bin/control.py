@@ -303,49 +303,81 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
 
 
     def change_polarity(polarity, state=state):
+        # new version w/o bf_cli, now delegates to change_gain()
 
-        if polarity in ['+', '-', 'toggle']:
-            if polarity == 'toggle':
-                polarity = {
-                    '+': '-',
-                    '-': '+'
-                    }[state['polarity']]
+        if polarity in ['+', '-', '+-', '-+']:
             state['polarity'] = polarity
             try:
-                bf_cli('cfia 0 0 m' + polarity + '1 '
-                     '; cfia 1 1 m' + polarity + '1')
                 state = change_gain(gain)
             except:
                 state['polarity'] = state_old['polarity']
                 warnings.append('Something went wrong when changing polarity state')
         else:
             state['polarity'] = state_old['polarity']
-            warnings.append('bad polarity option: has to be "+", "-"'
-                                'or "toggle"')
+            warnings.append('bad polarity option: has to be "+", "-", "+-" '
+                                'or "-+"')
         return state
 
 
-    def change_mono(mono, state=state):
-
+    def change_mono(mono):
+        # this is a pseudo command just for backwards compatibility
+        # here we translate mono:on|off to midside:on|off
+        
         try:
-            state['mono'] = {
-                'on':       True,
-                'off':      False,
-                'toggle':   not state['mono']
+            tmp = {
+                'on':       'mid',
+                'off':      'off',
+                'toggle':   {'off':'mid', 'side':'off', 'mid':'off'
+                             }[ state['midside'] ]
                 }[mono]
+            return change_midside(tmp, state=state)
+
         except KeyError:
-            state['mono'] = state_old['mono']
-            warnings.append('Option ' + arg + ' incorrect')
-            return state
-        try:
-            if state['mono']:
-                bf_cli('cffa 2 0 m0.5 ; cffa 2 1 m0.5 '
-                       '; cffa 3 1 m0.5 ; cffa 3 0 m0.5')
-            else:
-                bf_cli('cffa 2 0 m1 ; cffa 2 1 m0 ; cffa 3 1 m1 ; cffa 3 0 m0')
-        except:
-            state['mono'] = state_old['mono']
-            warnings.append('Something went wrong when changing mono state')
+            warnings.append('Command \'mono ' + arg + '\' is incorrect')
+        
+
+    def change_midside(midside, state=state):
+
+        if midside in ['mid', 'side', 'off']:
+            state['midside'] = midside
+            try:
+                if   state['midside']=='mid':
+                    bf_cli( 'cfia 0 0 m0.5 ; cfia 0 1 m0.5  ;'
+                            'cffa 1 0 m0.5 ; cfia 1 1 m0.5   ')
+
+                elif state['midside']=='side':
+                    bf_cli( 'cfia 0 0 m0.5 ; cfia 0 1 m-0.5 ;'
+                            'cfia 1 0 m0.5 ; cfia 1 1 m-0.5  ')
+
+                elif state['midside']=='off':
+                    bf_cli( 'cfia 0 0 m1   ; cfia 0 1 m0    ;'
+                            'cfia 1 0 m0   ; cfia 1 1 m1     ')
+            except:
+                state['midside'] = state_old['midside']
+                warnings.append('Something went wrong when changing '
+                                'midside state')
+        else:
+            state['midside'] = state_old['midside']
+            warnings.append('bad midside option: has to be "mid", "side"'
+                                ' or "off"')
+        return state
+
+
+    def change_solo(solo, state=state):
+        # new function w/o bf_cli, it delegates to change_gain()
+
+        if solo in ['off', 'l', 'r']:
+            state['solo'] = solo
+            try:
+                state = change_gain(gain)
+            except:
+                state['solo'] = state_old['solo']
+                warnings.append('Something went wrong '
+                                'when changing solo state')
+        else:
+            state['solo'] = state_old['solo']
+            warnings.append('bad solo option: has to be "l", "r" or "off"')
+
         return state
 
 
@@ -539,26 +571,43 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
 
 
         def commit_gain():
+            
 
-            bf_atten_dB_0 = gain
-            bf_atten_dB_1 = gain
+            bf_atten_dB_L = gain
+            bf_atten_dB_R = gain
             # add balance dB gains
             if abs(state['balance']) > gc.config['balance_variation']:
                 state['balance'] = m.copysign(
                         gc.config['balance_variation'] ,state['balance'])
-            bf_atten_dB_0 = bf_atten_dB_0 - (state['balance'] / 2)
-            bf_atten_dB_1 = bf_atten_dB_1 + (state['balance'] / 2)
-            # from dB to multiplier to implement easily
-            # polarity and mute
-            m_polarity = {'+': 1, '-': -1}[state['polarity']]
-            m_muted = float(not state['muted'])
-            m_gain = lambda x: m.pow(10, x/20) * m_polarity * m_muted
-            m_gain_0 = m_gain(bf_atten_dB_0)
-            m_gain_1 = m_gain(bf_atten_dB_1)
-            # commit final gain change
-            bf_cli('cfia 0 0 m' + str(m_gain_0)
-              + ' ; cfia 1 1 m' + str(m_gain_1))
+            bf_atten_dB_L = bf_atten_dB_L - (state['balance'] / 2)
+            bf_atten_dB_R = bf_atten_dB_R + (state['balance'] / 2)
 
+            # From dB to a multiplier to implement easily
+            # polarity and mute.
+            # Then channel gains are the product of
+            # gain, polarity, mute and solo
+
+            m_mute = {True: 0, False: 1}[ state['muted'] ]
+
+            m_polarity_L = {'+' :  1, '-' : -1,
+                            '+-':  1, '-+': -1 }[ state['polarity'] ]
+            m_polarity_R = {'+' :  1, '-' : -1,
+                            '+-': -1, '-+':  1 }[ state['polarity'] ]
+
+            m_solo_L  = {'off': 1, 'l': 1, 'r': 0}[ state['solo'] ]
+
+            m_solo_R  = {'off': 1, 'l': 0, 'r': 1}[ state['solo'] ]
+
+            m_gain = lambda x: m.pow(10, x/20) * m_mute
+            m_gain_L = ( m_gain( bf_atten_dB_L )
+                            * m_polarity_L * m_solo_L )
+            m_gain_R = ( m_gain( bf_atten_dB_R )
+                            * m_polarity_R * m_solo_R )
+
+            # commit final gain change will be applied to the input of
+            # drc filter#2,3 stages, i.e: the output of eq filters#0,1 stages
+            bf_cli(      'cffa 2 0 m' + str(m_gain_L)
+                    + ' ; cffa 3 1 m' + str(m_gain_R))
 
         # backs up actual gain
         gain_old = gain
@@ -601,7 +650,9 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
             'drc':              change_drc,
             'peq':              change_peq,
             'polarity':         change_polarity,
+            'solo':             change_solo,
             'mono':             change_mono,
+            'midside':          change_midside,
             'mute':             change_mute,
             'loudness_track':   change_loudness_track,
             'loudness_ref':     change_loudness_ref,
@@ -653,7 +704,9 @@ def do( cmdline ):
         (state, warnings) = proccess_commands( cmdline )
 
         try:
-            # Updates state file
+            ############################
+            # Here we update state.yml #
+            ############################
             with open( bp.state_path, 'w' ) as f:
                 yaml.dump( state, f, default_flow_style=False )
 

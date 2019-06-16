@@ -125,7 +125,9 @@ def define_widgets():
                 'level'             : { 'pos':'1  1',    'val':'v:'       },
                 'headroom'          : { 'pos':'0  0',    'val':'hrm:'     },
                 'balance'           : { 'pos':'10 1',    'val':'bl:'      },
-                'mono'              : { 'pos':'17 1',    'val':'MONO'     },
+                # the former 'mono' key is now 'midside' 
+                'midside'           : { 'pos':'17 1',    'val':''         },
+                'solo'              : { 'pos':'0  0',    'val':''         },
                 'muted'             : { 'pos':'1  1',    'val':'MUTED    '},
                 'bass'              : { 'pos':'1  2',    'val':'b:'       },
                 'treble'            : { 'pos':'6  2',    'val':'t:'       },
@@ -186,7 +188,7 @@ def update_status():
             pos = widgets_state[key]['pos'] # pos ~> position
             lab = widgets_state[key]['val'] # lab ~> label
 
-            # When booleans (loudness_track, muted, mono)
+            # When booleans (loudness_track, muted)
             # will leave the defalul widget value or will supress it
             if type(value) == bool:
                 if not value:
@@ -202,6 +204,13 @@ def update_status():
                     lab += str( int(round(value,0)) ).rjust(3)
                 else:
                     lab = ''
+
+            # Special case: midside (formerly 'mono')
+            elif key == 'midside':
+                if data['midside'] == 'off':
+                    lab = ''
+                else:
+                    lab = data['midside'].upper()
                     
             # Any else key:
             else:
