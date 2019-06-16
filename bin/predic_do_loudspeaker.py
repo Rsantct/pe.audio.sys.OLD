@@ -64,7 +64,7 @@ def patch_lspk(lspk):
 
     lspk['target_spl'] = float( lspk['target_spl'] )
     lspk['room_gain']  = float( lspk['room_gain'] )
-    lspk['house_gain'] = float( lspk['house_gain'] )
+    lspk['house_atten'] = float( lspk['house_atten'] )
 
     for set in lspk['drc_sets']:
         oldValue = lspk['drc_sets'][set]
@@ -288,14 +288,14 @@ def do_filtering_eq():
 
     tmp += ('''
     filter "f.eq.L" {
-        from_inputs:  "in.L"/100/1;
-        to_filters:   "f.drc.L", "f.drc.R";
+        from_inputs:  "in.L"/100/1, "in.R"/100/0;
+        to_filters:   "f.drc.L";
         coeff:        "c.eq";
     };
 
     filter "f.eq.R" {
-        from_inputs:  "in.R"/100/1;
-        to_filters:   "f.drc.R", "f.drc.L";
+        from_inputs:  "in.L"/100/0, "in.R"/100/1;
+        to_filters:   "f.drc.R";
         coeff:        "c.eq";
     };
     ''').replace('    f', 'f').replace('    to', 'to').replace('    co', 'co').replace('    }', '}')
@@ -314,12 +314,12 @@ def do_filtering_drc(drc_set, xo_set):
     ''').replace('    ','')
 
     # filter "f_drc_L" {
-    #     from_filters: "f_eq_L"//1, "f_eq_R"//0 ;
+    #     from_filters: "f_eq_L" ;
     #     to_filters:   "f_fr_L", "f_hi_L", "f_lo_L", "f_sw_amr", "f_sw_rel";
     #     coeff:        -1;
     # };
     # filter "f_drc_R" {
-    #     from_filters: "f_eq_L"//0, "f_eq_R"//1 ;
+    #     from_filters: "f_eq_R" ;
     #     to_filters:   "f_fr_R", "f_hi_R", "f_lo_R", "f_sw_amr", "f_sw_rel";
     #     coeff:        -1;
     # };
@@ -327,9 +327,9 @@ def do_filtering_drc(drc_set, xo_set):
     for in_cha in ('L','R'):
         tmp += '\nfilter "f.drc.'+in_cha+'" {\n'
         if in_cha == 'L':
-            tmp += '    from_filters: "f.eq.L"//1, "f.eq.R"//0;\n'
+            tmp += '    from_filters: "f.eq.L";\n'
         else:
-            tmp += '    from_filters: "f.eq.L"//0, "f.eq.R"//1;\n'
+            tmp += '    from_filters: "f.eq.R";\n'
 
         if in_cha == 'L': i = 0 # the column index
         else:             i = 1
