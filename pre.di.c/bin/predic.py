@@ -102,7 +102,8 @@ def start_pid(command, alias, redir_file=None):
 
     try:
         if redir_file:
-            p = sp.Popen( command.split(), shell=False, stdout=redir_file, stderr=redir_file )
+            p = sp.Popen( command.split(), shell=False,
+                          stdout=redir_file, stderr=redir_file )
         else:
             p = sp.Popen( command.split() )
         print(f'\tpid {p.pid:4}: {alias}')
@@ -161,7 +162,8 @@ def client_socket(data, quiet=True):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
         try:
-            if not quiet: print(f'Connecting to {server}, port {str(port)}...')
+            if not quiet:
+                print(f'Connecting to {server}, port {str(port)}...')
             s.connect((server,port))
         except socket.gaierror as e:
             print(f'Address-related error connecting to server: {e}')
@@ -271,37 +273,37 @@ def show( throw_it=None, state=gc.state ):
     tmp  = "\n"
     tmp += ( f"Loudspeaker is {gc.config['loudspeaker']}\n" )
     tmp += "\n"
-    tmp += ( f"fs             {gc.speaker['fs']:6}\n" )
-    tmp += ( f"Ref level gain {gc.speaker['ref_level_gain']: 6.1f}\n" )
+    tmp += ( f"fs             {gc.speaker['fs']:10}\n" ) 
+    tmp += ( f"Ref level gain {gc.speaker['ref_level_gain']: 10.1f}\n" )
 
     tmp += "\n"
-    tmp += ( f"Level          {gc.state['level']: 6.1f} " + muted + "\n")
-    tmp += ( f"Balance        {gc.state['balance']: 6.1f}\n" )
-    tmp += ( f"Polarity       {gc.state['polarity']:6}\n" )
-    tmp += ( f"Midside        {gc.state['midside']:>6s}\n" )
-    tmp += ( f"Solo           {gc.state['solo']:>6s}\n" )
+    tmp += ( f"Level          {gc.state['level'] :10.1f} " + muted + "\n")
+    tmp += ( f"Balance        {gc.state['balance'] : 10.1f}\n" )
+    tmp += ( f"Polarity       {gc.state['polarity'] : >10s}\n" )
+    tmp += ( f"Midside        {gc.state['midside'] : >10s}\n" )
+    tmp += ( f"Solo           {gc.state['solo'] : >10s}\n" )
     tmp += "\n"
-    tmp += ( f"Bass           {gc.state['bass']: 6.1f}\n" )
-    tmp += ( f"Treble         {gc.state['treble']: 6.1f}\n" )
-    tmp += ( f"Loudness ref   {gc.state['loudness_ref']: 6.1f} " + tracking_loud + "\n")
+    tmp += ( f"Bass           {gc.state['bass'] : 10.1f}\n" )
+    tmp += ( f"Treble         {gc.state['treble'] : 10.1f}\n" )
+    tmp += ( f"Loudness ref   {gc.state['loudness_ref']: 10.1f} " + tracking_loud + "\n")
 
     tmp += "\n"
-    tmp += ( f"Crossover set  {gc.state['XO_set']:>6s}\n" )
-    tmp += ( f"DRC set        {gc.state['DRC_set']:>6s}\n" )
-    tmp += ( f"PEQ            {gc.state['PEQ_set']:>6s}\n" )
+    tmp += ( f"Crossover set  {gc.state['XO_set'] : >10s}\n" )
+    tmp += ( f"DRC set        {gc.state['DRC_set'] : >10s}\n" )
+    tmp += ( f"PEQ            {gc.state['PEQ_set'] : >10s}\n" )
     tmp += "\n"
-    tmp += ( f"Input          {gc.state['input']:>6s}\n" )
-    tmp += ( f'Input gain     {input_gain: 6.1f}\n' )
+    tmp += ( f"Input          {gc.state['input'] : >10s}\n" )
+    tmp += ( f'Input gain     {input_gain : 10.1f}\n' )
 
     tmp += "\n"
-    tmp += ( f"Gain           {gain: 6.1f}\n" )
-    tmp += ( f"Headroom       {headroom: 6.1f}\n" )
+    tmp += ( f"Gain           {gain : 10.1f}\n" )
+    tmp += ( f"Headroom       {headroom : 10.1f}\n" )
     tmp += "\n"
 
     # writes the report to stdout
     print( tmp )
             
-    # and to /tmp/predic
+    # and also to /tmp/predic
     f = open( '/tmp/predic', 'w')
     f.write(tmp)
     f.close()
