@@ -121,14 +121,14 @@ coeff "mp_DynA42_right" {
 # ---------------------------------------------------------
 
 filter "f.eq.L" {
-    from_inputs:  "in.L"/100/1, "in.L"/100/0;
-    to_filters:   "f.drc.L",;
+    from_inputs:  "in.L"/100/1, "in.R"/100/0;
+    to_filters:   "f.drc.L";
     coeff:        "c.eq";
 };
 
 filter "f.eq.R" {
     from_inputs:  "in.L"/100/0, "in.R"/100/1;
-    to_filters:   "f.drc.L",;
+    to_filters:   "f.drc.R";
     coeff:        "c.eq";
 };
     
@@ -139,7 +139,7 @@ filter "f.eq.R" {
 # --------------------------------------------------------------
 
 filter "f.drc.L" {
-    from_filters: "f.eq.L"/;
+    from_filters: "f.eq.L";
     to_filters:   "f.fr.L";
     coeff:        -1;
 };
