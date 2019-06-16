@@ -341,17 +341,17 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
         if midside in ['mid', 'side', 'off']:
             state['midside'] = midside
             try:
-                if state['midside']=='mid':
-                    bf_cli( 'cffa 2 0 m0.5 ; cffa 2 1 m0.5  ;'
-                            'cffa 3 0 m0.5 ; cffa 3 1 m0.5   ')
+                if   state['midside']=='mid':
+                    bf_cli( 'cfia 0 0 m0.5 ; cfia 0 1 m0.5  ;'
+                            'cffa 1 0 m0.5 ; cfia 1 1 m0.5   ')
 
                 elif state['midside']=='side':
-                    bf_cli( 'cffa 2 0 m0.5 ; cffa 2 1 m-0.5 ;'
-                            'cffa 3 0 m0.5 ; cffa 3 1 m-0.5  ')
+                    bf_cli( 'cfia 0 0 m0.5 ; cfia 0 1 m-0.5 ;'
+                            'cfia 1 0 m0.5 ; cfia 1 1 m-0.5  ')
 
                 elif state['midside']=='off':
-                    bf_cli( 'cffa 2 0 m1   ; cffa 2 1 m0    ;'
-                            'cffa 3 0 m0   ; cffa 3 1 m1     ')
+                    bf_cli( 'cfia 0 0 m1   ; cfia 0 1 m0    ;'
+                            'cfia 1 0 m0   ; cfia 1 1 m1     ')
             except:
                 state['midside'] = state_old['midside']
                 warnings.append('Something went wrong when changing '
@@ -581,26 +581,33 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
                         gc.config['balance_variation'] ,state['balance'])
             bf_atten_dB_L = bf_atten_dB_L - (state['balance'] / 2)
             bf_atten_dB_R = bf_atten_dB_R + (state['balance'] / 2)
+
             # From dB to a multiplier to implement easily
             # polarity and mute.
             # Then channel gains are the product of
             # gain, polarity, mute and solo
+
             m_mute = {True: 0, False: 1}[ state['muted'] ]
+
             m_polarity_L = {'+' :  1, '-' : -1,
                             '+-':  1, '-+': -1 }[ state['polarity'] ]
             m_polarity_R = {'+' :  1, '-' : -1,
                             '+-': -1, '-+':  1 }[ state['polarity'] ]
+
             m_solo_L  = {'off': 1, 'l': 1, 'r': 0}[ state['solo'] ]
+
             m_solo_R  = {'off': 1, 'l': 0, 'r': 1}[ state['solo'] ]
+
             m_gain = lambda x: m.pow(10, x/20) * m_mute
             m_gain_L = ( m_gain( bf_atten_dB_L )
                             * m_polarity_L * m_solo_L )
             m_gain_R = ( m_gain( bf_atten_dB_R )
                             * m_polarity_R * m_solo_R )
-            # commit final gain change
-            bf_cli(      'cfia "f.eq.L" "in.L" m' + str(m_gain_L)
-                    + ' ; cfia "f.eq.R" "in.R" m' + str(m_gain_R))
 
+            # commit final gain change will be applied to the input of
+            # drc filter#2,3 stages, i.e: the output of eq filters#0,1 stages
+            bf_cli(      'cffa 2 0 m' + str(m_gain_L)
+                    + ' ; cffa 3 1 m' + str(m_gain_R))
 
         # backs up actual gain
         gain_old = gain
