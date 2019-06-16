@@ -2,31 +2,26 @@
 ## Numbers: assign "none" to not set
 ## Strings: assign "''" to not set
 
-loudspeaker: example2ways-sub
+## The startup behavoir:
 
-# Full ALSA identifier 'hw:Card,Device'
-system_card: hw:0,0
+loudspeaker: dipojorns
 
-# Cards external to jack
-# resamplingQ: 0..4 for alsa_in/out or 16..96 for zita-a2j/j2a
-external_cards: ''
-#external_cards:
-#    # JackName
-#        # {alsacard, resampler, resamplingQ, misc_params}
-#    CSL: 
-#        alsacard:       hw:Device,0
-#        resampler:      zita-a2j
-#        resamplingQ:    96
-#        misc_params:    ''
-#    DEQ2496:
-#        alsacard:       hw:miniStreamer,0
-#        resampler:      zita-j2a
-#        resamplingQ:    96
-#        misc_params:    ''
+# - optionally zeroes some settings
+tone_reset_on_startup:      true
+balance_reset_on_startup:   true
+loudness_reset_on_startup:  false
+midside_reset_on_startup:   true
+solo_reset_on_startup:      true
+
+# - volume (assign null to not set)
+level_on_startup: -24
+# - max volume (leave blank to not set, precedes level_on_startup)
+max_level_on_startup: -20
 
 # Delay between commands (seconds)
 command_delay: 1
-# "Beep" command options to indicate software load
+
+# "beep" command options to indicate software load
 beep_options: ''
 
 # Max digital gain (dB)
@@ -36,18 +31,33 @@ gain_max: 6
 # i.e. a mouse volume level control:
 alert_level: -15
 
-# Zeroes some settings on startup (True/False)
-tone_reset_on_startup : False
-balance_reset_on_startup : False
-loudness_reset_on_startup : False
-mono_reset_on_startup: True
-solo_reset_on_startup: True
+# The jack card (use full ALSA identifier 'hw:Card,Device')
+system_card: hw:DX,0
 
-# Volume settings on startup. assign null to not set
-level_on_startup: null
-# Max volume on startup. Leave blank to not set,
-# precedes level_on_startup.
-max_level_on_startup: 0
+# Additional cards to be used resampled under jack
+# resamplingQuality: 0..4 for alsa_in/out or 16..96 for zita-a2j/j2a
+# sintax:
+# <card jack name>
+#   {alsacard: ..., resampler: ..., resamplingQ:..., misc_params:...}
+external_cards: ''
+#external_cards:
+#
+#  # This is used to capture toslink
+#  CSL:
+#    alsacard:       hw:Device,0
+#    resampler:      zita-a2j
+#    resamplingQ:    96
+#    misc_params:    ''
+#
+#  # This is used just to RTA external monitoring
+#  DEQ2496:
+#    #alsacard: hw:miniStreamer,0
+#    # (i) Intel PCH digital section: hw:PCH,1 - SPDIF16
+#    alsacard:       hw:PCH,1
+#    resampler:      zita-j2a
+#    resamplingQ:    16
+#    misc_params:    ''
+#
 
 # Sound monitors (jack ports).
 # Input selector will connect sources also to these ports.
@@ -55,7 +65,6 @@ max_level_on_startup: 0
 jack_monitors:
     []
     #- DEQ2496:playback_1    DEQ2496:playback_2
-    #- ebumeter:in.L         ebumeter:in.R
 
 ## Paths & options
 
@@ -64,15 +73,18 @@ server_path: ~/pre.di.c/bin/server.py
 
 # Screen output: 0 (nothing) - 1 (minimal) - 2 (full)
 control_output: 0
-# Screen erasing between commands: True - False
-control_clear: False
+# Screen erasing between commands: True - false
+control_clear: false
 
 # Jack
 jack_path: /usr/bin/jackd
 # jack options on ALSA: omit cards and fs (managed in initaudio.py)
-jack_options:          -R -ddummy -P8 -C2
-#jack_options: --silent -R -dalsa -p2048 -n3 --shorts
-
+# - dummy:
+#jack_options:          -R -ddummy -P8 -C2
+# - RPI3 CLAC:
+#jack_options:          -R -dalsa  -p4096 -n3 --shorts
+# - salon:
+jack_options: -R -dalsa -p128 -n2
 
 # Brutefir,
 # for options see https://www.ludd.ltu.se/~torger/brutefir.html#config
@@ -81,7 +93,7 @@ brutefir_options: ''
 brutefir_ports: brutefir:in.L brutefir:in.R
 
 # Ecasound (optional)
-load_ecasound: False
+load_ecasound: true
 ecasound_path: /usr/bin/ecasound
 # Number of parametrics
 # Needed PEQxNN_defeat_Fs.ecs template in ~/config
@@ -119,8 +131,13 @@ treble_pha_curves: R20_ext-treble_pha.dat
 bass_mag_curves: R20_ext-bass_mag.dat
 bass_pha_curves: R20_ext-bass_pha.dat
 
+loudness_SPLref: 83
+loudness_SPLmax: 90
+loudness_SPLmin: 70
+
 # Index of the flat curve inside 'loudness_mag_curves'
 loudness_index_flat: 7
+
 
 # Max dB deviation from 0
 tone_variation: 6
