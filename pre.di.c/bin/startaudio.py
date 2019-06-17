@@ -26,7 +26,7 @@
     Starts predic audio system
 
     Usage:
-    initaudio.py    core | scripts | all
+    startaudio.py    core | scripts | all
 
     core:       jack, brutefir, ecasound, server
     scripts:    everything else (players and clients)
@@ -218,10 +218,15 @@ def init_inputs():
     """restore selected input as stored in state.ini"""
 
     input = gc.state['input']
-    if not input in gc.config['avoid_inputs_on_startup'] and input != 'none':
-        print(f'\n(startaudio) restoring input: {input}')
-    else:
+    try:
+        if input in gc.config['avoid_inputs_on_startup']:
+            return
+    except:
+        pass
+    if input == 'none':
         return
+
+    print(f'\n(startaudio) restoring input: {input}')
 
     # wait for input ports to be up
     ports = pd.gc.inputs[input]['in_ports']
