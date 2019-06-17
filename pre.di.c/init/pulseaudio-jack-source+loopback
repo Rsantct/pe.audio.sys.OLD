@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+
+"""
+    Loads the pulseaudio source plugin, in order to
+    JACK to play through by Pulseadio devices,
+    e.g. some bluettoth loudspeaker.
+
+    Also enables the PA loopback to reach the bluetooth
+    loudspeaker...
+
+    use:    pulseaudio-jack-source  start | stop
+"""
+import sys
+import subprocess as sp
+import time
+
+### CONFIGURE HERE THE ADDRESS OF BLUETOOTH LOUDSPEAKER DEVICE:
+BTaddr = "00:0C:8A:E1:F8:89"
+
+def start():
+
+    tmp= sp.check_output("pactl list sinks short".split()).decode()
+    if not BTaddr.replace(':','_') in tmp:
+        print('(init/pulseaudio-jack-source) Bluetooth loudspeaker not available')
+        return
+
+    # Will load Pulseadio writables ports in JACK. These ports named 'pulse_source'
+    # must be declared as jack_monitors inside <config.yml>
+    tmp = "pactl load-module module-jack-source channels=2 client_name=pulse_source connect=False"
+    sp.Popen( tmp.split() )
+
+    # The loopback module in PA to get audio from the above jack source module,
+    # then send it back to the bluetooth loudspeakers.
+    # (!) IMPORTANT: do not leave sink=xxx undefinied because if bluethooth connection breaks,
+    #                then will autoconnect to the default sink, ie: jack,
+    #                so a DANGEROUS LOOPBACK will occur.
+    time.sleep(1)
+    tmp = BTaddr.replace(":","_")
+    tmp = f"pactl load-module module-loopback \
+            source=jack_in \
+            sink=bluez_sink.{tmp}.a2dp_sink \
+            source_dont_move=True sink_dont_move=True"
+    sp.Popen( tmp.split() )
+
+def stop():
+
+    # notice the reversed order, anyway if unload first the module-jack-source,
+    # the module-loopback will shutdown automagically becasue its sink has gone.
+    tmp = "pactl unload-module module-loopback"
+    sp.Popen( tmp.split() )
+    time.sleep(.5)
+    tmp = "pactl unload-module module-jack-source"
+    sp.Popen( tmp.split() )
+
+if sys.argv[1:]:
+    try:
+        option = {
+            'start' : start,
+            'stop'  : stop
+            }[ sys.argv[1] ]()
+    except:
+        print( '(init/pulseaudio-jack-source) bad option' )
+else:
+    print(__doc__)
