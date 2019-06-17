@@ -18,6 +18,9 @@ level_on_startup: -24
 # - max volume (leave blank to not set, precedes level_on_startup)
 max_level_on_startup: -20
 
+# - some inputs can be avoided to be restored on startup (space delimited please)
+avoid_inputs_on_startup: ''
+
 # Delay between commands (seconds)
 command_delay: 1
 
