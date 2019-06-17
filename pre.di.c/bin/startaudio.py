@@ -218,10 +218,11 @@ def init_inputs():
     """restore selected input as stored in state.ini"""
 
     input = gc.state['input']
-    print(f'\n(startaudio) restoring input: {input}')
-    # exit if input is 'none'
-    if input == 'none':
+    if not input in gc.config['avoid_inputs_on_startup'] and input != 'none':
+        print(f'\n(startaudio) restoring input: {input}')
+    else:
         return
+
     # wait for input ports to be up
     ports = pd.gc.inputs[input]['in_ports']
     jc = jack.Client('tmp')
