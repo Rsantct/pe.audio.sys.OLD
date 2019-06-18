@@ -8,7 +8,9 @@ Must locate here any code to be intended as a **client** or **auxiliary** featur
 - **bin/aux.py** a module to interface with local functions
 - the global idea: anything which is designed to be plugged to work with the pre.di.c kernel
 
-Be aware that **end user scripts** and similar stuff must go inside [your home ~/bin folder](https://github.com/Rsantct/pe.audio.sys/tree/master/bin)
+IF the client or auxiliary feature consists of several files, you can keep all of them together in a subfolder, this is the case of the web page stuff under  **`pre.di.c/clients/www/`** or the LCD stuff under **`pre.di.c/clients/lcd/`**
+
+Be aware that **end user scripts** and similar stuff must go inside **[your home ~/bin folder](https://github.com/Rsantct/pe.audio.sys/tree/master/bin)**
 
 
 As per **pre.di.c** wants to run this clients, you must update your `PYTHONPATH` env variable for instance by editing your **`.profile`** home file:
