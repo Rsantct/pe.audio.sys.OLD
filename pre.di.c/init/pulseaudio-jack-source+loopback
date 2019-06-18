@@ -26,20 +26,23 @@ def start():
 
     # Will load Pulseadio writables ports in JACK. These ports named 'pulse_source'
     # must be declared as jack_monitors inside <config.yml>
-    tmp = "pactl load-module module-jack-source channels=2 client_name=pulse_source connect=False"
+    tmp = "pactl load-module module-jack-source channels=2 \
+           client_name=pulse_source connect=False"
     sp.Popen( tmp.split() )
 
     # The loopback module in PA to get audio from the above jack source module,
     # then send it back to the bluetooth loudspeakers.
-    # (!) IMPORTANT: do not leave sink=xxx undefinied because if bluethooth connection breaks,
-    #                then will autoconnect to the default sink, ie: jack,
+    # (!) IMPORTANT: do not leave sink=xxx undefinied because if bluethooth connection
+    #                breaks then will autoconnect to the default sink, ie: jack,
     #                so a DANGEROUS LOOPBACK will occur.
+    #                Also 'sink_dont_move=True' assured this will not happen.
     time.sleep(1)
     tmp = BTaddr.replace(":","_")
     tmp = f"pactl load-module module-loopback \
             source=jack_in \
             sink=bluez_sink.{tmp}.a2dp_sink \
-            source_dont_move=True sink_dont_move=True"
+            source_dont_move=True \
+            sink_dont_move=True"
     sp.Popen( tmp.split() )
 
 def stop():
