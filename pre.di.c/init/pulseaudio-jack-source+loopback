@@ -8,20 +8,22 @@
     Also enables the PA loopback to reach the bluetooth
     loudspeaker...
 
-    use:    pulseaudio-jack-source  start | stop
+    use:    pulseaudio-jack-source  start [xx:xx...] | stop
+    
+            were xx:xx...  is the BT address of the BT loudspeaker device
 """
 import sys
 import subprocess as sp
 import time
 
-### CONFIGURE HERE THE ADDRESS OF BLUETOOTH LOUDSPEAKER DEVICE:
+### You can configure here a default address for your BLUETOOTH LOUDSPEAKER DEVICE:
 BTaddr = "00:0C:8A:E1:F8:89"
 
 def start():
 
     tmp= sp.check_output("pactl list sinks short".split()).decode()
     if not BTaddr.replace(':','_') in tmp:
-        print('(init/pulseaudio-jack-source) Bluetooth loudspeaker not available')
+        print( f'(init/pulseaudio-jack-source) Bluetooth loudspeaker {BTaddr} not available' )
         return
 
     # Will load Pulseadio writables ports in JACK. These ports named 'pulse_source'
@@ -56,6 +58,9 @@ def stop():
     sp.Popen( tmp.split() )
 
 if sys.argv[1:]:
+
+    if sys.argv[2:]:
+        BTaddr = sys.argv[2]
     try:
         option = {
             'start' : start,
