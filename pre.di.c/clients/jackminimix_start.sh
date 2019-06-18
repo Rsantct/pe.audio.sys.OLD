@@ -77,7 +77,7 @@ if [[ $1 == *'-i'* ]]; then
 
     echo "(i) inserting the mixer:  pre.di.c --> in1"
     echo "                          out      --> system:playback"
-    ~/pre.di.c/clients/bin/jackminimix_insert.sh
+    ~/pre.di.c/clients/jackminimix_insert.sh
 
 else
 
