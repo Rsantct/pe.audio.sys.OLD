@@ -203,6 +203,15 @@ mkfifo pre.di.c/istreams_fifo    # internet streams
 #########################################################
 
 chmod +x bin/*                              >/dev/null 2>&1
+chmod -x bin/*md                            >/dev/null 2>&1
+chmod -x bin/*example                       >/dev/null 2>&1
+chmod -x bin/*wav                           >/dev/null 2>&1
+chmod -x bin/*png                           >/dev/null 2>&1
+chmod -x bin/*cfg                           >/dev/null 2>&1
+chmod -x bin/*conf                          >/dev/null 2>&1
+chmod -x bin/*ini                           >/dev/null 2>&1
+chmod -x bin/*list                          >/dev/null 2>&1
+chmod -x bin/*txt                           >/dev/null 2>&1
 chmod +x pre.di.c/bin/*                     >/dev/null 2>&1
 chmod +x pre.di.c/clients/*                 >/dev/null 2>&1
 chmod -x pre.di.c/clients/README*           >/dev/null 2>&1
