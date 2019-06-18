@@ -117,7 +117,7 @@ def do(task):
     # https://www.aelius.com/njh/jackminimix/
     elif task[:6] == 'mixer ':
         try:
-            cmd = f'{bp.main_folder}/clients/bin/jackminimix_ctrl.py { task[6:] }'
+            cmd = f'{bp.main_folder}/clients/jackminimix_ctrl.py { task[6:] }'
             sp.run( cmd.split() )
             return b'done'
         except:
