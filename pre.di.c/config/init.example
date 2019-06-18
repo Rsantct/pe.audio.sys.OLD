@@ -1,19 +1,22 @@
-#sound-cards-prepare     # release cards from PA an restore asound settings
-#external_cards          # Runs external cards resampled in JACK
-alsa_loop                # Sets up alsa_loop ports in jack to be used from ALSA backended players
-#pulseaudio-jack-sink    # Pulseadio sink on jack to be used from Pulseaudio backended players
-#mpd                     # Loads MPD
-istreams                 # Mplayer based internet streams player script
-#CDDA                    # Mplayer based CD player script
-#DVB                     # Mplayer based DVB-T player script
-#shairport-sync          # Airplay audio player
-#netjack
-#librespot               # Loads librespot (a Spotify Connect player)
-#spotify_monitor         # Loads a Spotify Desktop monitor
-aux                      # Loads a server to switching the amplifier and running user macros.
-players                  # Loads a server to interfacing with players
-#mouse_volume            # mouse controls the pre.di.c volume
+# Here we indicate an ordered list of the scripts from pre.di.c/init/ to be launched at startup.
+
+#sound-cards-prepare    # Release cards from PA an restore asound settings
+#external_cards         # Runs external cards resampled in JACK, as per configured under config.yml
+alsa_loop               # Sets up alsa_loop ports in jack to be used from ALSA backended players
+#pulseaudio-jack-sink   # A PA sink on jack to be used from PA backended players e.g. Spotify
+mpd                     # Loads MPD, the Music Player Daemon
+istreams                # A Mplayer based internet streams player script
+#CDDA                   # A Mplayer based CDDA player script
+#DVB                    # A Mplayer based DVB-T player script
+#netjack                # Jack audio over ethernet
+#librespot              # Loads librespot (a Spotify Connect player)
+#shairport-sync         # Airplay audio player
+#spotify_monitor        # Loads a Spotify Desktop monitor
+aux                     # Loads a server to misc tasks, e.g switching the amplifier or running user macros
+mouse_volume            # A mouse will control the pre.di.c volume
+#lcd                    # Loads the LCDd server and lcd_service.py 
+#ebumeter               # Loads the Ebumeter GUI
+#loudness_monitor       # Runs the loudness_monitor.py daemon client used by the web page and the lcd display
 #jackminimix             # Loads a Mixer
-#lcd                     # Loads the LCDd server and lcd_service.py 
-#loudness_monitor        # Runs the loudness_monitor.py daemon client
-#ebumeter                # Runs ebumeter
+players                 # Loads a server to interfacing with players (playing control and getting metadata)
+
