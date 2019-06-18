@@ -14,7 +14,7 @@ If the client or auxiliary feature consists of several files, you can keep all o
 Be aware that **end user scripts** and similar stuff must go inside **[your home ~/bin folder](https://github.com/Rsantct/pe.audio.sys/tree/master/bin)**
 
 
-As per **pre.di.c** wants to run this clients, you must update your `PYTHONPATH` env variable for instance by editing your **`.profile`** home file:
+As per **pre.di.c** scripts wants to import python modules from here, you must update your `PYTHONPATH` env variable for instance by editing your **`.profile`** home file:
 ```
 export PYTHONPATH="$PYTHONPATH:$HOME/pre.di.c/bin:$HOME/pre.di.c/clients"
 ```
