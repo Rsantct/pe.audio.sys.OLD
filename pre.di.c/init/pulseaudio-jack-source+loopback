@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 
 """
+    Use this under a Desktop installation.
+
     Loads the pulseaudio source plugin, in order to
-    JACK to play through by Pulseadio devices,
+    Jack to play through by Pulseadio devices,
     e.g. some bluettoth loudspeaker.
 
     Also enables the PA loopback to reach the bluetooth
-    loudspeaker...
+    loudspeaker ...
 
-    use:    pulseaudio-jack-source  start [xx:xx...] | stop
+    use:    pulseaudio-jack-source+loopback  start [xx:xx...] | stop
     
             were xx:xx...  is the BT address of the BT loudspeaker device
 """
@@ -38,7 +40,7 @@ def start():
            client_name=pulse_source connect=False"
     sp.Popen( tmp.split() )
 
-    # The loopback module in PA to get audio from the above jack source module,
+    # Also loads a loopback module in PA to get audio from the above jack source module,
     # then send it back to the bluetooth loudspeakers.
     # (!) IMPORTANT: do not leave sink=xxx undefinied because if bluethooth connection
     #                breaks then will autoconnect to the default sink, ie: jack,
