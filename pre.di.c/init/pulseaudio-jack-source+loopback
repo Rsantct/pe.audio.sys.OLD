@@ -16,6 +16,12 @@ import sys
 import subprocess as sp
 import time
 
+### ACHTUNG:
+# Altought we provide this inside the init/ folder, this script cannot works until
+# the BT loudspeaker has been paired and connected to the PA user session subsystem,
+# so you probably want to run this manually once the BT loudspeaker is ready,
+# e.g. by the provided launcher at ~/bin/predic_BT_loudspeaker.sh
+
 ### You can configure here a default address for your BLUETOOTH LOUDSPEAKER DEVICE:
 BTaddr = "00:0C:8A:E1:F8:89"
 
