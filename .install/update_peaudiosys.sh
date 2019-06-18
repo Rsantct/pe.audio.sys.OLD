@@ -95,14 +95,11 @@ done
 ## CLIENTS / WWW
 # - does not contains config neither user files -
 
-## CLIENTS / BIN
-rm clients/bin/*LAST    >/dev/null 2>&1     # discard previous *LAST if any
-for file in clients/bin/* ; do
+## CLIENTS
+rm clients/*LAST    >/dev/null 2>&1     # discard previous *LAST if any
+for file in clients/* ; do
     cp "$file" "$file.LAST" >/dev/null 2>&1
 done
-
-## CLIENTS / MACROS
-# These are privative files, nothing to do here. The branch will provide a 'macros.example' folder.
 
 #########################################################
 # Cleaning
@@ -206,8 +203,18 @@ mkfifo pre.di.c/istreams_fifo    # internet streams
 #########################################################
 
 chmod +x bin/*                              >/dev/null 2>&1
+chmod -x bin/*md                            >/dev/null 2>&1
+chmod -x bin/*example                       >/dev/null 2>&1
+chmod -x bin/*wav                           >/dev/null 2>&1
+chmod -x bin/*png                           >/dev/null 2>&1
+chmod -x bin/*cfg                           >/dev/null 2>&1
+chmod -x bin/*conf                          >/dev/null 2>&1
+chmod -x bin/*ini                           >/dev/null 2>&1
+chmod -x bin/*list                          >/dev/null 2>&1
+chmod -x bin/*txt                           >/dev/null 2>&1
 chmod +x pre.di.c/bin/*                     >/dev/null 2>&1
-chmod +x pre.di.c/clients/bin/*             >/dev/null 2>&1
+chmod +x pre.di.c/clients/*                 >/dev/null 2>&1
+chmod -x pre.di.c/clients/README*           >/dev/null 2>&1
 chmod +x pre.di.c/init/*                    >/dev/null 2>&1
 chmod +x pre.di.c/clients/www/macros/[1-9]* >/dev/null 2>&1
 
