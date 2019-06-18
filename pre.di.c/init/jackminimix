@@ -15,7 +15,7 @@
 
     Notice: jack sources to mixer inputs can be configured inside:
     
-        pre.di.c/clients/bin/jackminimix_start.sh
+        pre.di.c/clients/jackminimix_start.sh
 """
 
 import sys
@@ -24,7 +24,7 @@ from subprocess import Popen
 import basepaths as bp
 
 def start():
-    cmd = f'{bp.main_folder}/clients/bin/jackminimix_start.sh -i'
+    cmd = f'{bp.main_folder}/clients/jackminimix_start.sh -i'
     Popen( cmd.split() )
 
 def stop():
