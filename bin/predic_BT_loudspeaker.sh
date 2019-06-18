@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # This script starts the necessary jack to PA ports and the PA loopack,
-# in order to use a BT loudspeaker under PA as a predic input monitor.
+# in order to use a BT loudspeaker under PA as a predic input monitor,
+# under a Desktop installation.
 
-# It is needed that BT loudspeaker is paired and available under PA.
+# The BT loudspeaker must be paired and available under the PA user session.
 
 # Remember you need to declare the jack to PA ports 'pulse_source' inside 
 # the 'jack_monitors:' section under <config.yml>
