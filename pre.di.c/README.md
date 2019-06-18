@@ -44,7 +44,7 @@ https://jackclient-python.readthedocs.io
 for instance by editing your **`.profile`** home file:
 
 ```
-    export PYTHONPATH="$PYTHONPATH:$HOME/pre.di.c/bin:$HOME/pre.di.c/clients/bin"
+    export PYTHONPATH="$PYTHONPATH:$HOME/pre.di.c/bin:$HOME/pre.di.c/clients"
     export PATH="$PATH:$HOME/pre.di.c/bin"
 ```
 when done relogin.
