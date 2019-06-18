@@ -42,7 +42,7 @@ def start():
     except:
         sounddevice = 'system'
 
-    Popen( f'{bp.main_folder}/clients/bin/loudness_monitor.py \
+    Popen( f'{bp.main_folder}/clients/loudness_monitor.py \
              --input_device {sounddevice} \
              --control_file  {CTRLfname}\
              --output_file {bp.main_folder}/.loudness_monitor'.split() )
