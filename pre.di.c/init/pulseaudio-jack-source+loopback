@@ -48,11 +48,17 @@ def start():
     #                Also 'sink_dont_move=True' assured this will not happen.
     time.sleep(1)
     tmp = BTaddr.replace(":","_")
+    BTsink = f'bluez_sink.{tmp}.a2dp_sink'
     tmp = f"pactl load-module module-loopback \
             source=jack_in \
-            sink=bluez_sink.{tmp}.a2dp_sink \
+            sink={BTsink} \
             source_dont_move=True \
             sink_dont_move=True"
+    sp.Popen( tmp.split() )
+    time.sleep(.5)
+    
+    # Finally ensure BT loudspeaker PA volume is 100%
+    tmp = f'pactl set-sink-volume {BTsink} 100%'
     sp.Popen( tmp.split() )
 
 def stop():
