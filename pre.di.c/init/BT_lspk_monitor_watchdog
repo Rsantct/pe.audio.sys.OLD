@@ -13,11 +13,22 @@ BTaddr=00:0C:8A:E1:F8:89
 ###############################################################
 
 
-if [ $1 ]; then
+if [ $2 ]; then
   BTaddr=$1
 fi
 BTaddr=${BTaddr//:/_}
 BTsink="bluez_sink."$BTaddr".a2dp_sink"
+
+# If called with 'stop', arakiri
+if [[ $1 == stop ]];then
+    pkill -f BT_lspk_monitor_watchdog
+    exit 0
+fi
+
+if [[ $1 != start ]];then
+    echo  "usage: BT_lspk_monitor_watchdog   start [BT_address] | stop" 
+    exit 0
+fi
 
 # Watchdog that checks if the BT loudspeaker is available under the PA user session:
 
@@ -55,3 +66,4 @@ while true; do
     sleep 5
 
 done
+
