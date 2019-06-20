@@ -22,7 +22,7 @@ import time
 # Altought we provide this inside the init/ folder, this script cannot
 # work until the BT loudspeaker has been paired and connected to the 
 # PA user session subsystem, so you'll probably want to run at startup
-# the BT_loudspeaker_watchdog.sh provided alongside this script.
+# the "BT_lspk_monitor_watchdog" script provided alongside this script.
 
 ### You can configure here a default address for your BLUETOOTH LOUDSPEAKER DEVICE:
 BTaddr = "00:0C:8A:E1:F8:89"
