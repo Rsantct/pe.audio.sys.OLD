@@ -123,3 +123,12 @@ def do(task):
         except:
             return b'error'
 
+    ### Bluetooth monitor loudspeaker volume control
+    elif task[:9] == 'bt_volume':
+        try:
+            cmd = f'{bp.main_folder}/clients/PA_BT_lspk_monitor/PA_BT_volume.sh { task[9:] }'
+            sp.run( cmd.split() )
+            return b'done'
+        except:
+            return b'error'
+
