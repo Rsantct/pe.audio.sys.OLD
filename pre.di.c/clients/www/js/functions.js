@@ -79,6 +79,13 @@ function advanced_toggle() {
 
 //////// AUX SERVER FUNCTIONS ////////
 
+// BT lspk monitor volume
+function BT_vol(dB) {
+    var myREQ = new XMLHttpRequest();
+    myREQ.open("GET", "php/functions.php?command=bt_volume " + dB, async=true);
+    myREQ.send();
+}
+
 // Switch the amplifier
 function ampli(mode) {
     var myREQ = new XMLHttpRequest();
