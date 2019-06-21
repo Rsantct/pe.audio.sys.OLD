@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-""" Simply prints the BT asddress of the
+""" Simply prints the BT address of the
     1st BT loudspeaker as listed in Pulseaudio
 """
 
