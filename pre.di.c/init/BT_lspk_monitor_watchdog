@@ -8,13 +8,15 @@
 # the 'jack_monitors:' section under <config.yml>
 
 ###############################################################
-# Default BT loudspaker address, or read it from command line:
-BTaddr=00:0C:8A:E1:F8:89
+# BT loudspaker address configured as found by
+#       ~/pre.di.c/clients/PA_BT_lspk_monitor/PA_BT_1st_device.py
+# or alternatively you can give it it from command line.
 ###############################################################
 
+BTaddr=$(~/pre.di.c/clients/PA_BT_lspk_monitor/PA_BT_1st_device.py)
 
 if [ $2 ]; then
-  BTaddr=$1
+  BTaddr=$2
 fi
 BTaddr=${BTaddr//:/_}
 BTsink="bluez_sink."$BTaddr".a2dp_sink"
