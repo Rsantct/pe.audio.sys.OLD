@@ -186,6 +186,11 @@
         echo json_encode( $macros_array );
     }
 
+    // Aux: BT loudspeaker monitor volume control
+    elseif ( substr( $command, 0, 9 ) === "bt_volume" ) {
+        echo predic_socket( 'aux', $command );
+    }
+
     // PLAYERS related commands are handled by the 'players' server
     elseif ( substr( $command, 0, 7 ) === "player_" ) {
         // The expected playback control syntax is: 'player_play', 'player_pause', etc
