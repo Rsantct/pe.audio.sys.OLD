@@ -79,10 +79,10 @@ function advanced_toggle() {
 
 //////// AUX SERVER FUNCTIONS ////////
 
-// BT lspk monitor volume
-function BT_vol(dB) {
+// Monitor loudspeakers volume
+function MON_vol(dB) {
     var myREQ = new XMLHttpRequest();
-    myREQ.open("GET", "php/functions.php?command=bt_volume " + dB, async=true);
+    myREQ.open("GET", "php/functions.php?command=mon_volume " + dB, async=true);
     myREQ.send();
 }
 
@@ -412,9 +412,15 @@ function page_update(status) {
     // Displays or hides the advanced controls section
     if ( advanced_controls == true ) {
         document.getElementById( "advanced_controls").style.display = "block";
+        document.getElementById( "MON_vol_down").style.display = "inline-block";
+        document.getElementById( "MON_vol_up").style.display = "inline-block";
+        document.getElementById( "level_buttons13").style.display = "table-cell";
     }
     else {
         document.getElementById( "advanced_controls").style.display = "none";
+        document.getElementById( "MON_vol_down").style.display = "none";
+        document.getElementById( "MON_vol_up").style.display = "none";
+        document.getElementById( "level_buttons13").style.display = "none";
     }
 }
 
