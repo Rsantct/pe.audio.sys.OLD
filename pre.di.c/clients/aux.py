@@ -123,10 +123,16 @@ def do(task):
         except:
             return b'error'
 
-    ### Bluetooth monitor loudspeaker volume control
-    elif task[:9] == 'bt_volume':
+    ### MONITOR LOUDSPEAKER VOLUME CONTROL
+    elif task[:10] == 'mon_volume':
+        vol = task[10:].strip()
+        # I don't know why but '+' is missing :-/
+        if vol[0] != '-':
+            vol = '+' + vol
         try:
-            cmd = f'{bp.main_folder}/clients/PA_BT_lspk_monitor/PA_BT_volume.sh { task[9:] }'
+            # (i) clients/MON_volume.sh needs to be adjusted to point to
+            #     the real script that controls your monitor loudspeaker.
+            cmd = f'{bp.main_folder}/clients/MON_volume.sh {vol}'
             sp.run( cmd.split() )
             return b'done'
         except:
