@@ -186,8 +186,8 @@
         echo json_encode( $macros_array );
     }
 
-    // Aux: BT loudspeaker monitor volume control
-    elseif ( substr( $command, 0, 9 ) === "bt_volume" ) {
+    // Aux: monitor loudspeaker volume control
+    elseif ( substr( $command, 0, 10 ) === "mon_volume" ) {
         echo predic_socket( 'aux', $command );
     }
 
