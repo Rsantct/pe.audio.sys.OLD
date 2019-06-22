@@ -23,7 +23,7 @@ def start():
             config = yaml.load( f.read() )
         if not any( [ 'PortAudio' in x for x in config['jack_monitors'] ] ):
             print('(init/ebumeter) adding PortAudio for jack_monitors under config.yml')
-            config['jack_monitors'].append( 'PortAudio:in_0 PortAudio:in_1' )
+            config['jack_monitors'].append( 'PortAudio:in_0            PortAudio:in_1' )
             with open(f'{bp.config_folder}/config.yml', 'w') as f:
                 yaml.dump( config, f )
 
