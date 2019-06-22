@@ -108,8 +108,13 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
         td#peq              { border: none; width: 33%; color:grey; }
         
         /* 5th SECTION */
-        td#level_buttons1   { border-style: none; }
-        td#level_buttons2   { border-style: none; }
+        table#level_buttons_table  { table-layout: fixed; }
+        td#level_buttons11   { border-style: none; width:15%; }
+        td#level_buttons12   { border-style: none; width:70%; }
+        td#level_buttons13   { border-style: none; width:15%; font-size:0.50em; vertical-align: bottom;}
+        td#level_buttons21   { border-style: none; width:15%; }
+        td#level_buttons22   { border-style: none; width:70%; }
+        td#level_buttons23   { border-style: none; width:15%; font-size:0.50em; }
         
         /* 6th SECTION */
         table#player_info   { text-align: left; }
@@ -127,6 +132,7 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
         td#playback_control_21  { border-style: none; width:10%; }
         td#playback_control_22  { border-style: none; width:75%; }
         td#playback_control_23  { border-style: none; width:15%; text-align:center;}
+        
         
         /* 8th SECTION */
         .macro_buttons  {   width: 100%;
@@ -331,23 +337,37 @@ along with pre.di.c.  If not, see https://www.gnu.org/licenses/.
 
     <!-- LEVEL butttons -->
     <div class="level_buttons" id="level_buttons" align="center" >
-        <table>
+        <table id="level_buttons_table">
         <tr>
-            <td id="level_buttons1">
+            <td id="level_buttons11">
+            </td>
+            <!-- 1 dB MAIN VOLUME and MUTE buttons -->
+            <td id="level_buttons12">
                 <button type="button" onmousedown="predic_cmd('level -1 add')" >
-                &nbsp;-1&nbsp;</button>
+                        &nbsp;-1&nbsp;</button>
                 <button type="button" onmousedown="predic_cmd('mute toggle')" id="buttonMute" >
-                &nbsp;&nbsp;0&nbsp;&nbsp;</button>            
+                        &nbsp;&nbsp;0&nbsp;&nbsp;</button>            
                 <button type="button" onmousedown="predic_cmd('level +1 add')" >
-                &nbsp;+1&nbsp;</button>
+                        &nbsp;+1&nbsp;</button>
+            </td>
+            <td id="level_buttons13">
+                &nbsp;&nbsp;mon:&nbsp;&nbsp;
             </td>
         <tr>
-        </tr>    
-            <td id="level_buttons2">
+        </tr>
+            <td id="level_buttons21">
+            </td>
+            <!-- 3 dB MAIN VOLUME buttons -->
+            <td id="level_buttons22">
                 <button type="button" onmousedown="predic_cmd('level -3 add')" >
-                &nbsp;&nbsp;&nbsp;-3&nbsp;&nbsp;&nbsp;</button>
+                        &nbsp;&nbsp;&nbsp;-3&nbsp;&nbsp;&nbsp;</button>
                 <button type="button" onmousedown="predic_cmd('level +3 add')" >
-                &nbsp;&nbsp;&nbsp;+3&nbsp;&nbsp;&nbsp;</button>
+                        &nbsp;&nbsp;&nbsp;+3&nbsp;&nbsp;&nbsp;</button>
+            </td>
+            <!-- 2 dB MONITOR VOLUME buttons -->
+            <td id="level_buttons23">
+                <button type="button" id="MON_vol_down"  onmousedown="MON_vol('-2dB')">-</button>
+                <button type="button" id="MON_vol_up"    onmousedown="MON_vol('+2dB')">+</button>
             </td>
         </tr>
         </table>
