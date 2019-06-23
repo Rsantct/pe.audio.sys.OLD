@@ -1,0 +1,135 @@
+#!/usr/bin/env python3
+
+"""
+    This is intended to be used under a Desktop installation.
+
+    Loads the pulseaudio source plugin, in order to send the
+    selected pre.di.c. input from Jack to be played through 
+    by a Pulseadio bluetooth loudspeaker.
+
+    usage:   BT_lspk_monitor    start | stop
+
+    (i) Remember you need to declare the jack to PA ports 
+        'pulse_source' inside the 'jack_monitors:' section 
+        under <config.yml>
+"""
+### This script depens on ~/pre.di.c/clients/PA_BT_lspk_monitor/PA_BT_1st_device.py
+
+
+import sys
+import os
+import subprocess as sp
+import time
+
+import basepaths as bp
+import yaml
+
+HOME = os.path.expanduser("~")
+
+def load_Jack2Pulse_and_PulseLoop(BTaddr):
+    """ Loads the necessary stuff to link Jack to Pulseaudio
+        and looping back the stream to the BT lspk.
+        
+        receive: the xx:xx:... address of the BT lspk device
+        returns: the BT sink name as listed by 'pactl list sinks', or None
+    """
+
+    tmp= sp.check_output("pactl list sinks short".split()).decode()
+    if not BTaddr.replace(':','_') in tmp:
+        print( f'(init/pulseaudio-jack-source) Bluetooth loudspeaker {BTaddr} not available' )
+        return
+
+    # Will load Pulseadio writables ports in JACK. These ports named 'pulse_source'
+    # must be declared as jack_monitors inside <config.yml>
+    tmp = "pactl load-module module-jack-source channels=2 \
+           client_name=pulse_source connect=False"
+    sp.Popen( tmp.split() )
+
+    # Also loads a loopback module in PA to get audio from the above jack source module,
+    # then send it back to the bluetooth loudspeakers.
+    # (!) IMPORTANT: do not leave sink=xxx undefinied because if bluethooth connection
+    #                breaks then will autoconnect to the default sink, ie: jack,
+    #                so a DANGEROUS LOOPBACK will occur.
+    #                Also 'sink_dont_move=True' assured this will not happen.
+    time.sleep(1)
+    tmp = BTaddr.replace(":","_")
+    BTsink = f'bluez_sink.{tmp}.a2dp_sink'
+    tmp = f"pactl load-module module-loopback \
+            source=jack_in \
+            sink={BTsink} \
+            source_dont_move=True \
+            sink_dont_move=True"
+    sp.Popen( tmp.split() )
+    time.sleep(.5)
+    
+    return BTsink
+
+
+def start():
+
+    # Looping every 5 seconds
+    started = False
+    while True:
+    
+        # Looking for the 1st BT loudspeaker device under Pulseaudio
+        BTaddr = sp.check_output( f"{HOME}/pre.di.c/clients/PA_BT_lspk_monitor/PA_BT_1st_device.py" ).strip().decode()
+
+        if BTaddr:
+        
+            if not started:
+                # Starting
+                print( '(i) BT loudspeaker is available under Pulseaudio, ' )
+                print( '    trying to connect as a pre.di.c input monitor...' )
+
+                BTsink = load_Jack2Pulse_and_PulseLoop(BTaddr)
+    
+                # Ensure BT loudspeaker PA volume is 100%
+                tmp = f'pactl set-sink-volume {BTsink} 100%'
+                sp.Popen( tmp.split() )
+
+                # Reconnecting the current input in order to reach the new monitor ports
+                with open(f'{bp.config_folder}/state.yml', 'r') as f:
+                    state = yaml.load( f.read() )
+                sp.Popen( f"control input {state['input']}".split() )
+
+                started = True
+
+        else:
+
+            if started:
+                print( '(i) BT loudspeaker not available under Pulseaudio,' )
+                print( '    then removing modules.' )
+
+                # Removing the Pulseaudio loop-back: NOT necessary,
+                # because it dissapears when BT loudspeaker is shooted down.
+                #tmp = "pactl unload-module module-loopback"
+                #sp.Popen( tmp.split() )
+
+                # Removing the Pulseaudio jack source module
+                tmp = "pactl unload-module module-jack-source"
+                sp.Popen( tmp.split() )
+
+                started = False
+
+        time.sleep( 5 )
+
+
+def stop():
+    
+    # arakiri
+    sp.Popen( 'pkill -f BT_lspk_monitor'.split() )
+
+
+if sys.argv[1:]:
+
+    if sys.argv[2:]:
+        BTaddr = sys.argv[2]
+    try:
+        option = {
+            'start' : start,
+            'stop'  : stop
+            }[ sys.argv[1] ]()
+    except:
+        print( '(init/BT_lspk_monitor) bad option' )
+else:
+    print(__doc__)
