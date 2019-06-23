@@ -7,7 +7,7 @@
     selected pre.di.c. input from Jack to be played through 
     by a Pulseadio bluetooth loudspeaker.
 
-    usage:   BT_lspk_monitor    start | stop
+    usage:   PA_BT_lspk_monitor    start | stop
 
     (i) Remember you need to declare the jack to PA ports 
         'pulse_source' inside the 'jack_monitors:' section 
@@ -117,7 +117,7 @@ def start():
 def stop():
     
     # arakiri
-    sp.Popen( 'pkill -f BT_lspk_monitor'.split() )
+    sp.Popen( 'pkill -f PA_BT_lspk_monitor'.split() )
 
 
 if sys.argv[1:]:
@@ -130,6 +130,6 @@ if sys.argv[1:]:
             'stop'  : stop
             }[ sys.argv[1] ]()
     except:
-        print( '(init/BT_lspk_monitor) bad option' )
+        print( '(init/PA_BT_lspk_monitor) bad option' )
 else:
     print(__doc__)
