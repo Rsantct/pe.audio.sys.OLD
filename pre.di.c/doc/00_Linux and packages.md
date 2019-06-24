@@ -2,9 +2,15 @@ See here:
 
 https://github.com/AudioHumLab/FIRtro/wiki/04a-Instalación-de-Linux-y-paquetes-de-SW
 
-Usually it is enough to integrate the user which will run pre.di.c into convenient groups:
+Usually it is enough:
 
-    sudo usermod -a -G cdrom,audio,video,plugdev yourUser
+- add the **`predic`** user to your system, this is optional so you can run pre.di.c under any existent user account if you want so.
+
+    `sudo adduser predic`
+
+- then integrate the user which will run pre.di.c into convenient groups:
+
+    `sudo usermod -a -G cdrom,audio,video,plugdev YourUserHere`
 
 Also install the following packages on your linux installation:
 
