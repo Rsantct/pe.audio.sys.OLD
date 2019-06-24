@@ -5,7 +5,7 @@ Must locate here any code to be intended as a **client** or **auxiliary** featur
 
 - **players.py** a module to interface with players (MPD, Spotify, CD-Audio, DVB-T, internet)
 - **aux.py** a module to interface with local functions
-- **www/** the control web page and related web **macros** scripts
+- **www/** the control web page and the related scripts for user macro buttons.
 - **lcd/** files to run the LCD service
 - the global idea: anything which is designed to be plugged to work with the pre.di.c kernel
 
