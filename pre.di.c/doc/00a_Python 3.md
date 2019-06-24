@@ -90,7 +90,7 @@ This provides Python 3.7 :-)
 
 - Do `sudo apt update`, `sudo apt upgrade`, repeat until no more updates are announced. Then do `sudo apt dist-upgrade`.
 - Edit `/etc/apt/sources.list` and `/etc/apt/sources.list.d\raspi.list`, replacing `stretch` with `buster`.
-- Do `sudo apt update`, `sudo apt upgrade`, repeat until no more updates are announced. Be patient, this will take a while, and you'll need to answer some questions, just select the defaults. 
+- Do `sudo apt update`, `sudo apt upgrade`, repeat until no more updates are announced. Be patient, this will take a while, and you'll need to answer some questions, just say 'Y'. 
 - Then do `sudo apt dist-upgrade`
 - Reboot your RPI
 - Reconfigure MPD:
