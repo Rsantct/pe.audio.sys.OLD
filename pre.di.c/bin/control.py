@@ -343,7 +343,7 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
             try:
                 if   state['midside']=='mid':
                     bf_cli( 'cfia 0 0 m0.5 ; cfia 0 1 m0.5  ;'
-                            'cffa 1 0 m0.5 ; cfia 1 1 m0.5   ')
+                            'cfia 1 0 m0.5 ; cfia 1 1 m0.5   ')
 
                 elif state['midside']=='side':
                     bf_cli( 'cfia 0 0 m0.5 ; cfia 0 1 m-0.5 ;'
