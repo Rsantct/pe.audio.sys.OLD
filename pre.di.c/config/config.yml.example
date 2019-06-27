@@ -64,10 +64,11 @@ external_cards: ''
 
 # Sound monitors (jack ports).
 # Input selector will connect sources also to these ports.
-# Please use space separated ports pairs, or assign [] to not set.
+# Please use space separated ports pairs, or assign empty list [] to not set.
 jack_monitors:
     []
     #- DEQ2496:playback_1    DEQ2496:playback_2
+    #- zita-j2n:in_1         zita-j2n:in_2
 
 ## Paths & options
 
