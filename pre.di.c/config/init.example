@@ -17,6 +17,9 @@ mouse_volume            # A mouse will control the pre.di.c volume
 #lcd                    # Loads the LCDd server and lcd_service.py 
 #ebumeter               # Loads the Ebumeter GUI
 #loudness_monitor       # Runs the loudness_monitor.py daemon client used by the web page and the lcd display
-#jackminimix             # Loads a Mixer
+#jackminimix            # Loads a Mixer
 players                 # Loads a server to interfacing with players (playing control and getting metadata)
+#PA_BT_lspk_monitor     # Activates a Pulseaudio Bluetooth loudspeaker as a pre.di.c input monitor
+#zita-j2n_mcast         # A LAN multicast audio sender
+#zita-n2j_mcast         # A LAN multicast audio receiver
 
