@@ -7,7 +7,7 @@
     ... similar  to  having analog audio connections between the 
     sound cards of the systems using it
 
-    use:    zita-j2n_mcast   start | stop
+    usage:    zita-j2n_mcast   start | stop
 """
 import sys
 import subprocess as sp
