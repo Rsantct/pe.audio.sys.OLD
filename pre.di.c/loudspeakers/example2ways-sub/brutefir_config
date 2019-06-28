@@ -207,8 +207,7 @@ filter "f.eq.R" {
     
 # --------------------------------------------------------------
 # ------------------- CONVOLVER: DRC filters -------------------
-# Madatory filters "f.drc.L" "f.drc.R" for DRC & MONO/STEREO
-# From both filters "eq.L" & "eq.R" in order to operate 'mono'
+# Madatory filters "f.drc.L" "f.drc.R" for DRC
 # --------------------------------------------------------------
 
 filter "f.drc.L" {
