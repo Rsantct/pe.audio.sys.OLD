@@ -308,8 +308,7 @@ def do_filtering_drc(drc_set, xo_set):
     tmp = ('''
     # --------------------------------------------------------------
     # ------------------- CONVOLVER: DRC filters -------------------
-    # Madatory filters "f.drc.L" "f.drc.R" for DRC & MONO/STEREO
-    # From both filters "eq.L" & "eq.R" in order to operate \'mono\'
+    # Madatory filters "f.drc.L" "f.drc.R" for DRC
     # --------------------------------------------------------------
     ''').replace('    ','')
 
