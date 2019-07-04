@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# (i) You need to have the executable jackminimix
+#     Visit https://www.aelius.com/njh/jackminimix/ to download and compile
+
 ################## USER SETTINGS #########################3
 #
 # SOURCES (space separated portNames w/o the _N suffix)
