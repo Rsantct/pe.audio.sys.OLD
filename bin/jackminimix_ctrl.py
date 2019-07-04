@@ -8,6 +8,11 @@
 # because not available under Berryconda (Python Anaconda distro for Raspberry Pi)... 
 # So here we use oscchief, a nice OSC command line tool.
 
+# (i) You need to have the executable oscchief
+#     Visit https://github.com/hypebeast/oscchief to download and compile
+#     If you use an armhf machine like a Raspberry Pi we provide the binary here:
+#       pe.audio.sys/pre.di.c/doc/armhf_binaries/oscchief
+
 import argparse
 from subprocess import run, check_output
 import sys
