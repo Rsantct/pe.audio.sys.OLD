@@ -2,7 +2,7 @@
 
 # (i) You need to have the executable jackminimix
 #     Visit https://www.aelius.com/njh/jackminimix/ to download and compile
-#     If you use armhf machine like a Raspberry Pi we provide the binary here:
+#     If you use an armhf machine like a Raspberry Pi we provide the binary here:
 #       pe.audio.sys/pre.di.c/doc/armhf_binaries/jackminimix
 
 ################## USER SETTINGS #########################3
