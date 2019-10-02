@@ -39,6 +39,11 @@ https://jackclient-python.readthedocs.io
     sudo python3 -m pip install JACK-Client
 ```
 
+Optionaly recommended:
+
+    sudo pip3 install sounddevice watchdog
+
+
 ### Update your environment
 
 for instance by editing your **`.profile`** home file:
