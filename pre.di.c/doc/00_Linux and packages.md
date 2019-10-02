@@ -32,3 +32,4 @@ Also install the following packages on your linux installation:
     sudo apt install jackd2 brutefir ecasound ecatools python-ecasound mpd mpc mplayer
     sudo apt install ladspa-sdk fil-plugins zita-ajbridge zita-njbridge apache2 libapache2-mod-php
 
+**For the python3 needed packages, please refer to the file pre.di.c/README.md**
