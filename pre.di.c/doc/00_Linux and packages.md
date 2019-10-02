@@ -26,6 +26,24 @@ Update your `~/.profile`:
     export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
 
 
+Enable your user to access the sound card under the dbus system enviroment:
+
+    sudo nano /etc/dbus-1/system-local.conf
+    
+        <busconfig>
+          <!-- pre.di.c -->
+            <policy user="predic">
+              <allow own="org.freedesktop.ReserveDevice1.Audio0"/>
+              <allow own="org.freedesktop.ReserveDevice1.Audio1"/>
+              <allow own="org.freedesktop.ReserveDevice1.Audio2"/>
+              <allow own="org.freedesktop.ReserveDevice1.Audio3"/>
+            </policy>
+        </busconfig>
+    
+    
+    sudo service dbus restart
+
+
 Also install the following packages on your linux installation:
 
     sudo apt install alsa-utils libjack-jackd2-dev libasound2-dev libasound2-plugins
