@@ -3,7 +3,7 @@
 First of all it is strongly recommended that your Linux distro has Python3 version >= 3.6,
 so try to upgrade your Linux before continue.
 
-## Install procedure:
+## Your Linux enviroment and packages:
 
 See here: 
 
@@ -18,6 +18,13 @@ Usually it is enough:
 - then integrate the user which will run pre.di.c into convenient groups:
 
     `sudo usermod -a -G cdrom,audio,video,plugdev YourUserHere`
+
+Update your `~/.profile`:
+
+    export PYTHONPATH="$PYTHONPATH:$HOME/pre.di.c/bin:$HOME/pre.di.c/clients/bin"
+    export PATH="$PATH:$HOME/pre.di.c/bin"
+    export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
+
 
 Also install the following packages on your linux installation:
 
