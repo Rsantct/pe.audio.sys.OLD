@@ -1,3 +1,10 @@
+## ACHTUNG:
+
+First of all it is strongly recommended that your Linux distro has Python3 version >= 3.6,
+so try to upgrade your Linux before continue.
+
+## Install procedure:
+
 See here: 
 
 https://github.com/AudioHumLab/FIRtro/wiki/04a-Instalación-de-Linux-y-paquetes-de-SW
