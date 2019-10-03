@@ -53,7 +53,7 @@ function check_if_ecasound() {
 }
 
 // Used from buttons to send commands to pre.di.c
-function predic_cmd(cmd, update=true) {
+function control_cmd(cmd, update=true) {
     // Sends the command to pre.di.c through by the server's PHP:
     // https://www.w3schools.com/js/js_ajax_http.asp
     var myREQ = new XMLHttpRequest();
@@ -525,7 +525,7 @@ function insert_peq_selector(){
     // defines the selector
     var newSelector = document.createElement("select");
     newSelector.setAttribute("id", "peqSelector");
-    newSelector.setAttribute("onchange", "predic_cmd('peq ' + this.value, update=false)" );
+    newSelector.setAttribute("onchange", "control_cmd('peq ' + this.value, update=false)" );
 
     // Appends it
     var element = document.getElementById("span_peq");
@@ -708,7 +708,7 @@ function http_prepare(x) {
 // Processing the LOUDNESS_REF slider
 function loudness_ref_change(slider_value) {
     loudness_ref = parseInt(slider_value);
-    predic_cmd('loudness_ref ' + loudness_ref, update=false);
+    control_cmd('loudness_ref ' + loudness_ref, update=false);
 }
 
 // JUST TO TEST
