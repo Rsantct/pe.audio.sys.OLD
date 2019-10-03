@@ -135,7 +135,7 @@
         echo get_config("loudspeaker");
     }
 
-    // UPLOADING SOME FILES: inputs.yml, config.yml, speaker.yml, .loudness_monitor
+    // RETURNS THE CONTENTS OF SOME PREDEFINED FILES
     // Notice: readfile() does an 'echo', so it returns the contents to the standard php output
     elseif ( $command == "read_inputs_file" ) {
         readfile($CFG_FOLDER."/inputs.yml");
