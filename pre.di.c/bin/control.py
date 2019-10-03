@@ -604,10 +604,10 @@ def proccess_commands(full_command, state=gc.state, curves=curves):
             m_gain_R = ( m_gain( bf_atten_dB_R )
                             * m_polarity_R * m_solo_R )
 
-            # commit final gain change will be applied to the input of
-            # drc filter#2,3 stages, i.e: the output of eq filters#0,1 stages
-            bf_cli(      'cffa 2 0 m' + str(m_gain_L)
-                    + ' ; cffa 3 1 m' + str(m_gain_R))
+            # commit final gain change will be applied to the
+            # 'from filters' input section on drc filters (cffa)
+            bf_cli(      'cffa "f.drc.L" "f.eq.L" m' + str(m_gain_L)
+                    + ' ; cffa "f.drc.R" "f.eq.R" m' + str(m_gain_R))
 
         # backs up actual gain
         gain_old = gain
