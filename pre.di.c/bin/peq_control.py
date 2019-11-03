@@ -46,6 +46,7 @@ from configparser import ConfigParser
 import basepaths
 import getconfigs
 
+UHOME       = os.path.expanduser("~")
 
 # pool of PEQ settings
 PEQs = ConfigParser()
@@ -221,10 +222,10 @@ def auxPEQdump(plugin, pluginNum, filterNum):
 
 def PEQdump2ecs():
 
-    ecanet("cs-save-as /home/predic/tmp.ecs")
-    with open("/home/predic/tmp.ecs", "r") as f:
+    ecanet( f"cs-save-as {UHOME}/tmp.ecs" )
+    with open( f"{UHOME}/tmp.ecs", "r" ) as f:
         print((f.read()))
-    os.remove("/home/predic/tmp.ecs")
+    os.remove( f"{UHOME}/tmp.ecs" )
 
 
 if __name__ == '__main__':
